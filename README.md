@@ -1,17 +1,29 @@
-# LTW Video Splitter
+# LTW Professional Video Splitter
 
-A Python script that splits downloaded videos into customizable clips (default: 30 seconds). Optimized for macOS and Windows with GPU acceleration support.
+A professional-grade Python tool for YouTube content creators that splits videos into clips with DaVinci Resolve integration. Features automatic organization, metadata tracking, and Resolve project generation for streamlined video editing workflows.
 
 ## Features
 
+### Core Functionality
 - Split videos into clips of specified duration (default: 30 seconds)
 - Support for multiple video formats (MP4, AVI, MOV, MKV, FLV, WMV, WEBM)
-- Batch processing of multiple videos
-- Customizable input and output directories
-- Progress tracking and detailed output
-- Reliable audio in all clips (AAC 160k @ 44.1kHz, with retry)
+- Batch processing of multiple videos with progress tracking
+- Reliable audio encoding (AAC 160k @ 44.1kHz with retry mechanism)
+
+### Professional Features
+- **DaVinci Resolve Integration**: Automatic project file generation and Lua scripts for easy import
+- **Professional Organization**: Clips, metadata, and project files in structured directories
+- **YouTube-Optimized Quality**: SD (480p), HD (1080p), and 4K (2160p) presets
+- **Metadata Tracking**: JSON files with complete clip information and timestamps
+- **Custom Naming Patterns**: Flexible naming with project names, timestamps, and numbering
+- **Intelligent Scene Detection**: Automatically split videos at natural scene boundaries using computer vision
+- **Batch Processing with Resume**: Process multiple videos with automatic progress saving and resume capability
+
+### Performance & Compatibility
 - GPU acceleration support (NVIDIA RTX series on Windows)
 - Optimized for Apple Silicon (M1/M2/M3/M4) on macOS
+- Hardware-accelerated encoding with FFmpeg
+- Resume-capable processing with error recovery
 
 ## System Requirements
 
@@ -34,12 +46,25 @@ git clone https://github.com/Eli-Dolney/LTW_Clipper.git
 cd LTW_Clipper
 ```
 
-### 2. Set Up Python Environment
+### 2. Quick Setup (Recommended)
 
-**Option A: Using Virtual Environment (Recommended)**
+```bash
+# Run the automated setup script (does everything automatically)
+python3 setup.py
+```
+
+This will:
+- ✅ Create a virtual environment
+- ✅ Install all required dependencies
+- ✅ Make launcher scripts executable
+- ✅ Set up everything for you
+
+### 3. Manual Setup (Alternative)
+
+**Option A: Using Virtual Environment**
 ```bash
 # Create virtual environment
-python -m venv venv
+python3 -m venv venv
 
 # Activate virtual environment
 # On macOS/Linux:
@@ -79,7 +104,43 @@ sudo apt update
 sudo apt install ffmpeg
 ```
 
-## Usage
+## 🎨 GUI Mode (Recommended)
+
+### Professional Desktop Application
+
+**LTW Video Splitter Pro** includes a beautiful, modern GUI that works on both macOS and Windows.
+
+#### Quick Launch:
+- **macOS**: Double-click `LTW_Video_Splitter.command`
+- **Windows**: Double-click `LTW_Video_Splitter.bat`
+- **Manual**: `python launch_gui.py`
+
+#### Features:
+- 🎯 **Drag & Drop** - Drop video files directly onto the interface
+- 📊 **Real-time Progress** - Visual progress bars and status updates
+- ⚙️ **Professional Settings** - All options in an intuitive interface
+- 👀 **Clip Preview** - See exactly what clips will be created before processing
+- 📦 **Batch Processing** - Process entire directories with resume capability
+- 🎬 **Scene Detection** - AI-powered intelligent splitting
+
+#### GUI Features:
+- 🎬 **Drag & Drop Interface** - Drop video files or folders directly
+- 📊 **Live Progress Tracking** - Real-time progress bars and file status
+- ⚙️ **Professional Controls** - Quality presets, duration settings, naming patterns
+- 🎭 **DaVinci Resolve Integration** - Automatic project file generation
+- 🧠 **AI Scene Detection** - Intelligent splitting at natural scene boundaries
+- 📦 **Batch Mode** - Process entire directories with resume capability
+- 👀 **Clip Preview** - Preview exactly what clips will be created
+- 🌓 **Dark Mode** - Modern dark theme optimized for video editing
+
+#### Cross-Platform:
+- ✅ **macOS** (Intel/Apple Silicon) - Native performance
+- ✅ **Windows** (NVIDIA/AMD) - GPU acceleration support
+- ✅ **Offline** - No internet required, all processing local
+
+---
+
+## 💻 Command Line Usage
 
 ### Basic Usage
 
@@ -122,6 +183,31 @@ python video_splitter.py -d 60  # 60-second clips
 python video_splitter.py -i videos -o clips -d 45
 ```
 
+### Batch Processing with Resume
+
+Process all videos in a directory with automatic resume capability:
+
+```bash
+# Process all videos in a directory
+python video_splitter.py --batch --input "/path/to/videos"
+
+# With scene detection for intelligent splitting
+python video_splitter.py --batch --scene-detection --input "/path/to/videos"
+
+# Resume interrupted batch processing
+python video_splitter.py --batch --resume --input "/path/to/videos"
+
+# Batch with custom settings
+python video_splitter.py --batch --input "/path/to/videos" --duration 45 --quality youtube_hd --project-name "My_Batch_Project"
+```
+
+**Batch Processing Features:**
+- ✅ Processes multiple videos automatically
+- ✅ Saves progress and allows resume after interruption
+- ✅ Creates organized project structure
+- ✅ Generates DaVinci Resolve projects for all videos
+- ✅ Press Ctrl+C to interrupt safely (progress is saved)
+
 ### Single File Processing
 
 For processing just one video file:
@@ -146,6 +232,9 @@ python split_one.py --file 'you need to learn Python RIGHT NOW!! ⧸⧸ EP 1 [mR
 
 # With quality settings
 python split_one.py --file "video.mp4" -d 30 -q high -n "{name}_part_{num:03d}"
+
+# Intelligent scene detection
+python split_one.py --file "video.mp4" --scene-detection --min-scene-duration 15
 ```
 
 ### Command Line Options
@@ -158,8 +247,14 @@ python split_one.py --file "video.mp4" -d 30 -q high -n "{name}_part_{num:03d}"
 **split_one.py:**
 - `--file`: Path to the video file to split
 - `-d, --duration`: Duration of each clip in seconds (default: 30)
-- `-q, --quality`: Video quality ('low', 'medium', 'high', 'original', default: medium)
-- `-n, --naming`: Naming pattern (supports {name}, {num}, {duration})
+- `-q, --quality`: Video quality ('youtube_sd', 'youtube_hd', 'youtube_4k', 'original', default: youtube_hd)
+- `-n, --naming`: Naming pattern (supports {project}, {name}, {num}, {duration}, {timestamp})
+- `--resolve`: Generate DaVinci Resolve project files (default: enabled)
+- `--project-name`: Custom name for Resolve project (auto-generated if not specified)
+- `--scene-detection`: Use intelligent scene detection for natural splitting
+- `--min-scene-duration`: Minimum duration for detected scenes (default: 10 seconds)
+- `--batch`: Process all videos in input directory (batch mode)
+- `--resume`: Resume interrupted batch processing
 
 ## Performance Optimization
 
@@ -200,6 +295,31 @@ Processing: video2.mp4
 🎉 All done! Created 7 clips in 'clips'
 ```
 
+## 🎯 Advanced Features
+
+### Intelligent Scene Detection
+Automatically detect scene changes and split videos at natural boundaries instead of fixed time intervals:
+```bash
+# Use scene detection for intelligent splitting
+python split_one.py --file "video.mp4" --scene-detection --min-scene-duration 15
+```
+
+### Batch Processing with Resume
+Process entire directories of videos with automatic progress saving:
+```bash
+# Process all videos in a directory
+python video_splitter.py --batch --input "/path/to/videos"
+
+# Resume after interruption
+python video_splitter.py --batch --resume --input "/path/to/videos"
+```
+
+### Professional Project Organization
+- Automatic project folder creation
+- DaVinci Resolve project files
+- Metadata JSON files for each clip
+- Organized clip naming with timestamps
+
 ## Supported Video Formats
 
 - MP4 (.mp4)
@@ -210,21 +330,36 @@ Processing: video2.mp4
 - WMV (.wmv)
 - WEBM (.webm)
 
-## Quality Settings
+## Quality Settings (YouTube Optimized)
 
-- **Low**: 640x360, 1000k bitrate
-- **Medium**: 1280x720, 2000k bitrate (default)
-- **High**: 1920x1080, 4000k bitrate
-- **Original**: Maintains original video quality
+- **youtube_sd**: 854x480, 2000k bitrate (YouTube SD/480p)
+- **youtube_hd**: 1920x1080, 5000k bitrate (YouTube HD/1080p) - *Default*
+- **youtube_4k**: 3840x2160, 15000k bitrate (YouTube 4K/2160p)
+- **original**: Maintains original video quality
 
-## Notes
+## Professional Output Structure
 
-- The script automatically creates the output directory if it doesn't exist
-- Clips are saved in MP4 format with H.264 video codec and AAC audio codec
-- All clips keep audio; the script uses ffmpeg with a safe audio encode and retry
-- The last clip of each video may be shorter than the specified duration if the video length isn't evenly divisible
-- Processing time depends on video length and your computer's performance
-- GPU acceleration is automatically detected and used when available
+When you run the splitter, it creates a professional project structure:
+
+```
+Your_Project_Name/
+├── clips/                    # All video clips (MP4)
+├── metadata/                 # JSON metadata files
+│   └── project_metadata.json # Detailed clip information
+└── resolve_project/          # DaVinci Resolve integration
+    ├── project.drp           # Resolve project file
+    ├── project_import.lua    # Batch import script
+    └── README.md             # Instructions for Resolve users
+```
+
+## Technical Details
+
+- **Audio Encoding**: AAC 160k @ 44.1kHz with automatic retry on failure
+- **Video Codec**: H.264 with fast preset for optimal quality/speed balance
+- **Container**: MP4 with proper metadata
+- **Error Recovery**: Continues processing even if individual clips fail
+- **Progress Tracking**: Real-time progress bars with ETA
+- **Resolve Integration**: XML project files and Lua automation scripts
 
 ## Troubleshooting
 
