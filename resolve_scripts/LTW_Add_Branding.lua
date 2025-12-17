@@ -67,10 +67,12 @@ local function apply_branding(profile)
     
     print("Applying branding for: " .. profile)
     
-    -- Define assets based on profile (Placeholders)
-    -- In production, these would be paths to files in 'assets/branding/'
-    local intro_path = "/Users/elidolney/Desktop/Python Scripts/LTW_Splitter/assets/branding/intro.mov"
-    local outro_path = "/Users/elidolney/Desktop/Python Scripts/LTW_Splitter/assets/branding/outro.mov"
+    -- Define assets based on profile
+    -- Use relative path from script location
+    local script_path = debug.getinfo(1, "S").source:match("@(.*/)")
+    local assets_base = script_path and (script_path .. "../assets/branding") or (os.getenv("HOME") .. "/LTW_Clipper/assets/branding")
+    local intro_path = assets_base .. "/intro.mov"
+    local outro_path = assets_base .. "/outro.mov"
     
     -- Import Assets
     local items = mediaPool:ImportMedia({intro_path, outro_path})

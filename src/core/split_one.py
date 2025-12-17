@@ -5,7 +5,7 @@ import sys
 
 # Ensure we can import from current project
 sys.path.append('.')
-from video_splitter import VideoSplitter
+from src.core.video_splitter import VideoSplitter
 
 
 def main():

@@ -15,7 +15,7 @@ from tqdm import tqdm
 from ai_content_analyzer import analyze_video_content, HighlightDetector
 from social_media_optimizer import SocialMediaOptimizer, Platform
 from video_enhancer import VideoEnhancer
-from video_splitter import VideoSplitter
+from src.core.video_splitter import VideoSplitter
 
 
 class OpusClipProcessor:

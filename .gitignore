@@ -3,6 +3,7 @@ venv/
 env/
 .venv/
 .env/
+ENV/
 
 # Python
 __pycache__/
@@ -25,6 +26,7 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+MANIFEST
 
 # IDE
 .idea/
@@ -33,8 +35,10 @@ wheels/
 *.swo
 *~
 .DS_Store
+*.sublime-project
+*.sublime-workspace
 
-# Video files (don't commit personal content)
+# Video files (NEVER commit personal content)
 *.mp4
 *.avi
 *.mov
@@ -42,26 +46,61 @@ wheels/
 *.flv
 *.wmv
 *.webm
+*.m4v
+*.3gp
 
-# Output folders
+# Output folders (user-generated content)
 clips/
 output/
 exports/
+renders/
 batch_progress.json
+*.edl
 
 # Logs
 *.log
 logs/
+*.log.*
 
 # Temporary files
 *.tmp
 *.temp
 .cache/
+*.cache
 
 # OS files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+desktop.ini
 
 # Cursor/Editor
 .cursor/
 *.plan.md
+.cursorrules
+
+# Personal data
+*.key
+*.pem
+*.p12
+*.env
+.env.local
+.env.*.local
+
+# User-specific paths (if any scripts reference them)
+user_config.json
+local_settings.json
+
+# Test files
+test_*.mp4
+test_*.mov
+*.test.*
+
+# Backup files
+*.bak
+*.backup
+*~

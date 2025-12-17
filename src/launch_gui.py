@@ -8,10 +8,11 @@ import sys
 import os
 from pathlib import Path
 
-# Add src to path
-project_root = Path(__file__).parent
-sys.path.insert(0, str(project_root))
-sys.path.insert(0, str(project_root / "src"))
+# Ensure we're in the right directory
+os.chdir(Path(__file__).parent)
+
+# Add the project to path
+sys.path.insert(0, str(Path(__file__).parent))
 
 def check_dependencies():
     """Check if required dependencies are installed"""
@@ -66,8 +67,8 @@ def main():
     print()
     
     try:
-        # Import and run the GUI
-        from src.gui.main_app import LTWVideoEditorPro
+        # Import and run the new GUI
+        from gui.main_app import LTWVideoEditorPro
         
         app = LTWVideoEditorPro()
         app.run()
@@ -76,8 +77,16 @@ def main():
         print(f"❌ Failed to launch GUI: {e}")
         import traceback
         traceback.print_exc()
-        sys.exit(1)
+        
+        # Fallback to old GUI
+        print("\n⚠️  Attempting to launch legacy GUI...")
+        try:
+            from gui import VideoSplitterGUI
+            app = VideoSplitterGUI()
+            app.run()
+        except Exception as e2:
+            print(f"❌ Legacy GUI also failed: {e2}")
+            sys.exit(1)
 
 if __name__ == "__main__":
     main()
-

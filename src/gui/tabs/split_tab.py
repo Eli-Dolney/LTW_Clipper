@@ -506,7 +506,10 @@ class SplitTab(ctk.CTkFrame):
     def _process_videos(self):
         """Process videos in background thread"""
         try:
-            from video_splitter import VideoSplitter
+            import sys
+            import os
+            sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+            from src.core.video_splitter import VideoSplitter
             
             splitter = VideoSplitter(
                 output_dir=self.output_var.get(),

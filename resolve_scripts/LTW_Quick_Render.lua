@@ -87,9 +87,9 @@ local function setup_render(settings)
     -- Clear existing render settings
     project:DeleteAllRenderJobs()
     
-    -- Determine Output Path
+    -- Determine Output Path (user's Documents folder, safer than Desktop)
     local home = os.getenv("HOME")
-    local target_dir = home .. "/Desktop/Render_Output"
+    local target_dir = home .. "/Documents/LTW_Render_Output"
     
     if settings.destination == 'Movies' then
         target_dir = home .. "/Movies/Render_Output"

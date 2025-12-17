@@ -28,10 +28,14 @@ local function get_lut_selection()
     local itm = win:GetItems()
     
     -- Scan for LUTs in assets folder
-    -- We need to find the path relative to where we think we are, or user home
-    -- Let's assume standard path we set up
-    local home = os.getenv("HOME")
-    local lut_path = home .. "/Desktop/Python Scripts/LTW_Splitter/assets/luts"
+    -- Use relative path from script location or user-provided path
+    local script_path = debug.getinfo(1, "S").source:match("@(.*/)")
+    local lut_path = script_path and (script_path .. "../assets/luts") or (os.getenv("HOME") .. "/LTW_Clipper/assets/luts")
+    
+    -- Fallback: ask user for LUT folder path if not found
+    if not os.execute("test -d '" .. lut_path .. "'") then
+        lut_path = os.getenv("HOME") .. "/LTW_Clipper/assets/luts"
+    end
     
     -- List .cube files (using ls command as Lua filesystem access is limited in Resolve sandbox)
     local handle = io.popen('ls "' .. lut_path .. '"/*.cube 2>/dev/null')

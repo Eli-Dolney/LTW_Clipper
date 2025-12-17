@@ -110,6 +110,22 @@ Includes 11 automation scripts for Resolve:
 
 Install scripts: Go to **Resolve Tab** → **Install All Scripts**
 
+## 📁 Project Structure
+
+```
+LTW_Clipper/
+├── src/
+│   ├── core/           # Core video processing modules
+│   ├── gui/            # Professional GUI application
+│   └── scripts/        # Helper scripts
+├── resolve_scripts/     # DaVinci Resolve automation
+├── presets/            # Processing presets
+├── assets/             # LUTs and branding assets
+├── launch_gui.py       # GUI launcher
+├── requirements.txt    # Dependencies
+└── README.md           # This file
+```
+
 ## 📁 Output Structure
 
 ```
