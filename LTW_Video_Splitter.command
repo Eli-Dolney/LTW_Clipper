@@ -1,20 +1,29 @@
 #!/bin/bash
-# LTW Video Splitter Pro Launcher (macOS)
-# Make this file executable: chmod +x LTW_Video_Splitter.command
+# LTW Video Editor Pro - macOS Launcher
+# Double-click this file to launch the application
 
 cd "$(dirname "$0")"
 
-echo "🎬 LTW Video Splitter Pro"
-echo "=========================="
+echo "🎬 LTW Video Editor Pro"
+echo "========================"
 
-# Check if virtual environment exists
+# Check for venv
 if [ -d "venv" ]; then
-    echo "✅ Virtual environment found"
+    echo "✅ Activating virtual environment..."
     source venv/bin/activate
 else
     echo "⚠️  No virtual environment found"
-    echo "Consider creating one: python3 -m venv venv"
+    echo "💡 Run: python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt"
 fi
 
-# Launch GUI
+# Launch the app
+echo "🚀 Launching application..."
 python3 launch_gui.py
+
+# Keep terminal open on error
+if [ $? -ne 0 ]; then
+    echo ""
+    echo "❌ Application exited with error"
+    echo "Press any key to close..."
+    read -n 1
+fi

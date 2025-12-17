@@ -1,0 +1,20 @@
+{
+  "name": "Tutorial Clips",
+  "category": "educational",
+  "description": "Longer segments for educational content",
+  "clip_duration": 45,
+  "quality": "youtube_hd",
+  "scene_detection": false,
+  "min_scene_duration": 10,
+  "naming_pattern": "{name}_part_{num:03d}",
+  "platforms": ["youtube_shorts", "youtube"],
+  "ai_highlights": false,
+  "enhancement_preset": "clean",
+  "max_clips": 15,
+  "add_captions": true,
+  "generate_resolve_project": true,
+  "lut_name": null,
+  "created_at": "2024-01-01T00:00:00",
+  "modified_at": "2024-01-01T00:00:00"
+}
+

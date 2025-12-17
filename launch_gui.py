@@ -1,69 +1,92 @@
 #!/usr/bin/env python3
 """
-Launcher for LTW Video Splitter Pro GUI
-Cross-platform (macOS/Windows)
+LTW Video Editor Pro - GUI Launcher
+Launches the professional video editing interface
 """
 
 import sys
 import os
-import subprocess
-import platform
+from pathlib import Path
 
-def check_requirements():
-    """Check if required packages are installed"""
+# Ensure we're in the right directory
+os.chdir(Path(__file__).parent)
+
+# Add the project to path
+sys.path.insert(0, str(Path(__file__).parent))
+
+def check_dependencies():
+    """Check if required dependencies are installed"""
+    missing = []
+    
     try:
         import customtkinter
+    except ImportError:
+        missing.append("customtkinter")
+        
+    try:
         import tkinterdnd2
+    except ImportError:
+        print("⚠️  tkinterdnd2 not installed - drag & drop will be disabled")
+        
+    try:
+        from moviepy import VideoFileClip
+    except ImportError:
+        missing.append("moviepy")
+        
+    try:
         import cv2
-        import moviepy
-        return True
-    except ImportError as e:
-        print(f"❌ Missing required package: {e}")
-        print("Installing requirements...")
-        try:
-            subprocess.check_call([sys.executable, "-m", "pip", "install", "-r", "requirements.txt"])
-            return True
-        except subprocess.CalledProcessError:
-            print("❌ Failed to install requirements automatically")
-            print("Please run: pip install -r requirements.txt")
-            return False
+    except ImportError:
+        missing.append("opencv-python")
+        
+    try:
+        from tqdm import tqdm
+    except ImportError:
+        missing.append("tqdm")
+        
+    if missing:
+        print("❌ Missing dependencies:")
+        for dep in missing:
+            print(f"   - {dep}")
+        print("\n💡 Install with: pip install " + " ".join(missing))
+        return False
+        
+    return True
 
 def main():
-    """Launch the GUI application"""
-    print("🎬 LTW Video Splitter Pro")
-    print("=" * 30)
-
-    # Check if we're in a virtual environment
-    if hasattr(sys, 'real_prefix') or (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix):
-        print("✅ Running in virtual environment")
-    else:
-        print("⚠️  Not running in virtual environment (consider using one)")
-
-    # Check platform
-    system = platform.system()
-    if system == "Darwin":
-        print("🍎 Running on macOS")
-    elif system == "Windows":
-        print("🪟 Running on Windows")
-    else:
-        print(f"🐧 Running on {system}")
-
-    # Check requirements
-    if not check_requirements():
-        input("Press Enter to exit...")
-        return
-
-    # Import and run GUI
+    """Main entry point"""
+    print("🎬 LTW Video Editor Pro v2.0")
+    print("=" * 40)
+    
+    # Check dependencies
+    if not check_dependencies():
+        print("\n❌ Please install missing dependencies first")
+        sys.exit(1)
+        
+    print("✅ All dependencies OK")
+    print("🚀 Launching GUI...")
+    print()
+    
     try:
-        from gui import VideoSplitterGUI
-        print("🚀 Starting GUI...")
-        app = VideoSplitterGUI()
+        # Import and run the new GUI
+        from gui.main_app import LTWVideoEditorPro
+        
+        app = LTWVideoEditorPro()
         app.run()
+        
     except Exception as e:
-        print(f"❌ Failed to start GUI: {e}")
+        print(f"❌ Failed to launch GUI: {e}")
         import traceback
         traceback.print_exc()
-        input("Press Enter to exit...")
+        
+        # Fallback to old GUI
+        print("\n⚠️  Attempting to launch legacy GUI...")
+        try:
+            from gui import VideoSplitterGUI
+            app = VideoSplitterGUI()
+            app.run()
+        except Exception as e2:
+            print(f"❌ Legacy GUI also failed: {e2}")
+            sys.exit(1)
 
 if __name__ == "__main__":
     main()

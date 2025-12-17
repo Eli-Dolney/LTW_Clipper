@@ -1,0 +1,20 @@
+{
+  "name": "Sports Montage",
+  "category": "sports",
+  "description": "Fast-paced clips for sports highlights",
+  "clip_duration": 15,
+  "quality": "youtube_4k",
+  "scene_detection": true,
+  "min_scene_duration": 10,
+  "naming_pattern": "{name}_highlight_{num:03d}",
+  "platforms": ["tiktok", "instagram_reels", "youtube_shorts"],
+  "ai_highlights": true,
+  "enhancement_preset": "vibrant",
+  "max_clips": 20,
+  "add_captions": false,
+  "generate_resolve_project": true,
+  "lut_name": "Sports_Pop",
+  "created_at": "2024-01-01T00:00:00",
+  "modified_at": "2024-01-01T00:00:00"
+}
+

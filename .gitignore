@@ -1,3 +1,9 @@
+# Virtual Environment
+venv/
+env/
+.venv/
+.env/
+
 # Python
 __pycache__/
 *.py[cod]
@@ -19,34 +25,16 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-MANIFEST
-
-# Virtual environments
-venv/
-env/
-ENV/
-env.bak/
-venv.bak/
-.venv/
 
 # IDE
-.vscode/
 .idea/
+.vscode/
 *.swp
 *.swo
 *~
-
-# OS
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-desktop.ini
 
-# Video files (to avoid accidentally committing large video files)
+# Video files (don't commit personal content)
 *.mp4
 *.avi
 *.mov
@@ -54,63 +42,26 @@ desktop.ini
 *.flv
 *.wmv
 *.webm
-*.m4v
-*.3gp
 
-# Output directories
+# Output folders
 clips/
 output/
-temp/
-tmp/
+exports/
+batch_progress.json
 
 # Logs
 *.log
 logs/
 
-# Environment variables
-.env
-.env.local
-.env.*.local
+# Temporary files
+*.tmp
+*.temp
+.cache/
 
-# Jupyter Notebook
-.ipynb_checkpoints
+# OS files
+.DS_Store
+Thumbs.db
 
-# pyenv
-.python-version
-
-# pipenv
-Pipfile.lock
-
-# PEP 582
-__pypackages__/
-
-# Celery
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath parsed files
-*.sage.py
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre type checker
-.pyre/
-
-# Personal files
-*.personal
-personal_notes.txt
-my_videos/
-my_clips/
+# Cursor/Editor
+.cursor/
+*.plan.md

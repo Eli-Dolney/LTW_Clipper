@@ -1,0 +1,20 @@
+{
+  "name": "Gaming Clips",
+  "category": "gaming",
+  "description": "Optimized for gaming content",
+  "clip_duration": 20,
+  "quality": "youtube_4k",
+  "scene_detection": true,
+  "min_scene_duration": 8,
+  "naming_pattern": "{name}_gaming_{num:03d}",
+  "platforms": ["tiktok", "youtube_shorts"],
+  "ai_highlights": true,
+  "enhancement_preset": "gaming",
+  "max_clips": 15,
+  "add_captions": false,
+  "generate_resolve_project": true,
+  "lut_name": "Gaming_Vibrant",
+  "created_at": "2024-01-01T00:00:00",
+  "modified_at": "2024-01-01T00:00:00"
+}
+

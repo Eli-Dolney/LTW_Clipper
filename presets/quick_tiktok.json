@@ -1,0 +1,20 @@
+{
+  "name": "Quick TikTok",
+  "category": "social",
+  "description": "Short, punchy clips for TikTok",
+  "clip_duration": 15,
+  "quality": "youtube_hd",
+  "scene_detection": true,
+  "min_scene_duration": 5,
+  "naming_pattern": "{name}_tiktok_{num:03d}",
+  "platforms": ["tiktok"],
+  "ai_highlights": true,
+  "enhancement_preset": "vibrant",
+  "max_clips": 25,
+  "add_captions": true,
+  "generate_resolve_project": true,
+  "lut_name": null,
+  "created_at": "2024-01-01T00:00:00",
+  "modified_at": "2024-01-01T00:00:00"
+}
+

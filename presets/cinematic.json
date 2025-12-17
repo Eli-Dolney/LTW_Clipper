@@ -1,0 +1,20 @@
+{
+  "name": "Cinematic",
+  "category": "film",
+  "description": "Film-style color grading and pacing",
+  "clip_duration": 60,
+  "quality": "youtube_4k",
+  "scene_detection": true,
+  "min_scene_duration": 15,
+  "naming_pattern": "{name}_scene_{num:03d}",
+  "platforms": ["youtube"],
+  "ai_highlights": false,
+  "enhancement_preset": "cinematic",
+  "max_clips": 5,
+  "add_captions": false,
+  "generate_resolve_project": true,
+  "lut_name": "Cinematic_Teal",
+  "created_at": "2024-01-01T00:00:00",
+  "modified_at": "2024-01-01T00:00:00"
+}
+

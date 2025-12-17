@@ -1,0 +1,20 @@
+{
+  "name": "Highlight Reel",
+  "category": "general",
+  "description": "AI-powered best moments extraction",
+  "clip_duration": 30,
+  "quality": "youtube_hd",
+  "scene_detection": true,
+  "min_scene_duration": 10,
+  "naming_pattern": "{name}_best_{num:03d}",
+  "platforms": ["tiktok", "instagram_reels", "youtube_shorts"],
+  "ai_highlights": true,
+  "enhancement_preset": "social_media",
+  "max_clips": 10,
+  "add_captions": true,
+  "generate_resolve_project": true,
+  "lut_name": null,
+  "created_at": "2024-01-01T00:00:00",
+  "modified_at": "2024-01-01T00:00:00"
+}
+
