@@ -565,5 +565,4 @@ if __name__ == "__main__":
         print(f"   Sharpness: {settings['sharpness']}")
         print(f"   Color Temp: {settings['color_temp']}")
 
-    print("
-✨ Ready for professional video enhancement!"
+    print("\n✨ Ready for professional video enhancement!")

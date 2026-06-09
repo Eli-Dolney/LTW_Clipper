@@ -1,0 +1,48 @@
+{
+  "name": "Long-form (General)",
+  "niche": "general",
+  "icon": "🎞️",
+  "description": "Few, longer highlight segments from any long-form video. Chapter-first, lightly edited.",
+  "content_type": "long_form",
+  "builtin": true,
+  "clip_duration": 60.0,
+  "min_duration": 30.0,
+  "max_duration": 120.0,
+  "scene_detection": true,
+  "max_clips": 6,
+  "hook_phrases": [
+    "here's why", "the point is", "what i learned", "the big takeaway",
+    "let me explain", "the key thing", "here's the thing", "the story",
+    "what happened", "the lesson", "the reason", "the best part"
+  ],
+  "hook_words": [
+    "story", "lesson", "reason", "truth", "moment", "turning", "realized",
+    "learned", "secret", "mistake", "result", "change", "impact"
+  ],
+  "scoring_weights": {
+    "audio": 0.20,
+    "hook_phrase": 0.30,
+    "hook_word": 0.15,
+    "length": 0.20,
+    "completeness": 0.15
+  },
+  "voice": {
+    "persona": "A versatile long-form creator highlighting the strongest moments.",
+    "tone": "Natural, story-driven, audience-first.",
+    "title_style": "Curiosity + substance (e.g. 'The Moment Everything Changed').",
+    "cta": "Watch the full video for the whole story.",
+    "hashtag_sets": ["#youtube", "#longform", "#story", "#podcast"],
+    "keyword_tags": ["highlights", "long form", "best moments"]
+  },
+  "look": {
+    "caption_preset": "bold_outline",
+    "lut_name": null,
+    "transition_pack": null,
+    "sfx_pack": null,
+    "auto_transitions": false
+  },
+  "platforms": ["youtube", "youtube_shorts"],
+  "naming_pattern": "{name}_highlight_{num:03d}",
+  "add_captions": true,
+  "quality": "youtube_hd"
+}

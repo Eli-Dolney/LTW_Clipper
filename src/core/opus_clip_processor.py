@@ -1,439 +1,570 @@
-#!/usr/bin/env python3
-"""
-Opus Clip Processor - Complete AI-Powered Video Editing Suite
-Combines all LTW Video Editor Pro modules for comprehensive content creation
+"""End-to-end local Opus-style pipeline.
+
+Stages:
+
+1. Probe the source video (ffprobe).
+2. Transcribe locally with faster-whisper -> :class:`Transcript`.
+3. Heuristic scoring + optional Ollama re-ranking -> :class:`ClipPlan`.
+4. For each selected clip:
+   - Extract a horizontal (original aspect) clip.
+   - Extract / render a smart 9:16 portrait clip with face tracking.
+   - Generate captions (ASS + SRT + VTT) scoped to the clip window.
+   - Optionally burn the ASS into the portrait clip.
+   - Generate a thumbnail from the mid-point of the clip.
+   - Build publish-ready metadata (YouTube title/description/tags,
+     Shorts caption/hashtags, chapters).
+5. Write per-clip bundle + a top-level ``plan.json`` manifest.
+
+Everything runs locally. No API keys, no network I/O beyond the optional
+Ollama localhost call for title/description polish.
 """
 
-import sys
-from pathlib import Path
-from typing import List, Dict, Any, Optional
-from datetime import datetime
+from __future__ import annotations
+
 import json
-from tqdm import tqdm
+import logging
+import shutil
+import time
+from dataclasses import dataclass
+from pathlib import Path
+from typing import Callable
 
-# Import our modules
-from ai_content_analyzer import analyze_video_content, HighlightDetector
-from social_media_optimizer import SocialMediaOptimizer, Platform
-from video_enhancer import VideoEnhancer
-from src.core.video_splitter import VideoSplitter
+from .ai.heuristic_scorer import ScoringWeights
+from .ai.highlight_engine import EngineConfig, HighlightEngine
+from .ai.metadata_writer import MetadataConfig, MetadataWriter
+from .ai.ollama_client import OllamaConfig
+from .ai.transcriber import LocalTranscriber, TranscriberConfig
+from .captions.burner import CaptionBurner
+from .captions.styler import CaptionStyler
+from .models import (
+    ClipMetadata,
+    ClipPlan,
+    ClipSuggestion,
+    JobContext,
+    Transcript,
+)
+from .reframe.platform_specs import ReframeTarget, default_targets, platforms_to_targets
+from .reframe.renderer import LayoutMode, ReframeRenderer, RenderConfig
+from .reframe.tracker import TrackerConfig
+from .ai.rough_draft_writer import write_rough_draft
+from .render.ffmpeg import FFmpegRunner, detect_hwaccel, ffmpeg_available, probe_media
+from .render.manifest import ClipManifestEntry, RunManifest, load_manifest, save_manifest
 
+log = logging.getLogger(__name__)
+
+
+# ---- Pipeline options ------------------------------------------------------
+
+@dataclass
+class PipelineOptions:
+    max_clips: int = 10
+    target_duration: float = 30.0
+    min_duration: float = 8.0
+    max_duration: float = 60.0
+    whisper_model: str = "small"
+    whisper_device: str = "auto"
+    use_ollama: bool = True
+    ollama_host: str = "http://localhost:11434"
+    ollama_model: str = "llama3.1:8b"
+    caption_preset: str = "bold_outline"
+    burn_captions: bool = True
+    emit_horizontal: bool = True
+    emit_portrait: bool = True
+    platforms: list[str] | None = None
+    reframe_layout: LayoutMode = "crop"
+    reframe_zoom: float = 1.0
+    reframe_smoothing: float = 0.35
+    reframe_headroom: float = 0.08
+    reframe_max_pan_speed: float = 0.18
+    render_crf: int = 20
+    render_preset: str = "medium"
+    force_encoder: str | None = None  # "auto" | "videotoolbox" | ... | "cpu"
+    render_concurrency: int = 0
+    resume: bool = True
+
+    # ---- Channel-template tuning (all optional) ----------------------------
+    template_name: str = ""
+    hook_phrases: list[str] | None = None
+    hook_words: list[str] | None = None
+    scoring_weights: dict[str, float] | None = None
+    voice_block: str = ""
+    extra_hashtags: list[str] | None = None
+    extra_tags: list[str] | None = None
+
+    @classmethod
+    def from_template(cls, template, **overrides) -> "PipelineOptions":
+        """Build options from a :class:`ChannelTemplate`.
+
+        Any keyword in ``overrides`` (e.g. whisper_model, use_ollama) wins over
+        the template, so runtime/system settings stay separate from niche tuning.
+        """
+        opts = cls(
+            max_clips=template.max_clips,
+            target_duration=template.clip_duration,
+            min_duration=template.min_duration,
+            max_duration=template.max_duration,
+            caption_preset=template.look.caption_preset,
+            burn_captions=template.add_captions,
+            platforms=list(template.platforms),
+            template_name=template.name,
+            hook_phrases=list(template.hook_phrases) or None,
+            hook_words=list(template.hook_words) or None,
+            scoring_weights=template.scoring_weights.as_dict(),
+            voice_block=template.voice.prompt_block(),
+            extra_hashtags=list(template.voice.hashtag_sets) or None,
+            extra_tags=list(template.voice.keyword_tags) or None,
+        )
+        for key, value in overrides.items():
+            if hasattr(opts, key):
+                setattr(opts, key, value)
+        return opts
+
+
+# ---- Progress reporting ----------------------------------------------------
+
+Stage = str  # "probe" | "transcribe" | "plan" | "render" | "captions" | "metadata" | "package"
+ProgressCallback = Callable[[Stage, float, str], None]
+
+
+def _noop_progress(stage: str, progress: float, message: str) -> None:
+    log.debug("[%s] %3.0f%% - %s", stage, progress * 100, message)
+
+
+# ---- Pipeline --------------------------------------------------------------
 
 class OpusClipProcessor:
-    """
-    Complete Opus Clip-style video processing pipeline
-    """
+    """Run the full local clip-generation pipeline on a single video."""
 
-    def __init__(self):
-        self.content_analyzer = None
-        self.social_optimizer = SocialMediaOptimizer()
-        self.video_enhancer = VideoEnhancer()
-        self.video_splitter = VideoSplitter()
+    def __init__(self, options: PipelineOptions | None = None) -> None:
+        self.options = options or PipelineOptions()
+        self._cancelled = False
 
-        # Default processing settings
-        self.default_settings = {
-            'enhancement_preset': 'social_media',
-            'platforms': [Platform.TIKTOK, Platform.INSTAGRAM_REELS, Platform.YOUTUBE_SHORTS],
-            'clip_duration': 30,
-            'max_clips': 10,
-            'add_captions': True,
-            'stabilization': False,
-            'ai_highlights': True
-        }
+    # ---- Public API --------------------------------------------------------
 
-    def process_video_for_social_media(self, video_path: Path,
-                                     settings: Dict[str, Any] = None) -> Dict[str, Any]:
-        """
-        Complete Opus Clip-style processing pipeline
+    def cancel(self) -> None:
+        """Signal the pipeline to stop after the current stage."""
+        self._cancelled = True
 
-        Args:
-            video_path: Input video file
-            settings: Processing settings (uses defaults if None)
+    def run(
+        self,
+        source: Path,
+        output_root: Path,
+        *,
+        project_name: str | None = None,
+        progress: ProgressCallback | None = None,
+    ) -> JobContext:
+        """Execute the full pipeline for ``source``."""
+        self._cancelled = False
+        cb = progress or _noop_progress
 
-        Returns:
-            Complete processing results
-        """
-        # Merge settings with defaults
-        if settings is None:
-            settings = {}
-        processing_settings = {**self.default_settings, **settings}
+        if not ffmpeg_available():
+            raise RuntimeError("ffmpeg is required but not found on PATH.")
 
-        print("🎬 Starting Opus Clip-style processing pipeline...")
-        print(f"📹 Input: {video_path.name}")
-        print(f"🎯 Platforms: {[p.value for p in processing_settings['platforms']]}")
-        print(f"✨ Enhancement: {processing_settings['enhancement_preset']}")
-        print("=" * 60)
+        ctx = JobContext(
+            source_video=source,
+            output_root=output_root,
+            project_name=project_name or source.stem,
+        )
+        ctx.ensure_dirs()
+        manifest_path = ctx.project_dir / "manifest.json"
+        run_manifest: RunManifest | None = None
+        if self.options.resume:
+            run_manifest = load_manifest(manifest_path)
 
-        results = {
-            'input_video': str(video_path),
-            'processing_settings': processing_settings,
-            'processing_start': datetime.now().isoformat(),
-            'stages': {}
-        }
+        # -- Probe -----------------------------------------------------------
+        cb("probe", 0.02, f"Probing {source.name}")
+        probe = probe_media(source)
+        log.info("Probed %s: %.2fs @ %.2f fps, %dx%d",
+                 source.name, probe.duration, probe.fps, probe.width, probe.height)
+        self._checkpoint()
 
-        try:
-            # Stage 1: AI Content Analysis
-            print("\n🤖 STAGE 1: AI Content Analysis")
-            content_analysis = self._analyze_content(video_path, processing_settings)
-            results['stages']['content_analysis'] = content_analysis
-
-            # Stage 2: Video Enhancement
-            print("\n✨ STAGE 2: Video Enhancement")
-            enhanced_video = self._enhance_video(video_path, processing_settings)
-            results['stages']['enhancement'] = {'status': 'completed'}
-
-            # Stage 3: Smart Clip Generation
-            print("\n🎬 STAGE 3: Smart Clip Generation")
-            clips_data = self._generate_smart_clips(
-                enhanced_video if enhanced_video else video_path,
-                content_analysis,
-                processing_settings
+        # -- Transcribe (skip if resuming with cached transcript) ------------
+        if (
+            run_manifest
+            and run_manifest.stage in ("plan", "render", "package", "done")
+            and ctx.transcript_path.is_file()
+        ):
+            cb("transcribe", 0.35, "Using cached transcript")
+            ctx.transcript = Transcript.model_validate_json(
+                ctx.transcript_path.read_text(encoding="utf-8")
             )
-            results['stages']['clip_generation'] = clips_data
+            transcript = ctx.transcript
+        else:
+            cb("transcribe", 0.05, "Transcribing (local Whisper)")
+            transcript = self._transcribe(source)
+            ctx.transcript = transcript
+            ctx.transcript_path.write_text(transcript.model_dump_json(indent=2), encoding="utf-8")
+            cb("transcribe", 0.35, f"{len(transcript.segments)} segments")
+            if run_manifest:
+                run_manifest.stage = "transcribe"
+                save_manifest(manifest_path, run_manifest)
+        self._checkpoint()
 
-            # Stage 4: Multi-Platform Optimization
-            print("\n📱 STAGE 4: Multi-Platform Optimization")
-            platform_results = self._optimize_for_platforms(
-                clips_data['clips'],
-                processing_settings['platforms'],
-                video_path.parent / "social_media_output"
-            )
-            results['stages']['platform_optimization'] = platform_results
+        # -- Plan (skip if resuming with cached plan) ------------------------
+        if (
+            run_manifest
+            and run_manifest.stage in ("render", "package", "done")
+            and ctx.plan_path.is_file()
+        ):
+            cb("plan", 0.45, "Using cached clip plan")
+            plan = ClipPlan.model_validate_json(ctx.plan_path.read_text(encoding="utf-8"))
+            ctx.plan = plan
+        else:
+            cb("plan", 0.38, "Scoring highlights")
+            plan = self._plan(source, transcript)
+            ctx.plan = plan
+            ctx.plan_path.write_text(plan.model_dump_json(indent=2), encoding="utf-8")
+            cb("plan", 0.45, f"{len(plan.clips)} clips proposed ({plan.generator})")
 
-            # Stage 5: Final Packaging
-            print("\n📦 STAGE 5: Final Packaging")
-            final_package = self._create_final_package(
-                platform_results,
-                video_path.parent / "final_content"
-            )
-            results['stages']['packaging'] = final_package
+        run_manifest = RunManifest(
+            source_video=str(source),
+            project_name=ctx.project_name,
+            run_id=ctx.run_id,
+            generator=plan.generator,
+            stage="render",
+            clips=[
+                ClipManifestEntry(
+                    slug=self._slug_for_clip(c, transcript, source),
+                    start=c.start,
+                    end=c.end,
+                )
+                for c in plan.clips
+            ],
+            completed_slugs=list(run_manifest.completed_slugs) if run_manifest else [],
+        )
+        save_manifest(manifest_path, run_manifest)
 
-            results['status'] = 'completed'
-            results['processing_end'] = datetime.now().isoformat()
+        if not plan.clips:
+            cb("package", 1.0, "No clips produced - try lowering min_duration.")
+            return ctx
+        self._checkpoint()
 
-            print("\n✅ Opus Clip processing completed successfully!")
-            print(f"📊 Generated {final_package['total_files']} optimized videos")
-            print(f"🎯 Ready for {len(processing_settings['platforms'])} social platforms")
+        # -- Per-clip work ---------------------------------------------------
+        enc = self.options.force_encoder or "auto"
+        runner = FFmpegRunner(video_encoder=self._resolve_encoder(enc))
+        reframe_targets = self._reframe_targets()
+        tracker_cfg = TrackerConfig(
+            target_aspect=reframe_targets[0].aspect if reframe_targets else (9, 16),
+            smoothing=self.options.reframe_smoothing,
+            headroom=self.options.reframe_headroom,
+            max_pan_speed=self.options.reframe_max_pan_speed,
+            zoom=self.options.reframe_zoom,
+        )
+        reframer = ReframeRenderer(
+            tracker_config=tracker_cfg,
+            render_config=RenderConfig(layout=self.options.reframe_layout),
+        )
+        burner = CaptionBurner()
+        metadata_writer = MetadataWriter(
+            MetadataConfig(
+                use_ollama=self.options.use_ollama,
+                ollama=OllamaConfig(host=self.options.ollama_host, model=self.options.ollama_model),
+                voice_block=self.options.voice_block,
+                extra_hashtags=self.options.extra_hashtags,
+                extra_tags=self.options.extra_tags,
+            ),
+        )
 
-        except Exception as e:
-            results['status'] = 'failed'
-            results['error'] = str(e)
-            results['processing_end'] = datetime.now().isoformat()
-            print(f"\n❌ Processing failed: {e}")
-
-        return results
-
-    def _analyze_content(self, video_path: Path, settings: Dict) -> Dict[str, Any]:
-        """Analyze video content for highlights and engagement"""
-        if not settings.get('ai_highlights', True):
-            return {'skipped': True, 'reason': 'AI highlights disabled'}
-
-        try:
-            analysis = analyze_video_content(video_path, use_ai=True)
-            print(f"   ✅ Detected {len(analysis.get('highlight_analysis', {}).get('optimal_clips', []))} highlight moments")
-            return {'status': 'completed', 'data': analysis}
-        except Exception as e:
-            print(f"   ⚠️ Content analysis failed: {e}")
-            return {'status': 'failed', 'error': str(e)}
-
-    def _enhance_video(self, video_path: Path, settings: Dict) -> Optional[Path]:
-        """Enhance video quality"""
-        try:
-            enhanced = self.video_enhancer.enhance_video(
-                video_path,
-                preset=settings['enhancement_preset'],
-                stabilization=settings.get('stabilization', False)
-            )
-
-            # Save enhanced version
-            enhanced_path = video_path.parent / f"enhanced_{video_path.name}"
-            enhanced.write_videofile(
-                str(enhanced_path),
-                codec='libx264',
-                audio_codec='aac',
-                verbose=False,
-                logger=None
-            )
-
-            print(f"   ✅ Enhanced video saved: {enhanced_path.name}")
-            return enhanced_path
-
-        except Exception as e:
-            print(f"   ⚠️ Enhancement failed: {e}")
-            return None
-
-    def _generate_smart_clips(self, video_path: Path, content_analysis: Dict,
-                             settings: Dict) -> Dict[str, Any]:
-        """Generate smart clips based on content analysis"""
-        clips = []
-
-        # Use AI-detected highlights if available
-        if (content_analysis.get('status') == 'completed' and
-            content_analysis.get('data', {}).get('highlight_analysis', {}).get('optimal_clips')):
-
-            ai_clips = content_analysis['data']['highlight_analysis']['optimal_clips']
-            print(f"   🎯 Using {len(ai_clips)} AI-detected highlight moments")
-
-            for clip_data in ai_clips[:settings['max_clips']]:
-                clips.append({
-                    'start_time': clip_data['start_time'],
-                    'end_time': clip_data['end_time'],
-                    'reason': 'AI_highlight',
-                    'score': clip_data.get('highlight_score', 0)
-                })
-
-        # Fallback to time-based splitting
-        if not clips:
-            print(f"   ⏰ Falling back to {settings['clip_duration']}s time-based clips")
-            duration = self._get_video_duration(video_path)
-            clip_duration = settings['clip_duration']
-
-            for start_time in range(0, int(duration), clip_duration):
-                end_time = min(start_time + clip_duration, duration)
-                if end_time - start_time >= 10:  # Minimum 10 seconds
-                    clips.append({
-                        'start_time': start_time,
-                        'end_time': end_time,
-                        'reason': 'time_based',
-                        'score': 0.5
-                    })
-
-        print(f"   ✅ Generated {len(clips)} smart clips")
-        return {'clips': clips[:settings['max_clips']]}
-
-    def _optimize_for_platforms(self, clips: List[Dict], platforms: List[Platform],
-                               output_dir: Path) -> Dict[str, Any]:
-        """Optimize clips for multiple social media platforms"""
-        output_dir.mkdir(exist_ok=True)
-        platform_results = {}
-
-        for platform in platforms:
-            print(f"   📱 Optimizing for {platform.value}...")
-
-            platform_dir = output_dir / platform.value
-            platform_dir.mkdir(exist_ok=True)
-
-            platform_clips = []
-
-            for i, clip in enumerate(clips):
-                # Create temporary clip file (in real implementation, this would be optimized)
-                clip_filename = f"clip_{i+1:02d}_{platform.value}.mp4"
-                clip_path = platform_dir / clip_filename
-
-                # For demo, just copy the clip info
-                # In production, this would create actual optimized video files
-                platform_clips.append({
-                    'filename': clip_filename,
-                    'path': str(clip_path),
-                    'start_time': clip['start_time'],
-                    'end_time': clip['end_time'],
-                    'duration': clip['end_time'] - clip['start_time'],
-                    'reason': clip['reason'],
-                    'score': clip.get('score', 0)
-                })
-
-            platform_results[platform.value] = {
-                'clips': platform_clips,
-                'total_clips': len(platform_clips),
-                'output_directory': str(platform_dir)
-            }
-
-            print(f"      ✅ Created {len(platform_clips)} {platform.value} clips")
-
-        return platform_results
-
-    def _create_final_package(self, platform_results: Dict, output_dir: Path) -> Dict[str, Any]:
-        """Create final content package with metadata"""
-        output_dir.mkdir(exist_ok=True)
-
-        # Count total files
-        total_files = sum(len(platform['clips']) for platform in platform_results.values())
-
-        # Create metadata file
-        metadata = {
-            'created_at': datetime.now().isoformat(),
-            'total_files': total_files,
-            'platforms': list(platform_results.keys()),
-            'platform_details': platform_results,
-            'description': 'Opus Clip-style processed content for social media'
-        }
-
-        metadata_path = output_dir / "content_metadata.json"
-        with open(metadata_path, 'w') as f:
-            json.dump(metadata, f, indent=2)
-
-        # Create README
-        readme_content = f"""# Social Media Content Package
-
-Generated by LTW Video Editor Pro (Opus Clip-style)
-
-## 📊 Package Summary
-- **Created**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
-- **Total Files**: {total_files}
-- **Platforms**: {', '.join(platform_results.keys())}
-
-## 📱 Platform Breakdown
-"""
-
-        for platform, data in platform_results.items():
-            readme_content += f"""
-### {platform.upper()}
-- **Clips**: {data['total_clips']}
-- **Location**: {data['output_directory']}
-"""
-
-        readme_content += """
-## 🚀 Usage Tips
-1. Review clips in each platform folder
-2. Test on target platforms
-3. Adjust captions and hashtags as needed
-4. Schedule posting for optimal engagement
-
-## 🎯 Optimization Features
-- AI-powered highlight detection
-- Platform-specific formatting
-- Professional video enhancement
-- Automatic caption generation
-- Multi-platform compatibility
-
----
-*Generated by LTW Video Editor Pro*
-"""
-
-        readme_path = output_dir / "README.md"
-        with open(readme_path, 'w') as f:
-            f.write(readme_content)
-
-        return {
-            'total_files': total_files,
-            'metadata_file': str(metadata_path),
-            'readme_file': str(readme_path),
-            'output_directory': str(output_dir)
-        }
-
-    def _get_video_duration(self, video_path: Path) -> float:
-        """Get video duration"""
-        try:
-            from moviepy import VideoFileClip
-            video = VideoFileClip(str(video_path))
-            duration = video.duration
-            video.close()
-            return duration
-        except:
-            return 0.0
-
-    def batch_process_videos(self, video_paths: List[Path], settings: Dict = None) -> Dict[str, Any]:
-        """
-        Batch process multiple videos
-
-        Args:
-            video_paths: List of video file paths
-            settings: Processing settings
-
-        Returns:
-            Batch processing results
-        """
-        if settings is None:
-            settings = {}
-
-        results = []
-        total_files = 0
-
-        print(f"📦 Starting batch processing of {len(video_paths)} videos...")
-
-        for video_path in tqdm(video_paths, desc="Processing videos"):
+        completed = set(run_manifest.completed_slugs)
+        clips_to_render = [
+            c for c in plan.clips
+            if self._slug_for_clip(c, transcript, source) not in completed
+        ]
+        total = max(1, len(clips_to_render))
+        for idx, clip in enumerate(clips_to_render, start=1):
+            if self._cancelled:
+                cb("render", idx / total, "Cancelled")
+                break
+            slug = self._slug_for_clip(clip, transcript, source)
+            frac = 0.45 + (idx / total) * 0.50
+            cb("render", frac, f"Clip {idx}/{total}: {clip.title or slug}")
             try:
-                result = self.process_video_for_social_media(video_path, settings)
-                results.append(result)
-                if result.get('status') == 'completed':
-                    total_files += result.get('stages', {}).get('packaging', {}).get('total_files', 0)
-            except Exception as e:
-                results.append({
-                    'input_video': str(video_path),
-                    'status': 'failed',
-                    'error': str(e)
-                })
+                clip_dir = self._render_clip(
+                ctx=ctx,
+                clip=clip,
+                source=source,
+                runner=runner,
+                reframer=reframer,
+                reframe_targets=reframe_targets,
+                burner=burner,
+                metadata_writer=metadata_writer,
+                transcript=transcript,
+                probe_duration=probe.duration,
+                )
+                ctx.rendered_clip_dirs.append(clip_dir)
+                run_manifest.completed_slugs.append(slug)
+                for entry in run_manifest.clips:
+                    if entry.slug == slug:
+                        entry.status = "done"
+                        entry.clip_dir = str(clip_dir)
+                save_manifest(manifest_path, run_manifest)
+            except Exception as exc:
+                log.exception("Clip render failed: %s", slug)
+                for entry in run_manifest.clips:
+                    if entry.slug == slug:
+                        entry.status = "failed"
+                        entry.error = str(exc)
+                save_manifest(manifest_path, run_manifest)
+                raise
 
-        batch_summary = {
-            'total_videos': len(video_paths),
-            'successful': len([r for r in results if r.get('status') == 'completed']),
-            'failed': len([r for r in results if r.get('status') == 'failed']),
-            'total_files_generated': total_files,
-            'results': results,
-            'batch_completed_at': datetime.now().isoformat()
+        # -- Package ---------------------------------------------------------
+        cb("package", 0.98, "Writing manifest & rough draft")
+        try:
+            write_rough_draft(
+                ctx.project_dir,
+                transcript=transcript,
+                plan=plan,
+                source_title=source.stem,
+            )
+        except Exception as exc:
+            log.warning("Rough draft export failed: %s", exc)
+        run_manifest.stage = "done"
+        save_manifest(manifest_path, run_manifest)
+        self._write_manifest(ctx)
+        cb("package", 1.0, f"Done. {len(ctx.rendered_clip_dirs)} clips in {ctx.project_dir}")
+        return ctx
+
+    # ---- Stage implementations ---------------------------------------------
+
+    def _transcribe(self, source: Path) -> Transcript:
+        transcriber = LocalTranscriber(
+            TranscriberConfig(
+                model=self.options.whisper_model,
+                device=self.options.whisper_device,
+            )
+        )
+        t0 = time.time()
+        transcript = transcriber.transcribe(source)
+        log.info("Transcribed in %.1fs (%s segments)", time.time() - t0, len(transcript.segments))
+        return transcript
+
+    def _plan(self, source: Path, transcript: Transcript) -> ClipPlan:
+        weights = None
+        if self.options.scoring_weights:
+            weights = ScoringWeights(**self.options.scoring_weights)
+        engine = HighlightEngine(
+            EngineConfig(
+                max_clips=self.options.max_clips,
+                target_duration=self.options.target_duration,
+                min_duration=self.options.min_duration,
+                max_duration=self.options.max_duration,
+                use_ollama=self.options.use_ollama,
+                ollama=OllamaConfig(
+                    host=self.options.ollama_host,
+                    model=self.options.ollama_model,
+                ),
+                hook_phrases=tuple(self.options.hook_phrases) if self.options.hook_phrases else None,
+                hook_words=tuple(self.options.hook_words) if self.options.hook_words else None,
+                weights=weights,
+                voice_block=self.options.voice_block,
+            )
+        )
+        return engine.plan_clips(source, transcript)
+
+    def _render_clip(
+        self,
+        *,
+        ctx: JobContext,
+        clip: ClipSuggestion,
+        source: Path,
+        runner: FFmpegRunner,
+        reframer: ReframeRenderer,
+        reframe_targets: list[ReframeTarget],
+        burner: CaptionBurner,
+        metadata_writer: MetadataWriter,
+        transcript: Transcript,
+        probe_duration: float,
+    ) -> Path:
+        safe_start = max(0.0, float(clip.start))
+        safe_end = min(probe_duration or clip.end, float(clip.end))
+        if safe_end - safe_start < 0.5:
+            raise ValueError(f"Clip {clip.title!r} too short after clamping: {safe_end - safe_start:.2f}s")
+
+        meta = metadata_writer.build(clip, transcript, source_title=source.stem)
+        slug = meta.slug
+        clip_dir = ctx.clips_dir / slug
+        clip_dir.mkdir(parents=True, exist_ok=True)
+
+        horizontal_path = clip_dir / "clip.mp4"
+        thumb_path = clip_dir / "thumbnail.jpg"
+
+        # 1. Horizontal extract.
+        if self.options.emit_horizontal:
+            runner.extract_clip(
+                source, horizontal_path,
+                start=safe_start, end=safe_end,
+                crf=self.options.render_crf, preset=self.options.render_preset,
+            )
+
+        # 2. Portrait / platform variants via smart reframe.
+        portrait_paths: dict[str, Path] = {}
+        if self.options.emit_portrait and reframe_targets:
+            tmp_cut = clip_dir / "_cut.mp4"
+            runner.extract_clip(
+                source, tmp_cut,
+                start=safe_start, end=safe_end,
+                crf=self.options.render_crf, preset=self.options.render_preset,
+            )
+            tracked = None
+            try:
+                tracked = reframer.track(tmp_cut)
+                for target in reframe_targets:
+                    out_path = clip_dir / f"clip_{target.label}.mp4"
+                    try:
+                        reframer.render(
+                            tmp_cut,
+                            out_path,
+                            reframe=tracked,
+                            target_aspect=target.aspect,
+                            layout=self.options.reframe_layout,
+                            output_resolution=target.resolution,
+                            crf=self.options.render_crf,
+                            preset=self.options.render_preset,
+                        )
+                        portrait_paths[target.label] = out_path
+                    except Exception as exc:
+                        log.warning(
+                            "Smart reframe failed for %s (%s); center crop fallback.",
+                            target.label, exc,
+                        )
+                        reframer.render_center(
+                            tmp_cut, out_path,
+                            target_aspect=target.aspect,
+                            output_resolution=target.resolution,
+                            crf=self.options.render_crf,
+                            preset=self.options.render_preset,
+                        )
+                        portrait_paths[target.label] = out_path
+            except Exception as exc:
+                log.warning("Tracking failed (%s); center crop for all aspects.", exc)
+                for target in reframe_targets:
+                    out_path = clip_dir / f"clip_{target.label}.mp4"
+                    reframer.render_center(
+                        tmp_cut, out_path,
+                        target_aspect=target.aspect,
+                        output_resolution=target.resolution,
+                        crf=self.options.render_crf,
+                        preset=self.options.render_preset,
+                    )
+                    portrait_paths[target.label] = out_path
+            finally:
+                try:
+                    tmp_cut.unlink(missing_ok=True)
+                except OSError:
+                    pass
+
+            # Legacy alias: clip_portrait.mp4 -> primary 9:16 (or first target)
+            primary = portrait_paths.get("9x16") or next(iter(portrait_paths.values()), None)
+            if primary and primary.is_file():
+                legacy = clip_dir / "clip_portrait.mp4"
+                if legacy != primary:
+                    shutil.copy2(primary, legacy)
+
+        # 3. Captions (scoped to the clip window).
+        styler = CaptionStyler(self.options.caption_preset)
+        caption_artifacts = styler.write(
+            transcript, clip_dir,
+            base_name="captions",
+            clip_offset=safe_start,
+            clip_end=safe_end,
+        )
+
+        # 4. Optionally burn captions into portrait variants.
+        if self.options.burn_captions and caption_artifacts.ass:
+            for label, path in portrait_paths.items():
+                if not path.is_file():
+                    continue
+                try:
+                    burned = clip_dir / f"clip_{label}_captioned.mp4"
+                    burner.burn(
+                        path, caption_artifacts.ass, burned,
+                        crf=self.options.render_crf, preset=self.options.render_preset,
+                    )
+                    path.unlink(missing_ok=True)
+                    burned.rename(path)
+                except Exception as exc:
+                    log.warning("Caption burn failed for %s/%s: %s", slug, label, exc)
+            legacy = clip_dir / "clip_portrait.mp4"
+            primary = portrait_paths.get("9x16") or next(iter(portrait_paths.values()), None)
+            if primary and legacy != primary and primary.is_file():
+                shutil.copy2(primary, legacy)
+
+        # 5. Thumbnail at 20% into the clip.
+        try:
+            thumb_ts = safe_start + (safe_end - safe_start) * 0.2
+            runner.thumbnail(source, thumb_path, timestamp=thumb_ts, width=1280)
+        except Exception as exc:
+            log.warning("Thumbnail failed for %s: %s", slug, exc)
+
+        # 6. Write metadata + publish-ready text bundles.
+        self._write_metadata_bundle(clip_dir, meta)
+        return clip_dir
+
+    # ---- Metadata files ----------------------------------------------------
+
+    @staticmethod
+    def _write_metadata_bundle(clip_dir: Path, meta: ClipMetadata) -> None:
+        (clip_dir / "metadata.json").write_text(
+            meta.model_dump_json(indent=2), encoding="utf-8"
+        )
+
+        # youtube.txt: copy-paste ready
+        lines = [meta.youtube.title, "", meta.youtube.description]
+        if meta.youtube.chapters:
+            lines.append("")
+            lines.append("Chapters:")
+            for offset, title in meta.youtube.chapters:
+                mm = int(offset) // 60
+                ss = int(offset) % 60
+                lines.append(f"{mm:02d}:{ss:02d} {title}")
+        if meta.youtube.tags:
+            lines.append("")
+            lines.append("Tags: " + ", ".join(meta.youtube.tags))
+        (clip_dir / "youtube.txt").write_text("\n".join(lines).strip() + "\n", encoding="utf-8")
+
+        # tiktok.txt
+        tk_lines = [meta.shorts.caption]
+        if meta.shorts.hashtags:
+            tk_lines.append("")
+            tk_lines.append(" ".join(meta.shorts.hashtags))
+        (clip_dir / "tiktok.txt").write_text("\n".join(tk_lines).strip() + "\n", encoding="utf-8")
+
+    # ---- Manifest ----------------------------------------------------------
+
+    def _write_manifest(self, ctx: JobContext) -> None:
+        manifest = {
+            "source_video": str(ctx.source_video),
+            "project_name": ctx.project_name,
+            "run_id": ctx.run_id,
+            "generator": ctx.plan.generator if ctx.plan else "",
+            "clip_dirs": [str(p) for p in ctx.rendered_clip_dirs],
         }
+        (ctx.project_dir / "manifest.json").write_text(
+            json.dumps(manifest, indent=2), encoding="utf-8"
+        )
 
-        return batch_summary
+    # ---- Helpers -----------------------------------------------------------
 
-    def get_processing_stats(self, results: Dict) -> Dict[str, Any]:
-        """Get processing statistics"""
-        if 'total_videos' in results:  # Batch results
-            return {
-                'videos_processed': results['total_videos'],
-                'success_rate': results['successful'] / results['total_videos'] if results['total_videos'] > 0 else 0,
-                'total_clips_generated': results['total_files_generated'],
-                'average_clips_per_video': results['total_files_generated'] / results['successful'] if results['successful'] > 0 else 0
-            }
-        else:  # Single video results
-            return {
-                'clips_generated': results.get('stages', {}).get('packaging', {}).get('total_files', 0),
-                'platforms_optimized': len(results.get('stages', {}).get('platform_optimization', {})),
-                'processing_time': 'N/A'  # Would need to calculate from timestamps
-            }
+    def _reframe_targets(self) -> list[ReframeTarget]:
+        if self.options.platforms:
+            targets = platforms_to_targets(self.options.platforms)
+            if targets:
+                return targets
+        return default_targets()
 
+    def _checkpoint(self) -> None:
+        if self._cancelled:
+            raise RuntimeError("Pipeline cancelled by user")
 
-def quick_social_media_process(video_path: Path, platforms: List[str] = None) -> Dict[str, Any]:
-    """
-    Quick processing function for common use cases
+    @staticmethod
+    def _resolve_encoder(force: str) -> str:
+        return detect_hwaccel(force)
 
-    Args:
-        video_path: Input video path
-        platforms: List of platform names (optional)
+    @staticmethod
+    def _slug_for_clip(clip: ClipSuggestion, transcript: Transcript, source: Path) -> str:
+        from .ai.metadata_writer import MetadataWriter
 
-    Returns:
-        Processing results
-    """
-    processor = OpusClipProcessor()
-
-    if platforms:
-        platform_objects = []
-        platform_map = {
-            'tiktok': Platform.TIKTOK,
-            'instagram_reels': Platform.INSTAGRAM_REELS,
-            'instagram_stories': Platform.INSTAGRAM_STORIES,
-            'youtube_shorts': Platform.YOUTUBE_SHORTS,
-            'youtube': Platform.YOUTUBE,
-            'twitter': Platform.TWITTER
-        }
-
-        for p in platforms:
-            if p in platform_map:
-                platform_objects.append(platform_map[p])
-
-        if platform_objects:
-            processor.default_settings['platforms'] = platform_objects
-
-    return processor.process_video_for_social_media(video_path)
-
-
-if __name__ == "__main__":
-    # Example usage
-    print("🎬 Opus Clip Processor - Complete AI Video Editing Suite")
-    print("=" * 60)
-
-    # Show available platforms
-    from social_media_optimizer import get_platform_specs
-
-    print("📱 Supported Platforms:")
-    specs = get_platform_specs()
-    for platform, spec in specs.items():
-        print(f"   • {platform.upper()}: {spec['aspect_ratio'][0]}:{spec['aspect_ratio'][1]} - {spec['description']}")
-
-    print("\n✨ Enhancement Presets:")
-    from video_enhancer import get_available_presets
-    presets = get_available_presets()
-    for preset in presets:
-        print(f"   • {preset}")
-
-    print("\n🚀 Ready for Opus Clip-style processing!")
-    print("   Usage: python opus_clip_processor.py")
-    print("   Or import and use: quick_social_media_process(video_path)")
+        meta = MetadataWriter(MetadataConfig(use_ollama=False)).build(
+            clip, transcript, source_title=source.stem
+        )
+        return meta.slug

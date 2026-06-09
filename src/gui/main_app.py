@@ -40,11 +40,12 @@ class LTWVideoEditorPro:
     def _create_layout(self):
         """Create the main layout"""
         # Main horizontal container
-        main_frame = ctk.CTkFrame(self.root, fg_color="#13131f")
+        c = theme.colors
+        main_frame = ctk.CTkFrame(self.root, fg_color=c.bg_primary)
         main_frame.pack(fill="both", expand=True)
         
         # === HEADER ===
-        header = ctk.CTkFrame(main_frame, fg_color="#1a1a2e", height=60)
+        header = ctk.CTkFrame(main_frame, fg_color=c.bg_secondary, height=60)
         header.pack(fill="x", side="top")
         header.pack_propagate(False)
         
@@ -65,7 +66,7 @@ class LTWVideoEditorPro:
             header,
             text="● Ready",
             font=ctk.CTkFont(size=12),
-            text_color="#00d26a"
+            text_color=c.success
         )
         self.status_label.pack(side="right", padx=20)
         
@@ -74,7 +75,7 @@ class LTWVideoEditorPro:
         body.pack(fill="both", expand=True, side="top")
         
         # === SIDEBAR ===
-        sidebar = ctk.CTkFrame(body, fg_color="#1a1a2e", width=220)
+        sidebar = ctk.CTkFrame(body, fg_color=c.bg_secondary, width=220)
         sidebar.pack(fill="y", side="left")
         sidebar.pack_propagate(False)
         
@@ -83,14 +84,16 @@ class LTWVideoEditorPro:
             sidebar,
             text="MAIN TOOLS",
             font=ctk.CTkFont(size=10, weight="bold"),
-            text_color="#6b6b80"
+            text_color=c.text_muted
         )
         nav_label.pack(anchor="w", padx=16, pady=(20, 10))
         
         # Navigation buttons
         nav_items = [
             ("split", "✂️  Video Splitter"),
+            ("templates", "🎛️  Templates"),
             ("opus", "🤖  Opus Clip AI"),
+            ("studio", "🎬  Studio"),
             ("resolve", "🎭  DaVinci Resolve"),
         ]
         
@@ -102,8 +105,8 @@ class LTWVideoEditorPro:
                 font=ctk.CTkFont(size=14),
                 height=44,
                 anchor="w",
-                fg_color="#0066ff" if tab_id == "split" else "transparent",
-                hover_color="#0052cc" if tab_id == "split" else "#2d2d44",
+                fg_color=c.accent_primary if tab_id == "split" else "transparent",
+                hover_color=c.accent_hover if tab_id == "split" else c.bg_hover,
                 command=lambda t=tab_id: self._switch_tab(t)
             )
             btn.pack(fill="x", padx=12, pady=2)
@@ -114,7 +117,7 @@ class LTWVideoEditorPro:
             sidebar,
             text="CONFIGURATION",
             font=ctk.CTkFont(size=10, weight="bold"),
-            text_color="#6b6b80"
+            text_color=c.text_muted
         )
         settings_label.pack(anchor="w", padx=16, pady=(20, 10))
         
@@ -125,14 +128,14 @@ class LTWVideoEditorPro:
             height=44,
             anchor="w",
             fg_color="transparent",
-            hover_color="#2d2d44",
+            hover_color=c.bg_hover,
             command=lambda: self._switch_tab("settings")
         )
         settings_btn.pack(fill="x", padx=12, pady=2)
         self.nav_buttons["settings"] = settings_btn
         
         # === CONTENT AREA ===
-        self.content_area = ctk.CTkFrame(body, fg_color="#0d0d14")
+        self.content_area = ctk.CTkFrame(body, fg_color=c.bg_dark)
         self.content_area.pack(fill="both", expand=True, side="right")
         
         # Create tabs
@@ -148,6 +151,8 @@ class LTWVideoEditorPro:
         from .tabs.opus_tab import OpusTab
         from .tabs.resolve_tab import ResolveTab
         from .tabs.settings_tab import SettingsTab
+        from .tabs.studio_tab import StudioTab
+        from .tabs.templates_tab import TemplatesTab
         
         # Split Tab
         self.tabs["split"] = SplitTab(
@@ -162,7 +167,19 @@ class LTWVideoEditorPro:
             on_status_change=self._on_status_change,
             on_stats_update=lambda x: None
         )
+
+        # Templates Tab
+        self.tabs["templates"] = TemplatesTab(
+            self.content_area,
+            on_status_change=self._on_status_change,
+            on_apply_template=self._on_apply_template,
+        )
         
+        self.tabs["studio"] = StudioTab(
+            self.content_area,
+            on_status_change=self._on_status_change,
+        )
+
         # Resolve Tab
         self.tabs["resolve"] = ResolveTab(
             self.content_area,
@@ -182,9 +199,9 @@ class LTWVideoEditorPro:
         # Update button states
         for btn_id, btn in self.nav_buttons.items():
             if btn_id == tab_id:
-                btn.configure(fg_color="#0066ff", hover_color="#0052cc")
+                btn.configure(fg_color=theme.colors.accent_primary, hover_color=theme.colors.accent_hover)
             else:
-                btn.configure(fg_color="transparent", hover_color="#2d2d44")
+                btn.configure(fg_color="transparent", hover_color=theme.colors.bg_hover)
         
         self._show_tab(tab_id)
         
@@ -202,11 +219,11 @@ class LTWVideoEditorPro:
     def _on_status_change(self, status: str, status_type: str = "success"):
         """Handle status updates from tabs"""
         color_map = {
-            "success": "#00d26a",
-            "warning": "#ffb800",
-            "error": "#ff4757",
-            "info": "#00b4d8",
-            "processing": "#0066ff"
+            "success": theme.colors.success,
+            "warning": theme.colors.warning,
+            "error": theme.colors.error,
+            "info": theme.colors.info,
+            "processing": theme.colors.accent_primary,
         }
         self.status_label.configure(
             text=f"● {status}",
@@ -220,6 +237,11 @@ class LTWVideoEditorPro:
         self.tabs["opus"].apply_settings(settings)
         self._switch_tab("split")
         
+    def _on_apply_template(self, template):
+        """Send a channel template into the Opus pipeline and switch to it."""
+        self.tabs["opus"].set_active_template(template)
+        self._switch_tab("opus")
+
     def _get_current_settings(self) -> Dict[str, Any]:
         """Get current settings from all tabs"""
         settings = {}

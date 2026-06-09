@@ -1,0 +1,48 @@
+{
+  "name": "Gaming",
+  "niche": "gaming",
+  "icon": "🕹️",
+  "description": "Short, high-energy clips from gameplay: reactions, clutch moments, funny bits.",
+  "content_type": "gaming",
+  "builtin": true,
+  "clip_duration": 22.0,
+  "min_duration": 8.0,
+  "max_duration": 45.0,
+  "scene_detection": true,
+  "max_clips": 20,
+  "hook_phrases": [
+    "no way", "what just happened", "are you kidding", "let's go", "oh my god",
+    "watch this", "you won't believe", "that was insane", "biggest", "first try",
+    "i can't believe", "wait what"
+  ],
+  "hook_words": [
+    "insane", "clutch", "win", "rage", "fail", "epic", "crazy", "boss", "loot",
+    "rare", "kill", "speedrun", "glitch", "secret", "noscope"
+  ],
+  "scoring_weights": {
+    "audio": 0.40,
+    "hook_phrase": 0.28,
+    "hook_word": 0.17,
+    "length": 0.10,
+    "completeness": 0.05
+  },
+  "voice": {
+    "persona": "A hype gaming creator who matches the energy of the moment.",
+    "tone": "High-energy, casual, reaction-driven. Emojis OK in captions, not titles.",
+    "title_style": "Punchy reaction (e.g. 'This Boss Fight Went Completely Wrong').",
+    "cta": "Subscribe for more clips.",
+    "hashtag_sets": ["#gaming", "#gamingclips", "#twitch", "#gamer", "#fyp"],
+    "keyword_tags": ["gaming", "gameplay", "gaming clips", "highlights"]
+  },
+  "look": {
+    "caption_preset": "mrbeast",
+    "lut_name": "Gaming_Vibrant",
+    "transition_pack": null,
+    "sfx_pack": null,
+    "auto_transitions": true
+  },
+  "platforms": ["tiktok", "youtube_shorts", "instagram_reels"],
+  "naming_pattern": "{name}_clip_{num:03d}",
+  "add_captions": true,
+  "quality": "youtube_hd"
+}

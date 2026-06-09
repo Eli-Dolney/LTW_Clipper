@@ -12,7 +12,7 @@ import torch
 import torch.nn as nn
 from torchvision import models, transforms
 import librosa
-import speech_recognition as sr
+# Local ASR only — no cloud speech APIs.
 from moviepy import VideoFileClip
 from tqdm import tqdm
 import json
@@ -347,7 +347,6 @@ class SpeechToTextGenerator:
 
     def __init__(self, language: str = 'en-US'):
         self.language = language
-        self.recognizer = sr.Recognizer()
 
     def generate_transcript(self, video_path: Path) -> Dict[str, Any]:
         """
@@ -378,22 +377,16 @@ class SpeechToTextGenerator:
         }
 
         try:
-            # Load audio file for speech recognition
-            with sr.AudioFile(str(temp_audio)) as source:
-                audio = self.recognizer.record(source)
+            from .ai.transcriber import LocalTranscriber, TranscriberConfig
 
-                # Get full transcript
-                try:
-                    transcript = self.recognizer.recognize_google(audio, language=self.language)
-                    transcript_data['transcript'] = transcript
-                except sr.UnknownValueError:
-                    transcript_data['error'] = 'Could not understand audio'
-                except sr.RequestError as e:
-                    transcript_data['error'] = f'Speech recognition service error: {e}'
-
-            # Note: For timestamped segments, would need more advanced speech recognition
-            # This is a simplified implementation
-
+            tw = LocalTranscriber(TranscriberConfig(language=self.language or None))
+            result = tw.transcribe(temp_audio if temp_audio.exists() else video_path)
+            transcript_data['transcript'] = result.text()
+            transcript_data['segments'] = [
+                {'id': s.id, 'start': s.start, 'end': s.end, 'text': s.text}
+                for s in result.segments
+            ]
+            transcript_data['language'] = result.language or self.language
         except Exception as e:
             transcript_data['error'] = str(e)
         finally:

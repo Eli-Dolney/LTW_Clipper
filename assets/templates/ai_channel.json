@@ -1,0 +1,48 @@
+{
+  "name": "AI Channel",
+  "niche": "ai",
+  "icon": "🤖",
+  "description": "Clips from AI news / tool walkthroughs / model breakdowns. Fast, curious, future-facing.",
+  "content_type": "clips",
+  "builtin": true,
+  "clip_duration": 30.0,
+  "min_duration": 12.0,
+  "max_duration": 60.0,
+  "scene_detection": false,
+  "max_clips": 15,
+  "hook_phrases": [
+    "this changes everything", "here's how", "the new model", "you can now",
+    "watch this", "the crazy part", "what this means", "nobody is talking about",
+    "this just dropped", "here's why it matters", "let me show you", "the breakthrough"
+  ],
+  "hook_words": [
+    "model", "agent", "prompt", "gpt", "llm", "training", "dataset", "neural",
+    "automation", "workflow", "tool", "benchmark", "reasoning", "opensource", "breakthrough"
+  ],
+  "scoring_weights": {
+    "audio": 0.18,
+    "hook_phrase": 0.34,
+    "hook_word": 0.18,
+    "length": 0.15,
+    "completeness": 0.15
+  },
+  "voice": {
+    "persona": "An AI-savvy creator who makes cutting-edge tech approachable and exciting.",
+    "tone": "Curious, energetic, credible. Hype the capability, not the doom.",
+    "title_style": "Capability + implication (e.g. 'This New AI Agent Can Build Apps Itself').",
+    "cta": "Subscribe for daily AI breakdowns.",
+    "hashtag_sets": ["#ai", "#artificialintelligence", "#machinelearning", "#tech", "#aitools"],
+    "keyword_tags": ["ai", "artificial intelligence", "machine learning", "ai tools", "tech"]
+  },
+  "look": {
+    "caption_preset": "tiktok",
+    "lut_name": null,
+    "transition_pack": null,
+    "sfx_pack": null,
+    "auto_transitions": false
+  },
+  "platforms": ["youtube_shorts", "tiktok", "instagram_reels"],
+  "naming_pattern": "{name}_clip_{num:03d}",
+  "add_captions": true,
+  "quality": "youtube_hd"
+}

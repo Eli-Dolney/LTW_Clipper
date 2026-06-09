@@ -1,0 +1,67 @@
+# LTW Video Splitter Pro - Settings
+# Copy this file to config/settings.yaml and adjust to your preference.
+# All settings are OPTIONAL - sensible defaults are used when keys are missing.
+
+app:
+  # Where clip outputs land. "~" and env vars are expanded.
+  output_root: "~/Desktop/clips"
+  # How many ffmpeg render workers to run in parallel (CPU-bound).
+  # 0 = auto (half of CPU cores, minimum 1).
+  render_concurrency: 0
+
+ffmpeg:
+  # Path to ffmpeg binary. "auto" uses whatever is on PATH (or bundled build).
+  binary: "auto"
+  # Hardware acceleration. "auto" picks the best one for your OS:
+  #   macOS    -> videotoolbox
+  #   Windows  -> nvenc (NVIDIA) or qsv (Intel), else libx264
+  #   Linux    -> vaapi, else libx264
+  # Force one with: "videotoolbox" | "nvenc" | "qsv" | "vaapi" | "cpu"
+  hwaccel: "auto"
+
+whisper:
+  # Local transcription (faster-whisper). First run downloads the model.
+  # Options: tiny | base | small | medium | large-v3
+  model: "small"
+  # Device: "auto" picks cuda -> mps -> cpu. Force with "cuda" | "mps" | "cpu".
+  device: "auto"
+  # Compute type: "auto" picks int8/float16/float32 depending on device.
+  compute_type: "auto"
+  # VAD filter skips silence for better speed and accuracy.
+  vad_filter: true
+  # Optional. Leave empty to auto-detect.
+  language: ""
+
+ollama:
+  # Local LLM for smart titles/descriptions/tags. OPTIONAL.
+  # Install from https://ollama.com then `ollama pull llama3.1:8b`.
+  enabled: true
+  host: "http://localhost:11434"
+  model: "llama3.1:8b"
+  # Timeout per request in seconds.
+  request_timeout: 120
+
+reframe:
+  # Smart reframing for social clips.
+  target_aspect: "9:16"
+  # Layout: crop (face-tracked fill) | fit (letterbox, nothing cut off) | blur (blurred bg)
+  layout: "crop"
+  smoothing: 0.35
+  deadzone: 0.04
+  headroom: 0.08
+  zoom: 1.0
+  max_pan_speed: 0.18
+
+captions:
+  # Default caption style preset.
+  preset: "bold_outline"
+  # Burn captions into the output file by default.
+  burn_in: true
+  # Always export SRT + VTT side-car files.
+  export_sidecar: true
+
+logging:
+  # Levels: DEBUG | INFO | WARNING | ERROR
+  level: "INFO"
+  # If true, write JSON logs to outputs/<project>/logs/run.jsonl in addition to the console.
+  json_file: true

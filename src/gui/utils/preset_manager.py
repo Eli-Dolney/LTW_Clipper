@@ -57,8 +57,8 @@ class PresetManager:
     
     def __init__(self, presets_dir: Optional[Path] = None):
         if presets_dir is None:
-            # Default to presets directory in project
-            self.presets_dir = Path(__file__).parent.parent.parent / "presets"
+            # Repo root is four parents up from src/gui/utils/preset_manager.py
+            self.presets_dir = Path(__file__).resolve().parents[3] / "presets"
         else:
             self.presets_dir = Path(presets_dir)
             

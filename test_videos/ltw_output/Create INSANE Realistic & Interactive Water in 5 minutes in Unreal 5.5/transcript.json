@@ -1,0 +1,4184 @@
+{
+  "language": "en",
+  "duration": 291.9909375,
+  "segments": [
+    {
+      "id": 1,
+      "start": 1.74,
+      "end": 7.78,
+      "text": "Hello everyone. Today I'll be showing you how to create interactive and realistic water using Unreal's Niagara fluids.",
+      "words": [
+        {
+          "word": "Hello",
+          "start": 1.74,
+          "end": 2.26,
+          "probability": 0.9063709378242493
+        },
+        {
+          "word": "everyone.",
+          "start": 2.26,
+          "end": 2.6,
+          "probability": 0.8365989923477173
+        },
+        {
+          "word": "Today",
+          "start": 3.08,
+          "end": 3.24,
+          "probability": 0.9774559140205383
+        },
+        {
+          "word": "I'll",
+          "start": 3.24,
+          "end": 3.46,
+          "probability": 0.7610871195793152
+        },
+        {
+          "word": "be",
+          "start": 3.46,
+          "end": 3.6,
+          "probability": 0.9926159381866455
+        },
+        {
+          "word": "showing",
+          "start": 3.6,
+          "end": 3.84,
+          "probability": 0.994083821773529
+        },
+        {
+          "word": "you",
+          "start": 3.84,
+          "end": 4.02,
+          "probability": 0.9723678827285767
+        },
+        {
+          "word": "how",
+          "start": 4.02,
+          "end": 4.14,
+          "probability": 0.9925054907798767
+        },
+        {
+          "word": "to",
+          "start": 4.14,
+          "end": 4.24,
+          "probability": 0.9975166320800781
+        },
+        {
+          "word": "create",
+          "start": 4.24,
+          "end": 4.48,
+          "probability": 0.9884203672409058
+        },
+        {
+          "word": "interactive",
+          "start": 4.48,
+          "end": 5.08,
+          "probability": 0.9794884920120239
+        },
+        {
+          "word": "and",
+          "start": 5.08,
+          "end": 5.24,
+          "probability": 0.972407877445221
+        },
+        {
+          "word": "realistic",
+          "start": 5.24,
+          "end": 5.62,
+          "probability": 0.9979920387268066
+        },
+        {
+          "word": "water",
+          "start": 5.62,
+          "end": 6.04,
+          "probability": 0.9943775534629822
+        },
+        {
+          "word": "using",
+          "start": 6.04,
+          "end": 6.5,
+          "probability": 0.9627148509025574
+        },
+        {
+          "word": "Unreal's",
+          "start": 6.5,
+          "end": 7.08,
+          "probability": 0.9235348701477051
+        },
+        {
+          "word": "Niagara",
+          "start": 7.08,
+          "end": 7.34,
+          "probability": 0.9522128105163574
+        },
+        {
+          "word": "fluids.",
+          "start": 7.34,
+          "end": 7.78,
+          "probability": 0.7497894763946533
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "start": 8.34,
+      "end": 14.2,
+      "text": "In this quick video, we will go step by step so you can easily follow and create this for yourself in your own project.",
+      "words": [
+        {
+          "word": "In",
+          "start": 8.34,
+          "end": 8.62,
+          "probability": 0.9745954275131226
+        },
+        {
+          "word": "this",
+          "start": 8.62,
+          "end": 8.76,
+          "probability": 0.998791515827179
+        },
+        {
+          "word": "quick",
+          "start": 8.76,
+          "end": 8.96,
+          "probability": 0.9867324233055115
+        },
+        {
+          "word": "video,",
+          "start": 8.96,
+          "end": 9.32,
+          "probability": 0.9975268244743347
+        },
+        {
+          "word": "we",
+          "start": 9.54,
+          "end": 9.7,
+          "probability": 0.9686803221702576
+        },
+        {
+          "word": "will",
+          "start": 9.7,
+          "end": 9.82,
+          "probability": 0.8990744948387146
+        },
+        {
+          "word": "go",
+          "start": 9.82,
+          "end": 10.0,
+          "probability": 0.9926214218139648
+        },
+        {
+          "word": "step",
+          "start": 10.0,
+          "end": 10.28,
+          "probability": 0.9951167106628418
+        },
+        {
+          "word": "by",
+          "start": 10.28,
+          "end": 10.5,
+          "probability": 0.7271527051925659
+        },
+        {
+          "word": "step",
+          "start": 10.5,
+          "end": 10.8,
+          "probability": 0.9986600875854492
+        },
+        {
+          "word": "so",
+          "start": 10.8,
+          "end": 11.14,
+          "probability": 0.8140766620635986
+        },
+        {
+          "word": "you",
+          "start": 11.14,
+          "end": 11.24,
+          "probability": 0.9887635707855225
+        },
+        {
+          "word": "can",
+          "start": 11.24,
+          "end": 11.36,
+          "probability": 0.9960381984710693
+        },
+        {
+          "word": "easily",
+          "start": 11.36,
+          "end": 11.66,
+          "probability": 0.994986891746521
+        },
+        {
+          "word": "follow",
+          "start": 11.66,
+          "end": 12.08,
+          "probability": 0.9934733510017395
+        },
+        {
+          "word": "and",
+          "start": 12.08,
+          "end": 12.32,
+          "probability": 0.9679988026618958
+        },
+        {
+          "word": "create",
+          "start": 12.32,
+          "end": 12.52,
+          "probability": 0.9968552589416504
+        },
+        {
+          "word": "this",
+          "start": 12.52,
+          "end": 12.76,
+          "probability": 0.9940891265869141
+        },
+        {
+          "word": "for",
+          "start": 12.76,
+          "end": 12.92,
+          "probability": 0.9932262301445007
+        },
+        {
+          "word": "yourself",
+          "start": 12.92,
+          "end": 13.26,
+          "probability": 0.996410071849823
+        },
+        {
+          "word": "in",
+          "start": 13.26,
+          "end": 13.48,
+          "probability": 0.45480573177337646
+        },
+        {
+          "word": "your",
+          "start": 13.48,
+          "end": 13.6,
+          "probability": 0.9979926347732544
+        },
+        {
+          "word": "own",
+          "start": 13.6,
+          "end": 13.76,
+          "probability": 0.993878185749054
+        },
+        {
+          "word": "project.",
+          "start": 13.76,
+          "end": 14.2,
+          "probability": 0.9972193241119385
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "start": 16.32,
+      "end": 21.94,
+      "text": "The first step once you're in your GSAP project, you'll need to enable the Niagara fluids plugin,",
+      "words": [
+        {
+          "word": "The",
+          "start": 16.32,
+          "end": 16.7,
+          "probability": 0.9858113527297974
+        },
+        {
+          "word": "first",
+          "start": 16.7,
+          "end": 16.9,
+          "probability": 0.9971871972084045
+        },
+        {
+          "word": "step",
+          "start": 16.9,
+          "end": 17.18,
+          "probability": 0.9978187084197998
+        },
+        {
+          "word": "once",
+          "start": 17.18,
+          "end": 17.36,
+          "probability": 0.626650333404541
+        },
+        {
+          "word": "you're",
+          "start": 17.36,
+          "end": 17.6,
+          "probability": 0.9562601447105408
+        },
+        {
+          "word": "in",
+          "start": 17.6,
+          "end": 17.66,
+          "probability": 0.9885086417198181
+        },
+        {
+          "word": "your",
+          "start": 17.66,
+          "end": 17.76,
+          "probability": 0.9951476454734802
+        },
+        {
+          "word": "GSAP",
+          "start": 17.76,
+          "end": 18.24,
+          "probability": 0.7145949602127075
+        },
+        {
+          "word": "project,",
+          "start": 18.24,
+          "end": 18.74,
+          "probability": 0.9850236177444458
+        },
+        {
+          "word": "you'll",
+          "start": 19.1,
+          "end": 19.82,
+          "probability": 0.9512689411640167
+        },
+        {
+          "word": "need",
+          "start": 19.82,
+          "end": 19.96,
+          "probability": 0.9982214570045471
+        },
+        {
+          "word": "to",
+          "start": 19.96,
+          "end": 20.14,
+          "probability": 0.9981410503387451
+        },
+        {
+          "word": "enable",
+          "start": 20.14,
+          "end": 20.46,
+          "probability": 0.9966122508049011
+        },
+        {
+          "word": "the",
+          "start": 20.46,
+          "end": 20.84,
+          "probability": 0.9963089823722839
+        },
+        {
+          "word": "Niagara",
+          "start": 20.84,
+          "end": 21.1,
+          "probability": 0.9823768138885498
+        },
+        {
+          "word": "fluids",
+          "start": 21.1,
+          "end": 21.54,
+          "probability": 0.9297353625297546
+        },
+        {
+          "word": "plugin,",
+          "start": 21.54,
+          "end": 21.94,
+          "probability": 0.7119954824447632
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "start": 22.4,
+      "end": 24.76,
+      "text": "and then restart your project to activate the plugin.",
+      "words": [
+        {
+          "word": "and",
+          "start": 22.4,
+          "end": 22.7,
+          "probability": 0.9879778623580933
+        },
+        {
+          "word": "then",
+          "start": 22.7,
+          "end": 22.82,
+          "probability": 0.9980350136756897
+        },
+        {
+          "word": "restart",
+          "start": 22.82,
+          "end": 23.12,
+          "probability": 0.995062530040741
+        },
+        {
+          "word": "your",
+          "start": 23.12,
+          "end": 23.34,
+          "probability": 0.9970672726631165
+        },
+        {
+          "word": "project",
+          "start": 23.34,
+          "end": 23.74,
+          "probability": 0.9981808662414551
+        },
+        {
+          "word": "to",
+          "start": 23.74,
+          "end": 23.92,
+          "probability": 0.9923731684684753
+        },
+        {
+          "word": "activate",
+          "start": 23.92,
+          "end": 24.24,
+          "probability": 0.997463583946228
+        },
+        {
+          "word": "the",
+          "start": 24.24,
+          "end": 24.48,
+          "probability": 0.9976122379302979
+        },
+        {
+          "word": "plugin.",
+          "start": 24.48,
+          "end": 24.76,
+          "probability": 0.9545473456382751
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "start": 34.1,
+      "end": 38.64,
+      "text": "Once we are back, we can verify that it's enabled and start to get everything set up.",
+      "words": [
+        {
+          "word": "Once",
+          "start": 34.1,
+          "end": 34.6,
+          "probability": 0.995672881603241
+        },
+        {
+          "word": "we",
+          "start": 34.6,
+          "end": 34.78,
+          "probability": 0.995843231678009
+        },
+        {
+          "word": "are",
+          "start": 34.78,
+          "end": 34.9,
+          "probability": 0.900874674320221
+        },
+        {
+          "word": "back,",
+          "start": 34.9,
+          "end": 35.14,
+          "probability": 0.9989134073257446
+        },
+        {
+          "word": "we",
+          "start": 35.34,
+          "end": 35.44,
+          "probability": 0.9938526153564453
+        },
+        {
+          "word": "can",
+          "start": 35.44,
+          "end": 35.58,
+          "probability": 0.9986374974250793
+        },
+        {
+          "word": "verify",
+          "start": 35.58,
+          "end": 35.86,
+          "probability": 0.9994149208068848
+        },
+        {
+          "word": "that",
+          "start": 35.86,
+          "end": 36.16,
+          "probability": 0.9970771074295044
+        },
+        {
+          "word": "it's",
+          "start": 36.16,
+          "end": 36.34,
+          "probability": 0.9782639145851135
+        },
+        {
+          "word": "enabled",
+          "start": 36.34,
+          "end": 36.72,
+          "probability": 0.9986041188240051
+        },
+        {
+          "word": "and",
+          "start": 36.72,
+          "end": 37.22,
+          "probability": 0.8023277521133423
+        },
+        {
+          "word": "start",
+          "start": 37.22,
+          "end": 37.46,
+          "probability": 0.9956132173538208
+        },
+        {
+          "word": "to",
+          "start": 37.46,
+          "end": 37.64,
+          "probability": 0.9986693859100342
+        },
+        {
+          "word": "get",
+          "start": 37.64,
+          "end": 37.76,
+          "probability": 0.9990884065628052
+        },
+        {
+          "word": "everything",
+          "start": 37.76,
+          "end": 38.06,
+          "probability": 0.9991365075111389
+        },
+        {
+          "word": "set",
+          "start": 38.06,
+          "end": 38.4,
+          "probability": 0.9544990062713623
+        },
+        {
+          "word": "up.",
+          "start": 38.4,
+          "end": 38.64,
+          "probability": 0.9967087507247925
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "start": 40.24,
+      "end": 44.48,
+      "text": "We will head down to the content drawer and pick where you want to create your Niagara system,",
+      "words": [
+        {
+          "word": "We",
+          "start": 40.24,
+          "end": 40.68,
+          "probability": 0.5885552763938904
+        },
+        {
+          "word": "will",
+          "start": 40.68,
+          "end": 40.78,
+          "probability": 0.8782383799552917
+        },
+        {
+          "word": "head",
+          "start": 40.78,
+          "end": 40.94,
+          "probability": 0.9900729656219482
+        },
+        {
+          "word": "down",
+          "start": 40.94,
+          "end": 41.14,
+          "probability": 0.9666460156440735
+        },
+        {
+          "word": "to",
+          "start": 41.14,
+          "end": 41.22,
+          "probability": 0.9737210869789124
+        },
+        {
+          "word": "the",
+          "start": 41.22,
+          "end": 41.32,
+          "probability": 0.9897996187210083
+        },
+        {
+          "word": "content",
+          "start": 41.32,
+          "end": 41.6,
+          "probability": 0.6766778230667114
+        },
+        {
+          "word": "drawer",
+          "start": 41.6,
+          "end": 41.98,
+          "probability": 0.9962431192398071
+        },
+        {
+          "word": "and",
+          "start": 41.98,
+          "end": 42.44,
+          "probability": 0.8841817378997803
+        },
+        {
+          "word": "pick",
+          "start": 42.44,
+          "end": 42.66,
+          "probability": 0.9708026051521301
+        },
+        {
+          "word": "where",
+          "start": 42.66,
+          "end": 42.84,
+          "probability": 0.9932578802108765
+        },
+        {
+          "word": "you",
+          "start": 42.84,
+          "end": 42.96,
+          "probability": 0.991814911365509
+        },
+        {
+          "word": "want",
+          "start": 42.96,
+          "end": 43.18,
+          "probability": 0.9784414172172546
+        },
+        {
+          "word": "to",
+          "start": 43.18,
+          "end": 43.3,
+          "probability": 0.9926363229751587
+        },
+        {
+          "word": "create",
+          "start": 43.3,
+          "end": 43.5,
+          "probability": 0.9925674200057983
+        },
+        {
+          "word": "your",
+          "start": 43.5,
+          "end": 43.68,
+          "probability": 0.9695321321487427
+        },
+        {
+          "word": "Niagara",
+          "start": 43.68,
+          "end": 43.96,
+          "probability": 0.9413616061210632
+        },
+        {
+          "word": "system,",
+          "start": 43.96,
+          "end": 44.48,
+          "probability": 0.7325546145439148
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "start": 44.84,
+      "end": 52.02,
+      "text": "and scroll down until you find grid 2D SW particle collision, and you can name it whatever you'd like,",
+      "words": [
+        {
+          "word": "and",
+          "start": 44.84,
+          "end": 45.2,
+          "probability": 0.9766718149185181
+        },
+        {
+          "word": "scroll",
+          "start": 45.2,
+          "end": 45.44,
+          "probability": 0.9952308535575867
+        },
+        {
+          "word": "down",
+          "start": 45.44,
+          "end": 45.72,
+          "probability": 0.9969356060028076
+        },
+        {
+          "word": "until",
+          "start": 45.72,
+          "end": 46.04,
+          "probability": 0.9897494912147522
+        },
+        {
+          "word": "you",
+          "start": 46.04,
+          "end": 46.2,
+          "probability": 0.9955618381500244
+        },
+        {
+          "word": "find",
+          "start": 46.2,
+          "end": 46.56,
+          "probability": 0.9888315200805664
+        },
+        {
+          "word": "grid",
+          "start": 46.56,
+          "end": 47.36,
+          "probability": 0.26264074444770813
+        },
+        {
+          "word": "2D",
+          "start": 47.36,
+          "end": 47.96,
+          "probability": 0.7615303695201874
+        },
+        {
+          "word": "SW",
+          "start": 47.96,
+          "end": 48.72,
+          "probability": 0.8900046348571777
+        },
+        {
+          "word": "particle",
+          "start": 48.72,
+          "end": 49.38,
+          "probability": 0.6769195795059204
+        },
+        {
+          "word": "collision,",
+          "start": 49.38,
+          "end": 49.96,
+          "probability": 0.9869582056999207
+        },
+        {
+          "word": "and",
+          "start": 50.54,
+          "end": 50.7,
+          "probability": 0.9868173003196716
+        },
+        {
+          "word": "you",
+          "start": 50.7,
+          "end": 50.8,
+          "probability": 0.9951509237289429
+        },
+        {
+          "word": "can",
+          "start": 50.8,
+          "end": 50.96,
+          "probability": 0.9872661828994751
+        },
+        {
+          "word": "name",
+          "start": 50.96,
+          "end": 51.1,
+          "probability": 0.9976696372032166
+        },
+        {
+          "word": "it",
+          "start": 51.1,
+          "end": 51.22,
+          "probability": 0.9740668535232544
+        },
+        {
+          "word": "whatever",
+          "start": 51.22,
+          "end": 51.42,
+          "probability": 0.9830726385116577
+        },
+        {
+          "word": "you'd",
+          "start": 51.42,
+          "end": 51.76,
+          "probability": 0.9332940578460693
+        },
+        {
+          "word": "like,",
+          "start": 51.76,
+          "end": 52.02,
+          "probability": 0.998869001865387
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "start": 52.28,
+      "end": 55.0,
+      "text": "but for this tutorial, I'm going to name it water surface.",
+      "words": [
+        {
+          "word": "but",
+          "start": 52.28,
+          "end": 52.5,
+          "probability": 0.9943660497665405
+        },
+        {
+          "word": "for",
+          "start": 52.5,
+          "end": 52.64,
+          "probability": 0.996075451374054
+        },
+        {
+          "word": "this",
+          "start": 52.64,
+          "end": 52.78,
+          "probability": 0.9889882206916809
+        },
+        {
+          "word": "tutorial,",
+          "start": 52.78,
+          "end": 53.18,
+          "probability": 0.9973192811012268
+        },
+        {
+          "word": "I'm",
+          "start": 53.54,
+          "end": 53.78,
+          "probability": 0.9841103851795197
+        },
+        {
+          "word": "going",
+          "start": 53.78,
+          "end": 53.86,
+          "probability": 0.8429735898971558
+        },
+        {
+          "word": "to",
+          "start": 53.86,
+          "end": 53.94,
+          "probability": 0.995208203792572
+        },
+        {
+          "word": "name",
+          "start": 53.94,
+          "end": 54.14,
+          "probability": 0.9984423518180847
+        },
+        {
+          "word": "it",
+          "start": 54.14,
+          "end": 54.3,
+          "probability": 0.9924473762512207
+        },
+        {
+          "word": "water",
+          "start": 54.3,
+          "end": 54.54,
+          "probability": 0.7240073084831238
+        },
+        {
+          "word": "surface.",
+          "start": 54.54,
+          "end": 55.0,
+          "probability": 0.9867005944252014
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "start": 58.16,
+      "end": 62.5,
+      "text": "We can open it up because we can get rid of some unnecessary things that we won't be using.",
+      "words": [
+        {
+          "word": "We",
+          "start": 58.16,
+          "end": 58.54,
+          "probability": 0.9921811819076538
+        },
+        {
+          "word": "can",
+          "start": 58.54,
+          "end": 58.7,
+          "probability": 0.9937703013420105
+        },
+        {
+          "word": "open",
+          "start": 58.7,
+          "end": 58.92,
+          "probability": 0.9966417551040649
+        },
+        {
+          "word": "it",
+          "start": 58.92,
+          "end": 59.1,
+          "probability": 0.994953453540802
+        },
+        {
+          "word": "up",
+          "start": 59.1,
+          "end": 59.26,
+          "probability": 0.997817873954773
+        },
+        {
+          "word": "because",
+          "start": 59.26,
+          "end": 59.66,
+          "probability": 0.8233516812324524
+        },
+        {
+          "word": "we",
+          "start": 59.66,
+          "end": 59.84,
+          "probability": 0.9960450530052185
+        },
+        {
+          "word": "can",
+          "start": 59.84,
+          "end": 59.98,
+          "probability": 0.9868758916854858
+        },
+        {
+          "word": "get",
+          "start": 59.98,
+          "end": 60.12,
+          "probability": 0.9968379735946655
+        },
+        {
+          "word": "rid",
+          "start": 60.12,
+          "end": 60.26,
+          "probability": 0.9998155236244202
+        },
+        {
+          "word": "of",
+          "start": 60.26,
+          "end": 60.4,
+          "probability": 0.9972721934318542
+        },
+        {
+          "word": "some",
+          "start": 60.4,
+          "end": 60.52,
+          "probability": 0.9862931966781616
+        },
+        {
+          "word": "unnecessary",
+          "start": 60.52,
+          "end": 60.96,
+          "probability": 0.9945719838142395
+        },
+        {
+          "word": "things",
+          "start": 60.96,
+          "end": 61.48,
+          "probability": 0.9960213303565979
+        },
+        {
+          "word": "that",
+          "start": 61.48,
+          "end": 61.68,
+          "probability": 0.9514670372009277
+        },
+        {
+          "word": "we",
+          "start": 61.68,
+          "end": 61.8,
+          "probability": 0.9981071949005127
+        },
+        {
+          "word": "won't",
+          "start": 61.8,
+          "end": 62.02,
+          "probability": 0.9950854480266571
+        },
+        {
+          "word": "be",
+          "start": 62.02,
+          "end": 62.16,
+          "probability": 0.9985464215278625
+        },
+        {
+          "word": "using.",
+          "start": 62.16,
+          "end": 62.5,
+          "probability": 0.9989913105964661
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "start": 62.84,
+      "end": 67.84,
+      "text": "It has a sample sphere running through it, so you can get a little preview of how its collision will look.",
+      "words": [
+        {
+          "word": "It",
+          "start": 62.84,
+          "end": 62.98,
+          "probability": 0.9913027286529541
+        },
+        {
+          "word": "has",
+          "start": 62.98,
+          "end": 63.16,
+          "probability": 0.9982061386108398
+        },
+        {
+          "word": "a",
+          "start": 63.16,
+          "end": 63.32,
+          "probability": 0.9954516291618347
+        },
+        {
+          "word": "sample",
+          "start": 63.32,
+          "end": 63.62,
+          "probability": 0.9658311605453491
+        },
+        {
+          "word": "sphere",
+          "start": 63.62,
+          "end": 63.9,
+          "probability": 0.9836339950561523
+        },
+        {
+          "word": "running",
+          "start": 63.9,
+          "end": 64.2,
+          "probability": 0.9976849555969238
+        },
+        {
+          "word": "through",
+          "start": 64.2,
+          "end": 64.48,
+          "probability": 0.9962354302406311
+        },
+        {
+          "word": "it,",
+          "start": 64.48,
+          "end": 64.7,
+          "probability": 0.9977530837059021
+        },
+        {
+          "word": "so",
+          "start": 64.8,
+          "end": 65.18,
+          "probability": 0.9953000545501709
+        },
+        {
+          "word": "you",
+          "start": 65.18,
+          "end": 65.3,
+          "probability": 0.9931569695472717
+        },
+        {
+          "word": "can",
+          "start": 65.3,
+          "end": 65.5,
+          "probability": 0.9957877993583679
+        },
+        {
+          "word": "get",
+          "start": 65.5,
+          "end": 65.68,
+          "probability": 0.9958488941192627
+        },
+        {
+          "word": "a",
+          "start": 65.68,
+          "end": 65.8,
+          "probability": 0.9946898221969604
+        },
+        {
+          "word": "little",
+          "start": 65.8,
+          "end": 65.92,
+          "probability": 0.9948539137840271
+        },
+        {
+          "word": "preview",
+          "start": 65.92,
+          "end": 66.26,
+          "probability": 0.9981364011764526
+        },
+        {
+          "word": "of",
+          "start": 66.26,
+          "end": 66.54,
+          "probability": 0.9957440495491028
+        },
+        {
+          "word": "how",
+          "start": 66.54,
+          "end": 66.72,
+          "probability": 0.9978823065757751
+        },
+        {
+          "word": "its",
+          "start": 66.72,
+          "end": 66.84,
+          "probability": 0.7014715671539307
+        },
+        {
+          "word": "collision",
+          "start": 66.84,
+          "end": 67.16,
+          "probability": 0.8930665254592896
+        },
+        {
+          "word": "will",
+          "start": 67.16,
+          "end": 67.54,
+          "probability": 0.9905610680580139
+        },
+        {
+          "word": "look.",
+          "start": 67.54,
+          "end": 67.84,
+          "probability": 0.9985696077346802
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "start": 67.84,
+      "end": 72.92,
+      "text": "We can get rid of the shallow water collision particle blueprint and do some organization.",
+      "words": [
+        {
+          "word": "We",
+          "start": 67.84,
+          "end": 68.68,
+          "probability": 0.4366506040096283
+        },
+        {
+          "word": "can",
+          "start": 68.68,
+          "end": 68.84,
+          "probability": 0.9422815442085266
+        },
+        {
+          "word": "get",
+          "start": 68.84,
+          "end": 69.0,
+          "probability": 0.898803174495697
+        },
+        {
+          "word": "rid",
+          "start": 69.0,
+          "end": 69.12,
+          "probability": 0.9959794282913208
+        },
+        {
+          "word": "of",
+          "start": 69.12,
+          "end": 69.26,
+          "probability": 0.9942612648010254
+        },
+        {
+          "word": "the",
+          "start": 69.26,
+          "end": 69.36,
+          "probability": 0.9176450371742249
+        },
+        {
+          "word": "shallow",
+          "start": 69.36,
+          "end": 69.68,
+          "probability": 0.9577532410621643
+        },
+        {
+          "word": "water",
+          "start": 69.68,
+          "end": 70.02,
+          "probability": 0.959589958190918
+        },
+        {
+          "word": "collision",
+          "start": 70.02,
+          "end": 70.44,
+          "probability": 0.8831722140312195
+        },
+        {
+          "word": "particle",
+          "start": 70.44,
+          "end": 70.86,
+          "probability": 0.9796937108039856
+        },
+        {
+          "word": "blueprint",
+          "start": 70.86,
+          "end": 71.42,
+          "probability": 0.969606876373291
+        },
+        {
+          "word": "and",
+          "start": 71.42,
+          "end": 72.1,
+          "probability": 0.8175081610679626
+        },
+        {
+          "word": "do",
+          "start": 72.1,
+          "end": 72.26,
+          "probability": 0.992429792881012
+        },
+        {
+          "word": "some",
+          "start": 72.26,
+          "end": 72.44,
+          "probability": 0.9982505440711975
+        },
+        {
+          "word": "organization.",
+          "start": 72.44,
+          "end": 72.92,
+          "probability": 0.9763655662536621
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "start": 73.84,
+      "end": 78.52,
+      "text": "We can also get rid of the shallow water secondary emitter. We won't need either of these for the video.",
+      "words": [
+        {
+          "word": "We",
+          "start": 73.84,
+          "end": 73.94,
+          "probability": 0.9774076342582703
+        },
+        {
+          "word": "can",
+          "start": 73.94,
+          "end": 74.08,
+          "probability": 0.975347638130188
+        },
+        {
+          "word": "also",
+          "start": 74.08,
+          "end": 74.3,
+          "probability": 0.9912932515144348
+        },
+        {
+          "word": "get",
+          "start": 74.3,
+          "end": 74.52,
+          "probability": 0.9970484375953674
+        },
+        {
+          "word": "rid",
+          "start": 74.52,
+          "end": 74.66,
+          "probability": 0.9988453388214111
+        },
+        {
+          "word": "of",
+          "start": 74.66,
+          "end": 74.78,
+          "probability": 0.9907435774803162
+        },
+        {
+          "word": "the",
+          "start": 74.78,
+          "end": 74.84,
+          "probability": 0.9776104092597961
+        },
+        {
+          "word": "shallow",
+          "start": 74.84,
+          "end": 75.16,
+          "probability": 0.9947682619094849
+        },
+        {
+          "word": "water",
+          "start": 75.16,
+          "end": 75.5,
+          "probability": 0.9867575168609619
+        },
+        {
+          "word": "secondary",
+          "start": 75.5,
+          "end": 75.96,
+          "probability": 0.5777937173843384
+        },
+        {
+          "word": "emitter.",
+          "start": 75.96,
+          "end": 76.48,
+          "probability": 0.9978962540626526
+        },
+        {
+          "word": "We",
+          "start": 76.94,
+          "end": 77.1,
+          "probability": 0.9534236192703247
+        },
+        {
+          "word": "won't",
+          "start": 77.1,
+          "end": 77.26,
+          "probability": 0.9881706833839417
+        },
+        {
+          "word": "need",
+          "start": 77.26,
+          "end": 77.44,
+          "probability": 0.996834933757782
+        },
+        {
+          "word": "either",
+          "start": 77.44,
+          "end": 77.68,
+          "probability": 0.9902419447898865
+        },
+        {
+          "word": "of",
+          "start": 77.68,
+          "end": 77.82,
+          "probability": 0.9883198738098145
+        },
+        {
+          "word": "these",
+          "start": 77.82,
+          "end": 77.92,
+          "probability": 0.9955654740333557
+        },
+        {
+          "word": "for",
+          "start": 77.92,
+          "end": 78.16,
+          "probability": 0.9923220276832581
+        },
+        {
+          "word": "the",
+          "start": 78.16,
+          "end": 78.24,
+          "probability": 0.9910049438476562
+        },
+        {
+          "word": "video.",
+          "start": 78.24,
+          "end": 78.52,
+          "probability": 0.9977935552597046
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "start": 79.4,
+      "end": 83.94,
+      "text": "I'm going to pause the simulation for now and make the details window a little bit bigger for later.",
+      "words": [
+        {
+          "word": "I'm",
+          "start": 79.4,
+          "end": 79.68,
+          "probability": 0.9656049013137817
+        },
+        {
+          "word": "going",
+          "start": 79.68,
+          "end": 79.74,
+          "probability": 0.7923773527145386
+        },
+        {
+          "word": "to",
+          "start": 79.74,
+          "end": 79.8,
+          "probability": 0.9961198568344116
+        },
+        {
+          "word": "pause",
+          "start": 79.8,
+          "end": 80.06,
+          "probability": 0.9964176416397095
+        },
+        {
+          "word": "the",
+          "start": 80.06,
+          "end": 80.24,
+          "probability": 0.9705525636672974
+        },
+        {
+          "word": "simulation",
+          "start": 80.24,
+          "end": 80.62,
+          "probability": 0.9937166571617126
+        },
+        {
+          "word": "for",
+          "start": 80.62,
+          "end": 80.92,
+          "probability": 0.9900993704795837
+        },
+        {
+          "word": "now",
+          "start": 80.92,
+          "end": 81.18,
+          "probability": 0.998647153377533
+        },
+        {
+          "word": "and",
+          "start": 81.18,
+          "end": 81.7,
+          "probability": 0.8557559847831726
+        },
+        {
+          "word": "make",
+          "start": 81.7,
+          "end": 81.84,
+          "probability": 0.9954007267951965
+        },
+        {
+          "word": "the",
+          "start": 81.84,
+          "end": 82.0,
+          "probability": 0.995072066783905
+        },
+        {
+          "word": "details",
+          "start": 82.0,
+          "end": 82.34,
+          "probability": 0.9638150930404663
+        },
+        {
+          "word": "window",
+          "start": 82.34,
+          "end": 82.72,
+          "probability": 0.9888070821762085
+        },
+        {
+          "word": "a",
+          "start": 82.72,
+          "end": 82.92,
+          "probability": 0.9902105331420898
+        },
+        {
+          "word": "little",
+          "start": 82.92,
+          "end": 83.1,
+          "probability": 0.9869408011436462
+        },
+        {
+          "word": "bit",
+          "start": 83.1,
+          "end": 83.26,
+          "probability": 0.9247150421142578
+        },
+        {
+          "word": "bigger",
+          "start": 83.26,
+          "end": 83.5,
+          "probability": 0.9961481094360352
+        },
+        {
+          "word": "for",
+          "start": 83.5,
+          "end": 83.68,
+          "probability": 0.9873374104499817
+        },
+        {
+          "word": "later.",
+          "start": 83.68,
+          "end": 83.94,
+          "probability": 0.9990555644035339
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "start": 87.45,
+      "end": 93.49,
+      "text": "After we hide our window, we can now drag our Niagara fluids into our world and get it set up where we want it.",
+      "words": [
+        {
+          "word": "After",
+          "start": 87.45,
+          "end": 87.79,
+          "probability": 0.9897496104240417
+        },
+        {
+          "word": "we",
+          "start": 87.79,
+          "end": 87.93,
+          "probability": 0.99729984998703
+        },
+        {
+          "word": "hide",
+          "start": 87.93,
+          "end": 88.15,
+          "probability": 0.9877227544784546
+        },
+        {
+          "word": "our",
+          "start": 88.15,
+          "end": 88.41,
+          "probability": 0.9835228323936462
+        },
+        {
+          "word": "window,",
+          "start": 88.41,
+          "end": 88.67,
+          "probability": 0.9963449835777283
+        },
+        {
+          "word": "we",
+          "start": 88.99,
+          "end": 89.49,
+          "probability": 0.9736101031303406
+        },
+        {
+          "word": "can",
+          "start": 89.49,
+          "end": 89.65,
+          "probability": 0.9978267550468445
+        },
+        {
+          "word": "now",
+          "start": 89.65,
+          "end": 89.81,
+          "probability": 0.9963819980621338
+        },
+        {
+          "word": "drag",
+          "start": 89.81,
+          "end": 90.07,
+          "probability": 0.9900856018066406
+        },
+        {
+          "word": "our",
+          "start": 90.07,
+          "end": 90.25,
+          "probability": 0.9446761608123779
+        },
+        {
+          "word": "Niagara",
+          "start": 90.25,
+          "end": 90.53,
+          "probability": 0.9318278431892395
+        },
+        {
+          "word": "fluids",
+          "start": 90.53,
+          "end": 91.09,
+          "probability": 0.8787490725517273
+        },
+        {
+          "word": "into",
+          "start": 91.09,
+          "end": 91.49,
+          "probability": 0.9794892072677612
+        },
+        {
+          "word": "our",
+          "start": 91.49,
+          "end": 91.67,
+          "probability": 0.9943448305130005
+        },
+        {
+          "word": "world",
+          "start": 91.67,
+          "end": 91.95,
+          "probability": 0.9952882528305054
+        },
+        {
+          "word": "and",
+          "start": 91.95,
+          "end": 92.19,
+          "probability": 0.9472479224205017
+        },
+        {
+          "word": "get",
+          "start": 92.19,
+          "end": 92.35,
+          "probability": 0.9927648901939392
+        },
+        {
+          "word": "it",
+          "start": 92.35,
+          "end": 92.47,
+          "probability": 0.9937321543693542
+        },
+        {
+          "word": "set",
+          "start": 92.47,
+          "end": 92.65,
+          "probability": 0.912128746509552
+        },
+        {
+          "word": "up",
+          "start": 92.65,
+          "end": 92.79,
+          "probability": 0.9940084218978882
+        },
+        {
+          "word": "where",
+          "start": 92.79,
+          "end": 92.97,
+          "probability": 0.9938696622848511
+        },
+        {
+          "word": "we",
+          "start": 92.97,
+          "end": 93.11,
+          "probability": 0.9978524446487427
+        },
+        {
+          "word": "want",
+          "start": 93.11,
+          "end": 93.33,
+          "probability": 0.9936256408691406
+        },
+        {
+          "word": "it.",
+          "start": 93.33,
+          "end": 93.49,
+          "probability": 0.9863124489784241
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "start": 94.03,
+      "end": 98.03,
+      "text": "I'm going to outline it with the traversal block so we can climb in and out of our little pool.",
+      "words": [
+        {
+          "word": "I'm",
+          "start": 94.03,
+          "end": 94.39,
+          "probability": 0.9889911115169525
+        },
+        {
+          "word": "going",
+          "start": 94.39,
+          "end": 94.49,
+          "probability": 0.908099353313446
+        },
+        {
+          "word": "to",
+          "start": 94.49,
+          "end": 94.59,
+          "probability": 0.9967623949050903
+        },
+        {
+          "word": "outline",
+          "start": 94.59,
+          "end": 95.01,
+          "probability": 0.9749957323074341
+        },
+        {
+          "word": "it",
+          "start": 95.01,
+          "end": 95.17,
+          "probability": 0.9938160181045532
+        },
+        {
+          "word": "with",
+          "start": 95.17,
+          "end": 95.29,
+          "probability": 0.9980150461196899
+        },
+        {
+          "word": "the",
+          "start": 95.29,
+          "end": 95.43,
+          "probability": 0.9680972099304199
+        },
+        {
+          "word": "traversal",
+          "start": 95.43,
+          "end": 95.87,
+          "probability": 0.9857760965824127
+        },
+        {
+          "word": "block",
+          "start": 95.87,
+          "end": 96.07,
+          "probability": 0.5781162977218628
+        },
+        {
+          "word": "so",
+          "start": 96.07,
+          "end": 96.29,
+          "probability": 0.9432939291000366
+        },
+        {
+          "word": "we",
+          "start": 96.29,
+          "end": 96.39,
+          "probability": 0.9706364274024963
+        },
+        {
+          "word": "can",
+          "start": 96.39,
+          "end": 96.51,
+          "probability": 0.9968382120132446
+        },
+        {
+          "word": "climb",
+          "start": 96.51,
+          "end": 96.77,
+          "probability": 0.9949432015419006
+        },
+        {
+          "word": "in",
+          "start": 96.77,
+          "end": 97.01,
+          "probability": 0.9966074228286743
+        },
+        {
+          "word": "and",
+          "start": 97.01,
+          "end": 97.13,
+          "probability": 0.9928314685821533
+        },
+        {
+          "word": "out",
+          "start": 97.13,
+          "end": 97.29,
+          "probability": 0.9984487295150757
+        },
+        {
+          "word": "of",
+          "start": 97.29,
+          "end": 97.41,
+          "probability": 0.9902822971343994
+        },
+        {
+          "word": "our",
+          "start": 97.41,
+          "end": 97.51,
+          "probability": 0.9922677874565125
+        },
+        {
+          "word": "little",
+          "start": 97.51,
+          "end": 97.71,
+          "probability": 0.9957278966903687
+        },
+        {
+          "word": "pool.",
+          "start": 97.71,
+          "end": 98.03,
+          "probability": 0.9972643852233887
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "start": 98.51,
+      "end": 102.79,
+      "text": "Bear with me here while I create my outline. I will speed it up to lessen your suffering.",
+      "words": [
+        {
+          "word": "Bear",
+          "start": 98.51,
+          "end": 98.89,
+          "probability": 0.6182516813278198
+        },
+        {
+          "word": "with",
+          "start": 98.89,
+          "end": 99.09,
+          "probability": 0.9889580011367798
+        },
+        {
+          "word": "me",
+          "start": 99.09,
+          "end": 99.25,
+          "probability": 0.991820216178894
+        },
+        {
+          "word": "here",
+          "start": 99.25,
+          "end": 99.49,
+          "probability": 0.908604085445404
+        },
+        {
+          "word": "while",
+          "start": 99.49,
+          "end": 99.71,
+          "probability": 0.8018008470535278
+        },
+        {
+          "word": "I",
+          "start": 99.71,
+          "end": 99.87,
+          "probability": 0.9710686802864075
+        },
+        {
+          "word": "create",
+          "start": 99.87,
+          "end": 100.09,
+          "probability": 0.9772734045982361
+        },
+        {
+          "word": "my",
+          "start": 100.09,
+          "end": 100.23,
+          "probability": 0.9648449420928955
+        },
+        {
+          "word": "outline.",
+          "start": 100.23,
+          "end": 100.49,
+          "probability": 0.9819210171699524
+        },
+        {
+          "word": "I",
+          "start": 101.07,
+          "end": 101.15,
+          "probability": 0.9896300435066223
+        },
+        {
+          "word": "will",
+          "start": 101.15,
+          "end": 101.25,
+          "probability": 0.9684742093086243
+        },
+        {
+          "word": "speed",
+          "start": 101.25,
+          "end": 101.47,
+          "probability": 0.9974374771118164
+        },
+        {
+          "word": "it",
+          "start": 101.47,
+          "end": 101.65,
+          "probability": 0.960406482219696
+        },
+        {
+          "word": "up",
+          "start": 101.65,
+          "end": 101.77,
+          "probability": 0.9957016110420227
+        },
+        {
+          "word": "to",
+          "start": 101.77,
+          "end": 101.91,
+          "probability": 0.9814013838768005
+        },
+        {
+          "word": "lessen",
+          "start": 101.91,
+          "end": 102.23,
+          "probability": 0.9803527295589447
+        },
+        {
+          "word": "your",
+          "start": 102.23,
+          "end": 102.33,
+          "probability": 0.9870456457138062
+        },
+        {
+          "word": "suffering.",
+          "start": 102.33,
+          "end": 102.79,
+          "probability": 0.9885593056678772
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "start": 103.53,
+      "end": 109.33,
+      "text": "I'm sure there are better ways to create an outline, but I'm only a couple months into my unreal journey, so I am new like y'all.",
+      "words": [
+        {
+          "word": "I'm",
+          "start": 103.53,
+          "end": 103.69,
+          "probability": 0.8479208052158356
+        },
+        {
+          "word": "sure",
+          "start": 103.69,
+          "end": 103.91,
+          "probability": 0.9980158805847168
+        },
+        {
+          "word": "there",
+          "start": 103.91,
+          "end": 104.05,
+          "probability": 0.9742389917373657
+        },
+        {
+          "word": "are",
+          "start": 104.05,
+          "end": 104.17,
+          "probability": 0.9769291281700134
+        },
+        {
+          "word": "better",
+          "start": 104.17,
+          "end": 104.33,
+          "probability": 0.9960393905639648
+        },
+        {
+          "word": "ways",
+          "start": 104.33,
+          "end": 104.59,
+          "probability": 0.9941680431365967
+        },
+        {
+          "word": "to",
+          "start": 104.59,
+          "end": 104.77,
+          "probability": 0.9957220554351807
+        },
+        {
+          "word": "create",
+          "start": 104.77,
+          "end": 104.99,
+          "probability": 0.9944960474967957
+        },
+        {
+          "word": "an",
+          "start": 104.99,
+          "end": 105.13,
+          "probability": 0.9866777658462524
+        },
+        {
+          "word": "outline,",
+          "start": 105.13,
+          "end": 105.35,
+          "probability": 0.9969442486763
+        },
+        {
+          "word": "but",
+          "start": 105.77,
+          "end": 105.91,
+          "probability": 0.9843130111694336
+        },
+        {
+          "word": "I'm",
+          "start": 105.91,
+          "end": 106.07,
+          "probability": 0.9380467236042023
+        },
+        {
+          "word": "only",
+          "start": 106.07,
+          "end": 106.27,
+          "probability": 0.9934210181236267
+        },
+        {
+          "word": "a",
+          "start": 106.27,
+          "end": 106.41,
+          "probability": 0.9897799491882324
+        },
+        {
+          "word": "couple",
+          "start": 106.41,
+          "end": 106.57,
+          "probability": 0.9923551082611084
+        },
+        {
+          "word": "months",
+          "start": 106.57,
+          "end": 106.83,
+          "probability": 0.7405019402503967
+        },
+        {
+          "word": "into",
+          "start": 106.83,
+          "end": 107.07,
+          "probability": 0.9583278894424438
+        },
+        {
+          "word": "my",
+          "start": 107.07,
+          "end": 107.23,
+          "probability": 0.9914897680282593
+        },
+        {
+          "word": "unreal",
+          "start": 107.23,
+          "end": 107.47,
+          "probability": 0.55900639295578
+        },
+        {
+          "word": "journey,",
+          "start": 107.47,
+          "end": 107.97,
+          "probability": 0.9960134029388428
+        },
+        {
+          "word": "so",
+          "start": 108.15,
+          "end": 108.35,
+          "probability": 0.9892076849937439
+        },
+        {
+          "word": "I",
+          "start": 108.35,
+          "end": 108.53,
+          "probability": 0.9923141598701477
+        },
+        {
+          "word": "am",
+          "start": 108.53,
+          "end": 108.63,
+          "probability": 0.9388189315795898
+        },
+        {
+          "word": "new",
+          "start": 108.63,
+          "end": 108.83,
+          "probability": 0.987941563129425
+        },
+        {
+          "word": "like",
+          "start": 108.83,
+          "end": 109.07,
+          "probability": 0.9849075078964233
+        },
+        {
+          "word": "y",
+          "start": 109.07,
+          "end": 109.23,
+          "probability": 0.8158627152442932
+        },
+        {
+          "word": "'all.",
+          "start": 109.23,
+          "end": 109.33,
+          "probability": 0.9727573394775391
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "start": 139.38,
+      "end": 144.58,
+      "text": "Now that we got our water set up and adjusted the water level to our liking, we can do a little test.",
+      "words": [
+        {
+          "word": "Now",
+          "start": 139.38,
+          "end": 139.5,
+          "probability": 0.9471123218536377
+        },
+        {
+          "word": "that",
+          "start": 139.5,
+          "end": 139.62,
+          "probability": 0.9893893599510193
+        },
+        {
+          "word": "we",
+          "start": 139.62,
+          "end": 139.72,
+          "probability": 0.9939996004104614
+        },
+        {
+          "word": "got",
+          "start": 139.72,
+          "end": 139.9,
+          "probability": 0.8424026966094971
+        },
+        {
+          "word": "our",
+          "start": 139.9,
+          "end": 140.0,
+          "probability": 0.9871816635131836
+        },
+        {
+          "word": "water",
+          "start": 140.0,
+          "end": 140.26,
+          "probability": 0.9906855225563049
+        },
+        {
+          "word": "set",
+          "start": 140.26,
+          "end": 140.54,
+          "probability": 0.7967286109924316
+        },
+        {
+          "word": "up",
+          "start": 140.54,
+          "end": 140.74,
+          "probability": 0.9922078251838684
+        },
+        {
+          "word": "and",
+          "start": 140.74,
+          "end": 141.12,
+          "probability": 0.8136416673660278
+        },
+        {
+          "word": "adjusted",
+          "start": 141.12,
+          "end": 141.74,
+          "probability": 0.9818822741508484
+        },
+        {
+          "word": "the",
+          "start": 141.74,
+          "end": 142.02,
+          "probability": 0.9824428558349609
+        },
+        {
+          "word": "water",
+          "start": 142.02,
+          "end": 142.24,
+          "probability": 0.9883927702903748
+        },
+        {
+          "word": "level",
+          "start": 142.24,
+          "end": 142.52,
+          "probability": 0.99073725938797
+        },
+        {
+          "word": "to",
+          "start": 142.52,
+          "end": 142.68,
+          "probability": 0.9963143467903137
+        },
+        {
+          "word": "our",
+          "start": 142.68,
+          "end": 142.8,
+          "probability": 0.9815818071365356
+        },
+        {
+          "word": "liking,",
+          "start": 142.8,
+          "end": 143.12,
+          "probability": 0.9557958245277405
+        },
+        {
+          "word": "we",
+          "start": 143.46,
+          "end": 143.6,
+          "probability": 0.9912642240524292
+        },
+        {
+          "word": "can",
+          "start": 143.6,
+          "end": 143.74,
+          "probability": 0.9977045655250549
+        },
+        {
+          "word": "do",
+          "start": 143.74,
+          "end": 143.9,
+          "probability": 0.9973358511924744
+        },
+        {
+          "word": "a",
+          "start": 143.9,
+          "end": 144.0,
+          "probability": 0.99716717004776
+        },
+        {
+          "word": "little",
+          "start": 144.0,
+          "end": 144.16,
+          "probability": 0.9890536665916443
+        },
+        {
+          "word": "test.",
+          "start": 144.16,
+          "end": 144.58,
+          "probability": 0.9937043786048889
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "start": 145.84,
+      "end": 149.28,
+      "text": "As you can see, there's no collision and the water is unaffected by our character.",
+      "words": [
+        {
+          "word": "As",
+          "start": 145.84,
+          "end": 146.14,
+          "probability": 0.9900045990943909
+        },
+        {
+          "word": "you",
+          "start": 146.14,
+          "end": 146.24,
+          "probability": 0.9987493753433228
+        },
+        {
+          "word": "can",
+          "start": 146.24,
+          "end": 146.38,
+          "probability": 0.9964543581008911
+        },
+        {
+          "word": "see,",
+          "start": 146.38,
+          "end": 146.56,
+          "probability": 0.9977108240127563
+        },
+        {
+          "word": "there's",
+          "start": 146.62,
+          "end": 146.76,
+          "probability": 0.9335767924785614
+        },
+        {
+          "word": "no",
+          "start": 146.76,
+          "end": 146.9,
+          "probability": 0.9982055425643921
+        },
+        {
+          "word": "collision",
+          "start": 146.9,
+          "end": 147.3,
+          "probability": 0.9959511756896973
+        },
+        {
+          "word": "and",
+          "start": 147.3,
+          "end": 147.6,
+          "probability": 0.54655921459198
+        },
+        {
+          "word": "the",
+          "start": 147.6,
+          "end": 147.7,
+          "probability": 0.9898363947868347
+        },
+        {
+          "word": "water",
+          "start": 147.7,
+          "end": 147.92,
+          "probability": 0.9928207993507385
+        },
+        {
+          "word": "is",
+          "start": 147.92,
+          "end": 148.06,
+          "probability": 0.8589596152305603
+        },
+        {
+          "word": "unaffected",
+          "start": 148.06,
+          "end": 148.62,
+          "probability": 0.9942584236462911
+        },
+        {
+          "word": "by",
+          "start": 148.62,
+          "end": 148.76,
+          "probability": 0.9966391324996948
+        },
+        {
+          "word": "our",
+          "start": 148.76,
+          "end": 148.9,
+          "probability": 0.9932665824890137
+        },
+        {
+          "word": "character.",
+          "start": 148.9,
+          "end": 149.28,
+          "probability": 0.991384744644165
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "start": 149.86,
+      "end": 155.84,
+      "text": "We can fix this by going to our Niagara fluid system we created and get some proper tags and add them to our character.",
+      "words": [
+        {
+          "word": "We",
+          "start": 149.86,
+          "end": 150.1,
+          "probability": 0.9942688941955566
+        },
+        {
+          "word": "can",
+          "start": 150.1,
+          "end": 150.26,
+          "probability": 0.9947226047515869
+        },
+        {
+          "word": "fix",
+          "start": 150.26,
+          "end": 150.44,
+          "probability": 0.9920027256011963
+        },
+        {
+          "word": "this",
+          "start": 150.44,
+          "end": 150.66,
+          "probability": 0.9882792234420776
+        },
+        {
+          "word": "by",
+          "start": 150.66,
+          "end": 150.82,
+          "probability": 0.995622456073761
+        },
+        {
+          "word": "going",
+          "start": 150.82,
+          "end": 151.02,
+          "probability": 0.9928512573242188
+        },
+        {
+          "word": "to",
+          "start": 151.02,
+          "end": 151.2,
+          "probability": 0.9850333333015442
+        },
+        {
+          "word": "our",
+          "start": 151.2,
+          "end": 151.28,
+          "probability": 0.9717530608177185
+        },
+        {
+          "word": "Niagara",
+          "start": 151.28,
+          "end": 151.56,
+          "probability": 0.9720852971076965
+        },
+        {
+          "word": "fluid",
+          "start": 151.56,
+          "end": 151.94,
+          "probability": 0.2780226767063141
+        },
+        {
+          "word": "system",
+          "start": 151.94,
+          "end": 152.36,
+          "probability": 0.9970887303352356
+        },
+        {
+          "word": "we",
+          "start": 152.36,
+          "end": 152.52,
+          "probability": 0.9801836609840393
+        },
+        {
+          "word": "created",
+          "start": 152.52,
+          "end": 152.88,
+          "probability": 0.9891842603683472
+        },
+        {
+          "word": "and",
+          "start": 152.88,
+          "end": 153.5,
+          "probability": 0.7488794326782227
+        },
+        {
+          "word": "get",
+          "start": 153.5,
+          "end": 153.66,
+          "probability": 0.9742518067359924
+        },
+        {
+          "word": "some",
+          "start": 153.66,
+          "end": 153.84,
+          "probability": 0.9957524538040161
+        },
+        {
+          "word": "proper",
+          "start": 153.84,
+          "end": 154.14,
+          "probability": 0.9950249791145325
+        },
+        {
+          "word": "tags",
+          "start": 154.14,
+          "end": 154.58,
+          "probability": 0.9974002838134766
+        },
+        {
+          "word": "and",
+          "start": 154.58,
+          "end": 154.84,
+          "probability": 0.9350095391273499
+        },
+        {
+          "word": "add",
+          "start": 154.84,
+          "end": 155.1,
+          "probability": 0.9935885667800903
+        },
+        {
+          "word": "them",
+          "start": 155.1,
+          "end": 155.2,
+          "probability": 0.995915949344635
+        },
+        {
+          "word": "to",
+          "start": 155.2,
+          "end": 155.32,
+          "probability": 0.9967238306999207
+        },
+        {
+          "word": "our",
+          "start": 155.32,
+          "end": 155.44,
+          "probability": 0.9943554401397705
+        },
+        {
+          "word": "character.",
+          "start": 155.44,
+          "end": 155.84,
+          "probability": 0.9959145188331604
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "start": 156.6,
+      "end": 162.52,
+      "text": "We can head to the details window and go to collide meshes. There's already an actor tag called collider.",
+      "words": [
+        {
+          "word": "We",
+          "start": 156.6,
+          "end": 157.12,
+          "probability": 0.18190895020961761
+        },
+        {
+          "word": "can",
+          "start": 157.12,
+          "end": 157.26,
+          "probability": 0.9230957627296448
+        },
+        {
+          "word": "head",
+          "start": 157.26,
+          "end": 157.38,
+          "probability": 0.32120373845100403
+        },
+        {
+          "word": "to",
+          "start": 157.38,
+          "end": 157.5,
+          "probability": 0.9791839122772217
+        },
+        {
+          "word": "the",
+          "start": 157.5,
+          "end": 157.6,
+          "probability": 0.9644802212715149
+        },
+        {
+          "word": "details",
+          "start": 157.6,
+          "end": 157.88,
+          "probability": 0.6808804869651794
+        },
+        {
+          "word": "window",
+          "start": 157.88,
+          "end": 158.34,
+          "probability": 0.9815933108329773
+        },
+        {
+          "word": "and",
+          "start": 158.34,
+          "end": 159.08,
+          "probability": 0.7726314067840576
+        },
+        {
+          "word": "go",
+          "start": 159.08,
+          "end": 159.26,
+          "probability": 0.9751297235488892
+        },
+        {
+          "word": "to",
+          "start": 159.26,
+          "end": 159.38,
+          "probability": 0.9886198043823242
+        },
+        {
+          "word": "collide",
+          "start": 159.38,
+          "end": 159.7,
+          "probability": 0.40393856167793274
+        },
+        {
+          "word": "meshes.",
+          "start": 159.7,
+          "end": 160.2,
+          "probability": 0.971205860376358
+        },
+        {
+          "word": "There's",
+          "start": 160.74,
+          "end": 161.02,
+          "probability": 0.8272281885147095
+        },
+        {
+          "word": "already",
+          "start": 161.02,
+          "end": 161.26,
+          "probability": 0.9742056131362915
+        },
+        {
+          "word": "an",
+          "start": 161.26,
+          "end": 161.38,
+          "probability": 0.9752420783042908
+        },
+        {
+          "word": "actor",
+          "start": 161.38,
+          "end": 161.56,
+          "probability": 0.7943775057792664
+        },
+        {
+          "word": "tag",
+          "start": 161.56,
+          "end": 161.82,
+          "probability": 0.9921653270721436
+        },
+        {
+          "word": "called",
+          "start": 161.82,
+          "end": 162.08,
+          "probability": 0.9886733889579773
+        },
+        {
+          "word": "collider.",
+          "start": 162.08,
+          "end": 162.52,
+          "probability": 0.8067497611045837
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "start": 163.02,
+      "end": 166.26,
+      "text": "We can just copy and paste that and create a tag for components as well.",
+      "words": [
+        {
+          "word": "We",
+          "start": 163.02,
+          "end": 163.14,
+          "probability": 0.9647130370140076
+        },
+        {
+          "word": "can",
+          "start": 163.14,
+          "end": 163.28,
+          "probability": 0.9934297204017639
+        },
+        {
+          "word": "just",
+          "start": 163.28,
+          "end": 163.42,
+          "probability": 0.9571132063865662
+        },
+        {
+          "word": "copy",
+          "start": 163.42,
+          "end": 163.76,
+          "probability": 0.9961923360824585
+        },
+        {
+          "word": "and",
+          "start": 163.76,
+          "end": 163.92,
+          "probability": 0.9723353385925293
+        },
+        {
+          "word": "paste",
+          "start": 163.92,
+          "end": 164.2,
+          "probability": 0.9869493842124939
+        },
+        {
+          "word": "that",
+          "start": 164.2,
+          "end": 164.44,
+          "probability": 0.9788331389427185
+        },
+        {
+          "word": "and",
+          "start": 164.44,
+          "end": 164.64,
+          "probability": 0.9348534941673279
+        },
+        {
+          "word": "create",
+          "start": 164.64,
+          "end": 164.86,
+          "probability": 0.9948818683624268
+        },
+        {
+          "word": "a",
+          "start": 164.86,
+          "end": 164.98,
+          "probability": 0.9963002800941467
+        },
+        {
+          "word": "tag",
+          "start": 164.98,
+          "end": 165.16,
+          "probability": 0.9936680197715759
+        },
+        {
+          "word": "for",
+          "start": 165.16,
+          "end": 165.32,
+          "probability": 0.9928336143493652
+        },
+        {
+          "word": "components",
+          "start": 165.32,
+          "end": 165.76,
+          "probability": 0.9501253366470337
+        },
+        {
+          "word": "as",
+          "start": 165.76,
+          "end": 166.04,
+          "probability": 0.9744529128074646
+        },
+        {
+          "word": "well.",
+          "start": 166.04,
+          "end": 166.26,
+          "probability": 0.997399091720581
+        }
+      ]
+    },
+    {
+      "id": 23,
+      "start": 171.02,
+      "end": 177.06,
+      "text": "Then go to your character blueprint and search tags in the details pane so we can make sure our character can affect the water.",
+      "words": [
+        {
+          "word": "Then",
+          "start": 171.02,
+          "end": 171.32,
+          "probability": 0.9840918779373169
+        },
+        {
+          "word": "go",
+          "start": 171.32,
+          "end": 171.5,
+          "probability": 0.959620475769043
+        },
+        {
+          "word": "to",
+          "start": 171.5,
+          "end": 171.6,
+          "probability": 0.98800128698349
+        },
+        {
+          "word": "your",
+          "start": 171.6,
+          "end": 171.7,
+          "probability": 0.9852033853530884
+        },
+        {
+          "word": "character",
+          "start": 171.7,
+          "end": 172.0,
+          "probability": 0.9256941676139832
+        },
+        {
+          "word": "blueprint",
+          "start": 172.0,
+          "end": 172.38,
+          "probability": 0.973186194896698
+        },
+        {
+          "word": "and",
+          "start": 172.38,
+          "end": 172.8,
+          "probability": 0.9501250982284546
+        },
+        {
+          "word": "search",
+          "start": 172.8,
+          "end": 173.12,
+          "probability": 0.9959288239479065
+        },
+        {
+          "word": "tags",
+          "start": 173.12,
+          "end": 173.5,
+          "probability": 0.9612369537353516
+        },
+        {
+          "word": "in",
+          "start": 173.5,
+          "end": 173.72,
+          "probability": 0.9742732644081116
+        },
+        {
+          "word": "the",
+          "start": 173.72,
+          "end": 173.82,
+          "probability": 0.986431896686554
+        },
+        {
+          "word": "details",
+          "start": 173.82,
+          "end": 174.12,
+          "probability": 0.9479054808616638
+        },
+        {
+          "word": "pane",
+          "start": 174.12,
+          "end": 174.46,
+          "probability": 0.9923921823501587
+        },
+        {
+          "word": "so",
+          "start": 174.46,
+          "end": 175.06,
+          "probability": 0.4878544807434082
+        },
+        {
+          "word": "we",
+          "start": 175.06,
+          "end": 175.18,
+          "probability": 0.9861896634101868
+        },
+        {
+          "word": "can",
+          "start": 175.18,
+          "end": 175.28,
+          "probability": 0.9929015040397644
+        },
+        {
+          "word": "make",
+          "start": 175.28,
+          "end": 175.44,
+          "probability": 0.9976930022239685
+        },
+        {
+          "word": "sure",
+          "start": 175.44,
+          "end": 175.64,
+          "probability": 0.9907341003417969
+        },
+        {
+          "word": "our",
+          "start": 175.64,
+          "end": 175.84,
+          "probability": 0.9812228083610535
+        },
+        {
+          "word": "character",
+          "start": 175.84,
+          "end": 176.12,
+          "probability": 0.9940798878669739
+        },
+        {
+          "word": "can",
+          "start": 176.12,
+          "end": 176.34,
+          "probability": 0.9953745007514954
+        },
+        {
+          "word": "affect",
+          "start": 176.34,
+          "end": 176.6,
+          "probability": 0.932118833065033
+        },
+        {
+          "word": "the",
+          "start": 176.6,
+          "end": 176.8,
+          "probability": 0.9953729510307312
+        },
+        {
+          "word": "water.",
+          "start": 176.8,
+          "end": 177.06,
+          "probability": 0.9949352145195007
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "start": 178.12,
+      "end": 185.08,
+      "text": "Under the component and actor section, add a tag using the same name as you did for your Niagara system and compile it.",
+      "words": [
+        {
+          "word": "Under",
+          "start": 178.12,
+          "end": 178.46,
+          "probability": 0.9844648241996765
+        },
+        {
+          "word": "the",
+          "start": 178.46,
+          "end": 178.6,
+          "probability": 0.9910798668861389
+        },
+        {
+          "word": "component",
+          "start": 178.6,
+          "end": 179.02,
+          "probability": 0.9608853459358215
+        },
+        {
+          "word": "and",
+          "start": 179.02,
+          "end": 179.44,
+          "probability": 0.8597400784492493
+        },
+        {
+          "word": "actor",
+          "start": 179.44,
+          "end": 179.78,
+          "probability": 0.9538737535476685
+        },
+        {
+          "word": "section,",
+          "start": 179.78,
+          "end": 180.3,
+          "probability": 0.9933351278305054
+        },
+        {
+          "word": "add",
+          "start": 180.68,
+          "end": 181.3,
+          "probability": 0.9754848480224609
+        },
+        {
+          "word": "a",
+          "start": 181.3,
+          "end": 181.42,
+          "probability": 0.9925059676170349
+        },
+        {
+          "word": "tag",
+          "start": 181.42,
+          "end": 181.7,
+          "probability": 0.998134195804596
+        },
+        {
+          "word": "using",
+          "start": 181.7,
+          "end": 181.98,
+          "probability": 0.9887751340866089
+        },
+        {
+          "word": "the",
+          "start": 181.98,
+          "end": 182.18,
+          "probability": 0.9973312616348267
+        },
+        {
+          "word": "same",
+          "start": 182.18,
+          "end": 182.44,
+          "probability": 0.9928725957870483
+        },
+        {
+          "word": "name",
+          "start": 182.44,
+          "end": 182.66,
+          "probability": 0.9981752634048462
+        },
+        {
+          "word": "as",
+          "start": 182.66,
+          "end": 182.84,
+          "probability": 0.9651899933815002
+        },
+        {
+          "word": "you",
+          "start": 182.84,
+          "end": 182.94,
+          "probability": 0.9891037940979004
+        },
+        {
+          "word": "did",
+          "start": 182.94,
+          "end": 183.1,
+          "probability": 0.9987849593162537
+        },
+        {
+          "word": "for",
+          "start": 183.1,
+          "end": 183.3,
+          "probability": 0.9910611510276794
+        },
+        {
+          "word": "your",
+          "start": 183.3,
+          "end": 183.42,
+          "probability": 0.9738784432411194
+        },
+        {
+          "word": "Niagara",
+          "start": 183.42,
+          "end": 183.68,
+          "probability": 0.7149249911308289
+        },
+        {
+          "word": "system",
+          "start": 183.68,
+          "end": 184.14,
+          "probability": 0.8610568642616272
+        },
+        {
+          "word": "and",
+          "start": 184.14,
+          "end": 184.42,
+          "probability": 0.9475243091583252
+        },
+        {
+          "word": "compile",
+          "start": 184.42,
+          "end": 184.72,
+          "probability": 0.9889196753501892
+        },
+        {
+          "word": "it.",
+          "start": 184.72,
+          "end": 185.08,
+          "probability": 0.9966961145401001
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "start": 188.22,
+      "end": 194.9,
+      "text": "Now when we test we can see our character can interact with the water, but it's a little too much unless your character is supposed to be 700 pounds.",
+      "words": [
+        {
+          "word": "Now",
+          "start": 188.22,
+          "end": 188.68,
+          "probability": 0.6071197986602783
+        },
+        {
+          "word": "when",
+          "start": 188.68,
+          "end": 188.84,
+          "probability": 0.7678937315940857
+        },
+        {
+          "word": "we",
+          "start": 188.84,
+          "end": 188.96,
+          "probability": 0.9920948147773743
+        },
+        {
+          "word": "test",
+          "start": 188.96,
+          "end": 189.22,
+          "probability": 0.9945289492607117
+        },
+        {
+          "word": "we",
+          "start": 189.22,
+          "end": 189.4,
+          "probability": 0.5974876284599304
+        },
+        {
+          "word": "can",
+          "start": 189.4,
+          "end": 189.54,
+          "probability": 0.9721339344978333
+        },
+        {
+          "word": "see",
+          "start": 189.54,
+          "end": 189.7,
+          "probability": 0.9930388331413269
+        },
+        {
+          "word": "our",
+          "start": 189.7,
+          "end": 189.86,
+          "probability": 0.9241569638252258
+        },
+        {
+          "word": "character",
+          "start": 189.86,
+          "end": 190.22,
+          "probability": 0.9761907458305359
+        },
+        {
+          "word": "can",
+          "start": 190.22,
+          "end": 190.44,
+          "probability": 0.9669955372810364
+        },
+        {
+          "word": "interact",
+          "start": 190.44,
+          "end": 190.76,
+          "probability": 0.9935599565505981
+        },
+        {
+          "word": "with",
+          "start": 190.76,
+          "end": 191.0,
+          "probability": 0.9965324401855469
+        },
+        {
+          "word": "the",
+          "start": 191.0,
+          "end": 191.08,
+          "probability": 0.94319748878479
+        },
+        {
+          "word": "water,",
+          "start": 191.08,
+          "end": 191.34,
+          "probability": 0.9899868369102478
+        },
+        {
+          "word": "but",
+          "start": 191.66,
+          "end": 191.86,
+          "probability": 0.9785782098770142
+        },
+        {
+          "word": "it's",
+          "start": 191.86,
+          "end": 192.04,
+          "probability": 0.9283627867698669
+        },
+        {
+          "word": "a",
+          "start": 192.04,
+          "end": 192.12,
+          "probability": 0.9856876730918884
+        },
+        {
+          "word": "little",
+          "start": 192.12,
+          "end": 192.26,
+          "probability": 0.9963427186012268
+        },
+        {
+          "word": "too",
+          "start": 192.26,
+          "end": 192.44,
+          "probability": 0.9840532541275024
+        },
+        {
+          "word": "much",
+          "start": 192.44,
+          "end": 192.74,
+          "probability": 0.9987762570381165
+        },
+        {
+          "word": "unless",
+          "start": 192.74,
+          "end": 192.96,
+          "probability": 0.8210587501525879
+        },
+        {
+          "word": "your",
+          "start": 192.96,
+          "end": 193.16,
+          "probability": 0.9532010555267334
+        },
+        {
+          "word": "character",
+          "start": 193.16,
+          "end": 193.5,
+          "probability": 0.9930475354194641
+        },
+        {
+          "word": "is",
+          "start": 193.5,
+          "end": 193.68,
+          "probability": 0.9906168580055237
+        },
+        {
+          "word": "supposed",
+          "start": 193.68,
+          "end": 193.84,
+          "probability": 0.9580076336860657
+        },
+        {
+          "word": "to",
+          "start": 193.84,
+          "end": 194.04,
+          "probability": 0.9989864230155945
+        },
+        {
+          "word": "be",
+          "start": 194.04,
+          "end": 194.14,
+          "probability": 0.9957901835441589
+        },
+        {
+          "word": "700",
+          "start": 194.14,
+          "end": 194.5,
+          "probability": 0.9640278816223145
+        },
+        {
+          "word": "pounds.",
+          "start": 194.5,
+          "end": 194.9,
+          "probability": 0.6204041242599487
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "start": 199.48,
+      "end": 201.56,
+      "text": "We can fix this by adjusting a few settings.",
+      "words": [
+        {
+          "word": "We",
+          "start": 199.48,
+          "end": 199.7,
+          "probability": 0.9824413657188416
+        },
+        {
+          "word": "can",
+          "start": 199.7,
+          "end": 199.86,
+          "probability": 0.9969103932380676
+        },
+        {
+          "word": "fix",
+          "start": 199.86,
+          "end": 200.04,
+          "probability": 0.9915321469306946
+        },
+        {
+          "word": "this",
+          "start": 200.04,
+          "end": 200.26,
+          "probability": 0.9914658069610596
+        },
+        {
+          "word": "by",
+          "start": 200.26,
+          "end": 200.4,
+          "probability": 0.9971185922622681
+        },
+        {
+          "word": "adjusting",
+          "start": 200.4,
+          "end": 200.9,
+          "probability": 0.995537519454956
+        },
+        {
+          "word": "a",
+          "start": 200.9,
+          "end": 201.12,
+          "probability": 0.9906478524208069
+        },
+        {
+          "word": "few",
+          "start": 201.12,
+          "end": 201.24,
+          "probability": 0.9990953207015991
+        },
+        {
+          "word": "settings.",
+          "start": 201.24,
+          "end": 201.56,
+          "probability": 0.9918010830879211
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "start": 202.2,
+      "end": 206.94,
+      "text": "We'll start with the sim tab of shallow water emitter and adjust the velocity dissipation.",
+      "words": [
+        {
+          "word": "We'll",
+          "start": 202.2,
+          "end": 202.32,
+          "probability": 0.9792454540729523
+        },
+        {
+          "word": "start",
+          "start": 202.32,
+          "end": 202.56,
+          "probability": 0.9969929456710815
+        },
+        {
+          "word": "with",
+          "start": 202.56,
+          "end": 202.74,
+          "probability": 0.9953426122665405
+        },
+        {
+          "word": "the",
+          "start": 202.74,
+          "end": 202.86,
+          "probability": 0.9871697425842285
+        },
+        {
+          "word": "sim",
+          "start": 202.86,
+          "end": 203.06,
+          "probability": 0.10475336760282516
+        },
+        {
+          "word": "tab",
+          "start": 203.06,
+          "end": 203.38,
+          "probability": 0.9850532412528992
+        },
+        {
+          "word": "of",
+          "start": 203.38,
+          "end": 203.76,
+          "probability": 0.8584193587303162
+        },
+        {
+          "word": "shallow",
+          "start": 203.76,
+          "end": 204.1,
+          "probability": 0.6059055924415588
+        },
+        {
+          "word": "water",
+          "start": 204.1,
+          "end": 204.46,
+          "probability": 0.9604905247688293
+        },
+        {
+          "word": "emitter",
+          "start": 204.46,
+          "end": 204.88,
+          "probability": 0.9908671081066132
+        },
+        {
+          "word": "and",
+          "start": 204.88,
+          "end": 205.32,
+          "probability": 0.7706813812255859
+        },
+        {
+          "word": "adjust",
+          "start": 205.32,
+          "end": 205.58,
+          "probability": 0.9850643277168274
+        },
+        {
+          "word": "the",
+          "start": 205.58,
+          "end": 205.78,
+          "probability": 0.9917879700660706
+        },
+        {
+          "word": "velocity",
+          "start": 205.78,
+          "end": 206.14,
+          "probability": 0.9891975522041321
+        },
+        {
+          "word": "dissipation.",
+          "start": 206.14,
+          "end": 206.94,
+          "probability": 0.9775615930557251
+        }
+      ]
+    },
+    {
+      "id": 28,
+      "start": 207.58,
+      "end": 212.0,
+      "text": "You can play around with it until you find something you like. I did .01 for mine.",
+      "words": [
+        {
+          "word": "You",
+          "start": 207.58,
+          "end": 207.74,
+          "probability": 0.9886503219604492
+        },
+        {
+          "word": "can",
+          "start": 207.74,
+          "end": 207.88,
+          "probability": 0.9970104694366455
+        },
+        {
+          "word": "play",
+          "start": 207.88,
+          "end": 208.06,
+          "probability": 0.9949238896369934
+        },
+        {
+          "word": "around",
+          "start": 208.06,
+          "end": 208.3,
+          "probability": 0.9967572093009949
+        },
+        {
+          "word": "with",
+          "start": 208.3,
+          "end": 208.5,
+          "probability": 0.9685261249542236
+        },
+        {
+          "word": "it",
+          "start": 208.5,
+          "end": 208.58,
+          "probability": 0.9752010107040405
+        },
+        {
+          "word": "until",
+          "start": 208.58,
+          "end": 208.76,
+          "probability": 0.9913832545280457
+        },
+        {
+          "word": "you",
+          "start": 208.76,
+          "end": 208.88,
+          "probability": 0.9913257956504822
+        },
+        {
+          "word": "find",
+          "start": 208.88,
+          "end": 209.08,
+          "probability": 0.996001660823822
+        },
+        {
+          "word": "something",
+          "start": 209.08,
+          "end": 209.38,
+          "probability": 0.9973817467689514
+        },
+        {
+          "word": "you",
+          "start": 209.38,
+          "end": 209.56,
+          "probability": 0.9835209846496582
+        },
+        {
+          "word": "like.",
+          "start": 209.56,
+          "end": 209.8,
+          "probability": 0.9919096827507019
+        },
+        {
+          "word": "I",
+          "start": 210.32,
+          "end": 210.56,
+          "probability": 0.9888805150985718
+        },
+        {
+          "word": "did",
+          "start": 210.56,
+          "end": 210.72,
+          "probability": 0.9935821890830994
+        },
+        {
+          "word": ".01",
+          "start": 210.72,
+          "end": 211.38,
+          "probability": 0.7683171927928925
+        },
+        {
+          "word": "for",
+          "start": 211.38,
+          "end": 211.74,
+          "probability": 0.9736804962158203
+        },
+        {
+          "word": "mine.",
+          "start": 211.74,
+          "end": 212.0,
+          "probability": 0.9946796298027039
+        }
+      ]
+    },
+    {
+      "id": 29,
+      "start": 216.44,
+      "end": 223.32,
+      "text": "Next we'll go to the emitter update section and go to update sim attributes tab and do the same thing for the delta time multiplier.",
+      "words": [
+        {
+          "word": "Next",
+          "start": 216.44,
+          "end": 216.68,
+          "probability": 0.9920090436935425
+        },
+        {
+          "word": "we'll",
+          "start": 216.68,
+          "end": 216.9,
+          "probability": 0.8684591948986053
+        },
+        {
+          "word": "go",
+          "start": 216.9,
+          "end": 217.02,
+          "probability": 0.9960899949073792
+        },
+        {
+          "word": "to",
+          "start": 217.02,
+          "end": 217.12,
+          "probability": 0.9772308468818665
+        },
+        {
+          "word": "the",
+          "start": 217.12,
+          "end": 217.24,
+          "probability": 0.993492066860199
+        },
+        {
+          "word": "emitter",
+          "start": 217.24,
+          "end": 217.54,
+          "probability": 0.9787735342979431
+        },
+        {
+          "word": "update",
+          "start": 217.54,
+          "end": 217.86,
+          "probability": 0.6580308079719543
+        },
+        {
+          "word": "section",
+          "start": 217.86,
+          "end": 218.3,
+          "probability": 0.9953117370605469
+        },
+        {
+          "word": "and",
+          "start": 218.3,
+          "end": 218.78,
+          "probability": 0.901585042476654
+        },
+        {
+          "word": "go",
+          "start": 218.78,
+          "end": 218.98,
+          "probability": 0.9908779263496399
+        },
+        {
+          "word": "to",
+          "start": 218.98,
+          "end": 219.12,
+          "probability": 0.9859732389450073
+        },
+        {
+          "word": "update",
+          "start": 219.12,
+          "end": 219.48,
+          "probability": 0.8387137651443481
+        },
+        {
+          "word": "sim",
+          "start": 219.48,
+          "end": 219.9,
+          "probability": 0.9564176201820374
+        },
+        {
+          "word": "attributes",
+          "start": 219.9,
+          "end": 220.36,
+          "probability": 0.9713534116744995
+        },
+        {
+          "word": "tab",
+          "start": 220.36,
+          "end": 220.8,
+          "probability": 0.9945118427276611
+        },
+        {
+          "word": "and",
+          "start": 220.8,
+          "end": 221.08,
+          "probability": 0.9140135645866394
+        },
+        {
+          "word": "do",
+          "start": 221.08,
+          "end": 221.22,
+          "probability": 0.9969878792762756
+        },
+        {
+          "word": "the",
+          "start": 221.22,
+          "end": 221.36,
+          "probability": 0.9979612827301025
+        },
+        {
+          "word": "same",
+          "start": 221.36,
+          "end": 221.6,
+          "probability": 0.9982343912124634
+        },
+        {
+          "word": "thing",
+          "start": 221.6,
+          "end": 221.86,
+          "probability": 0.9897086024284363
+        },
+        {
+          "word": "for",
+          "start": 221.86,
+          "end": 222.06,
+          "probability": 0.9945289492607117
+        },
+        {
+          "word": "the",
+          "start": 222.06,
+          "end": 222.16,
+          "probability": 0.9922950267791748
+        },
+        {
+          "word": "delta",
+          "start": 222.16,
+          "end": 222.46,
+          "probability": 0.854645311832428
+        },
+        {
+          "word": "time",
+          "start": 222.46,
+          "end": 222.84,
+          "probability": 0.9171112775802612
+        },
+        {
+          "word": "multiplier.",
+          "start": 222.84,
+          "end": 223.32,
+          "probability": 0.9942495822906494
+        }
+      ]
+    },
+    {
+      "id": 30,
+      "start": 223.32,
+      "end": 234.46,
+      "text": "I chose 0.4. Finally go back to the emitter summary and then collisions tab and switch the collision velocity multiplier.",
+      "words": [
+        {
+          "word": "I",
+          "start": 223.32,
+          "end": 224.06,
+          "probability": 0.5327714085578918
+        },
+        {
+          "word": "chose",
+          "start": 224.06,
+          "end": 224.38,
+          "probability": 0.7919871211051941
+        },
+        {
+          "word": "0",
+          "start": 224.38,
+          "end": 224.84,
+          "probability": 0.9448468089103699
+        },
+        {
+          "word": ".4.",
+          "start": 224.84,
+          "end": 225.44,
+          "probability": 0.9944469034671783
+        },
+        {
+          "word": "Finally",
+          "start": 227.66,
+          "end": 228.06,
+          "probability": 0.9617165327072144
+        },
+        {
+          "word": "go",
+          "start": 228.06,
+          "end": 228.22,
+          "probability": 0.5225903987884521
+        },
+        {
+          "word": "back",
+          "start": 228.22,
+          "end": 228.42,
+          "probability": 0.9923990368843079
+        },
+        {
+          "word": "to",
+          "start": 228.42,
+          "end": 228.54,
+          "probability": 0.9950202703475952
+        },
+        {
+          "word": "the",
+          "start": 228.54,
+          "end": 228.68,
+          "probability": 0.9805785417556763
+        },
+        {
+          "word": "emitter",
+          "start": 228.68,
+          "end": 228.92,
+          "probability": 0.7520090043544769
+        },
+        {
+          "word": "summary",
+          "start": 228.92,
+          "end": 229.36,
+          "probability": 0.9763338565826416
+        },
+        {
+          "word": "and",
+          "start": 229.36,
+          "end": 230.16,
+          "probability": 0.7302684783935547
+        },
+        {
+          "word": "then",
+          "start": 230.16,
+          "end": 230.38,
+          "probability": 0.9839504957199097
+        },
+        {
+          "word": "collisions",
+          "start": 230.38,
+          "end": 230.8,
+          "probability": 0.8495119214057922
+        },
+        {
+          "word": "tab",
+          "start": 230.8,
+          "end": 231.22,
+          "probability": 0.9918689727783203
+        },
+        {
+          "word": "and",
+          "start": 231.22,
+          "end": 232.28,
+          "probability": 0.7897298336029053
+        },
+        {
+          "word": "switch",
+          "start": 232.28,
+          "end": 232.56,
+          "probability": 0.9680293202400208
+        },
+        {
+          "word": "the",
+          "start": 232.56,
+          "end": 232.8,
+          "probability": 0.8655957579612732
+        },
+        {
+          "word": "collision",
+          "start": 232.8,
+          "end": 233.16,
+          "probability": 0.9888402819633484
+        },
+        {
+          "word": "velocity",
+          "start": 233.16,
+          "end": 233.8,
+          "probability": 0.969826877117157
+        },
+        {
+          "word": "multiplier.",
+          "start": 233.8,
+          "end": 234.46,
+          "probability": 0.9870785474777222
+        }
+      ]
+    },
+    {
+      "id": 31,
+      "start": 235.72,
+      "end": 240.06,
+      "text": "I chose .2, but again you can play around with it until you find something you like.",
+      "words": [
+        {
+          "word": "I",
+          "start": 235.72,
+          "end": 236.2,
+          "probability": 0.9933496117591858
+        },
+        {
+          "word": "chose",
+          "start": 236.2,
+          "end": 236.46,
+          "probability": 0.9837148785591125
+        },
+        {
+          "word": ".2,",
+          "start": 236.46,
+          "end": 237.06,
+          "probability": 0.5864644944667816
+        },
+        {
+          "word": "but",
+          "start": 237.24,
+          "end": 237.46,
+          "probability": 0.9926115870475769
+        },
+        {
+          "word": "again",
+          "start": 237.46,
+          "end": 237.7,
+          "probability": 0.9841431379318237
+        },
+        {
+          "word": "you",
+          "start": 237.7,
+          "end": 237.86,
+          "probability": 0.8399075865745544
+        },
+        {
+          "word": "can",
+          "start": 237.86,
+          "end": 238.0,
+          "probability": 0.9971330165863037
+        },
+        {
+          "word": "play",
+          "start": 238.0,
+          "end": 238.2,
+          "probability": 0.9943142533302307
+        },
+        {
+          "word": "around",
+          "start": 238.2,
+          "end": 238.46,
+          "probability": 0.9981645941734314
+        },
+        {
+          "word": "with",
+          "start": 238.46,
+          "end": 238.64,
+          "probability": 0.9979087114334106
+        },
+        {
+          "word": "it",
+          "start": 238.64,
+          "end": 238.76,
+          "probability": 0.9918171763420105
+        },
+        {
+          "word": "until",
+          "start": 238.76,
+          "end": 238.96,
+          "probability": 0.9919203519821167
+        },
+        {
+          "word": "you",
+          "start": 238.96,
+          "end": 239.1,
+          "probability": 0.9978799819946289
+        },
+        {
+          "word": "find",
+          "start": 239.1,
+          "end": 239.34,
+          "probability": 0.9974114298820496
+        },
+        {
+          "word": "something",
+          "start": 239.34,
+          "end": 239.64,
+          "probability": 0.9987738728523254
+        },
+        {
+          "word": "you",
+          "start": 239.64,
+          "end": 239.8,
+          "probability": 0.994312047958374
+        },
+        {
+          "word": "like.",
+          "start": 239.8,
+          "end": 240.06,
+          "probability": 0.9429882764816284
+        }
+      ]
+    },
+    {
+      "id": 32,
+      "start": 242.27,
+      "end": 246.07,
+      "text": "Now you should have some nice footsteps and waves coming from your character as you move through the water.",
+      "words": [
+        {
+          "word": "Now",
+          "start": 242.27,
+          "end": 242.45,
+          "probability": 0.9835192561149597
+        },
+        {
+          "word": "you",
+          "start": 242.45,
+          "end": 242.59,
+          "probability": 0.9805439114570618
+        },
+        {
+          "word": "should",
+          "start": 242.59,
+          "end": 242.69,
+          "probability": 0.9906423687934875
+        },
+        {
+          "word": "have",
+          "start": 242.69,
+          "end": 242.81,
+          "probability": 0.9983676075935364
+        },
+        {
+          "word": "some",
+          "start": 242.81,
+          "end": 242.95,
+          "probability": 0.994223415851593
+        },
+        {
+          "word": "nice",
+          "start": 242.95,
+          "end": 243.13,
+          "probability": 0.9952889680862427
+        },
+        {
+          "word": "footsteps",
+          "start": 243.13,
+          "end": 243.37,
+          "probability": 0.9683722853660583
+        },
+        {
+          "word": "and",
+          "start": 243.37,
+          "end": 243.81,
+          "probability": 0.9690543413162231
+        },
+        {
+          "word": "waves",
+          "start": 243.81,
+          "end": 243.99,
+          "probability": 0.9940869808197021
+        },
+        {
+          "word": "coming",
+          "start": 243.99,
+          "end": 244.21,
+          "probability": 0.9961620569229126
+        },
+        {
+          "word": "from",
+          "start": 244.21,
+          "end": 244.45,
+          "probability": 0.989099383354187
+        },
+        {
+          "word": "your",
+          "start": 244.45,
+          "end": 244.59,
+          "probability": 0.994240403175354
+        },
+        {
+          "word": "character",
+          "start": 244.59,
+          "end": 244.95,
+          "probability": 0.9974892139434814
+        },
+        {
+          "word": "as",
+          "start": 244.95,
+          "end": 245.23,
+          "probability": 0.9913330674171448
+        },
+        {
+          "word": "you",
+          "start": 245.23,
+          "end": 245.33,
+          "probability": 0.9983812570571899
+        },
+        {
+          "word": "move",
+          "start": 245.33,
+          "end": 245.47,
+          "probability": 0.9945677518844604
+        },
+        {
+          "word": "through",
+          "start": 245.47,
+          "end": 245.67,
+          "probability": 0.9934866428375244
+        },
+        {
+          "word": "the",
+          "start": 245.67,
+          "end": 245.77,
+          "probability": 0.9953843951225281
+        },
+        {
+          "word": "water.",
+          "start": 245.77,
+          "end": 246.07,
+          "probability": 0.9983687996864319
+        }
+      ]
+    },
+    {
+      "id": 33,
+      "start": 246.47,
+      "end": 251.09,
+      "text": "You can go back into the settings and test and repeat until you find something that fits your project.",
+      "words": [
+        {
+          "word": "You",
+          "start": 246.47,
+          "end": 246.77,
+          "probability": 0.983540952205658
+        },
+        {
+          "word": "can",
+          "start": 246.77,
+          "end": 246.89,
+          "probability": 0.9964473843574524
+        },
+        {
+          "word": "go",
+          "start": 246.89,
+          "end": 247.01,
+          "probability": 0.9975046515464783
+        },
+        {
+          "word": "back",
+          "start": 247.01,
+          "end": 247.25,
+          "probability": 0.9988678693771362
+        },
+        {
+          "word": "into",
+          "start": 247.25,
+          "end": 247.43,
+          "probability": 0.9842258095741272
+        },
+        {
+          "word": "the",
+          "start": 247.43,
+          "end": 247.59,
+          "probability": 0.9974763989448547
+        },
+        {
+          "word": "settings",
+          "start": 247.59,
+          "end": 247.87,
+          "probability": 0.9880326986312866
+        },
+        {
+          "word": "and",
+          "start": 247.87,
+          "end": 248.09,
+          "probability": 0.9703699946403503
+        },
+        {
+          "word": "test",
+          "start": 248.09,
+          "end": 248.39,
+          "probability": 0.9822967648506165
+        },
+        {
+          "word": "and",
+          "start": 248.39,
+          "end": 248.67,
+          "probability": 0.9931285381317139
+        },
+        {
+          "word": "repeat",
+          "start": 248.67,
+          "end": 248.95,
+          "probability": 0.9989301562309265
+        },
+        {
+          "word": "until",
+          "start": 248.95,
+          "end": 249.37,
+          "probability": 0.9851689338684082
+        },
+        {
+          "word": "you",
+          "start": 249.37,
+          "end": 249.59,
+          "probability": 0.9975273013114929
+        },
+        {
+          "word": "find",
+          "start": 249.59,
+          "end": 249.77,
+          "probability": 0.9979351758956909
+        },
+        {
+          "word": "something",
+          "start": 249.77,
+          "end": 250.05,
+          "probability": 0.9992095232009888
+        },
+        {
+          "word": "that",
+          "start": 250.05,
+          "end": 250.23,
+          "probability": 0.9990894794464111
+        },
+        {
+          "word": "fits",
+          "start": 250.23,
+          "end": 250.43,
+          "probability": 0.9969916343688965
+        },
+        {
+          "word": "your",
+          "start": 250.43,
+          "end": 250.61,
+          "probability": 0.997377872467041
+        },
+        {
+          "word": "project.",
+          "start": 250.61,
+          "end": 251.09,
+          "probability": 0.9971127510070801
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "start": 252.27,
+      "end": 256.61,
+      "text": "If this helped you out please like and subscribe and let me know in the comments what you'd like to see next.",
+      "words": [
+        {
+          "word": "If",
+          "start": 252.27,
+          "end": 252.63,
+          "probability": 0.7167071104049683
+        },
+        {
+          "word": "this",
+          "start": 252.63,
+          "end": 252.99,
+          "probability": 0.993948221206665
+        },
+        {
+          "word": "helped",
+          "start": 252.99,
+          "end": 253.19,
+          "probability": 0.9827322959899902
+        },
+        {
+          "word": "you",
+          "start": 253.19,
+          "end": 253.35,
+          "probability": 0.975721001625061
+        },
+        {
+          "word": "out",
+          "start": 253.35,
+          "end": 253.51,
+          "probability": 0.6990044713020325
+        },
+        {
+          "word": "please",
+          "start": 253.51,
+          "end": 253.69,
+          "probability": 0.46717560291290283
+        },
+        {
+          "word": "like",
+          "start": 253.69,
+          "end": 253.95,
+          "probability": 0.7926629185676575
+        },
+        {
+          "word": "and",
+          "start": 253.95,
+          "end": 254.07,
+          "probability": 0.9739891290664673
+        },
+        {
+          "word": "subscribe",
+          "start": 254.07,
+          "end": 254.47,
+          "probability": 0.9903141856193542
+        },
+        {
+          "word": "and",
+          "start": 254.47,
+          "end": 254.73,
+          "probability": 0.8865702748298645
+        },
+        {
+          "word": "let",
+          "start": 254.73,
+          "end": 254.83,
+          "probability": 0.9969828724861145
+        },
+        {
+          "word": "me",
+          "start": 254.83,
+          "end": 254.93,
+          "probability": 0.9993970394134521
+        },
+        {
+          "word": "know",
+          "start": 254.93,
+          "end": 255.07,
+          "probability": 0.9988189339637756
+        },
+        {
+          "word": "in",
+          "start": 255.07,
+          "end": 255.15,
+          "probability": 0.9968881011009216
+        },
+        {
+          "word": "the",
+          "start": 255.15,
+          "end": 255.23,
+          "probability": 0.99936443567276
+        },
+        {
+          "word": "comments",
+          "start": 255.23,
+          "end": 255.45,
+          "probability": 0.9929565191268921
+        },
+        {
+          "word": "what",
+          "start": 255.45,
+          "end": 255.65,
+          "probability": 0.9829899072647095
+        },
+        {
+          "word": "you'd",
+          "start": 255.65,
+          "end": 255.87,
+          "probability": 0.9856875836849213
+        },
+        {
+          "word": "like",
+          "start": 255.87,
+          "end": 255.97,
+          "probability": 0.998789370059967
+        },
+        {
+          "word": "to",
+          "start": 255.97,
+          "end": 256.11,
+          "probability": 0.9996254444122314
+        },
+        {
+          "word": "see",
+          "start": 256.11,
+          "end": 256.25,
+          "probability": 0.9990035891532898
+        },
+        {
+          "word": "next.",
+          "start": 256.25,
+          "end": 256.61,
+          "probability": 0.9980902075767517
+        }
+      ]
+    }
+  ]
+}

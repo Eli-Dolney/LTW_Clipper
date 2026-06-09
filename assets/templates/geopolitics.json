@@ -1,0 +1,48 @@
+{
+  "name": "Geopolitics",
+  "niche": "geopolitics",
+  "icon": "🌍",
+  "description": "Explainer-style clips from analysis / commentary. Authoritative, sober, context-rich.",
+  "content_type": "clips",
+  "builtin": true,
+  "clip_duration": 40.0,
+  "min_duration": 18.0,
+  "max_duration": 70.0,
+  "scene_detection": false,
+  "max_clips": 12,
+  "hook_phrases": [
+    "what's really happening", "here's why", "the reason", "what this means",
+    "the bigger picture", "few people realize", "the truth is", "this is why",
+    "what you need to understand", "the real story", "history shows", "the consequence"
+  ],
+  "hook_words": [
+    "power", "conflict", "economy", "sanctions", "alliance", "border", "trade",
+    "strategy", "crisis", "military", "policy", "resources", "influence", "war", "treaty"
+  ],
+  "scoring_weights": {
+    "audio": 0.12,
+    "hook_phrase": 0.33,
+    "hook_word": 0.20,
+    "length": 0.15,
+    "completeness": 0.20
+  },
+  "voice": {
+    "persona": "A measured geopolitical analyst explaining complex events plainly.",
+    "tone": "Authoritative, neutral, explanatory. No sensationalism or partisan framing.",
+    "title_style": "Question or claim that frames stakes (e.g. 'Why This Border Dispute Matters').",
+    "cta": "Subscribe for clear geopolitical analysis.",
+    "hashtag_sets": ["#geopolitics", "#worldnews", "#politics", "#analysis", "#internationalrelations"],
+    "keyword_tags": ["geopolitics", "world news", "international relations", "analysis", "politics"]
+  },
+  "look": {
+    "caption_preset": "minimal",
+    "lut_name": null,
+    "transition_pack": null,
+    "sfx_pack": null,
+    "auto_transitions": false
+  },
+  "platforms": ["youtube", "youtube_shorts", "tiktok"],
+  "naming_pattern": "{name}_point_{num:03d}",
+  "add_captions": true,
+  "quality": "youtube_hd"
+}

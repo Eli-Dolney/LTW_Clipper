@@ -376,6 +376,9 @@ class SettingsTab(ctk.CTkFrame):
         )
         light_btn.pack(side="left")
         
+        # Local AI / pipeline settings
+        self._build_local_settings_card()
+
         # About Section
         about_card = ctk.CTkFrame(
             self.scroll_frame,
@@ -400,6 +403,172 @@ class SettingsTab(ctk.CTkFrame):
             justify="left"
         )
         about_content.pack(anchor="w", padx=theme.spacing.lg, pady=(0, theme.spacing.lg))
+
+    def _build_local_settings_card(self):
+        """Whisper, ffmpeg, Ollama — loaded from config/settings.yaml."""
+        from ...config import get_settings
+
+        try:
+            settings = get_settings()
+        except Exception:
+            settings = None
+
+        card = ctk.CTkFrame(
+            self.scroll_frame,
+            fg_color=theme.colors.bg_secondary,
+            corner_radius=theme.spacing.card_radius,
+        )
+        card.pack(fill="x", pady=(0, theme.spacing.lg))
+
+        ctk.CTkLabel(
+            card, text="🧠  Local AI & Pipeline",
+            font=get_font("md", "bold"), text_color=theme.colors.text_primary,
+        ).pack(anchor="w", padx=theme.spacing.lg, pady=(theme.spacing.lg, theme.spacing.md))
+
+        content = ctk.CTkFrame(card, fg_color="transparent")
+        content.pack(fill="x", padx=theme.spacing.lg, pady=(0, theme.spacing.lg))
+
+        self.whisper_model_var = ctk.StringVar(
+            value=settings.whisper.model if settings else "small"
+        )
+        self._add_option_row(content, "Whisper model", self.whisper_model_var,
+                             ["tiny", "base", "small", "medium", "large-v3"])
+
+        self.hwaccel_var = ctk.StringVar(
+            value=settings.ffmpeg.hwaccel if settings else "auto"
+        )
+        self._add_option_row(content, "Hardware encoder", self.hwaccel_var,
+                             ["auto", "videotoolbox", "nvenc", "qsv", "vaapi", "cpu"])
+
+        self.caption_preset_var = ctk.StringVar(
+            value=settings.captions.preset if settings else "bold_outline"
+        )
+        self._add_option_row(content, "Caption preset", self.caption_preset_var,
+                             ["bold_outline", "minimal", "mrbeast", "tiktok"])
+
+        self.reframe_layout_var = ctk.StringVar(
+            value=settings.reframe.layout if settings else "crop"
+        )
+        self._add_option_row(content, "Reframe layout", self.reframe_layout_var,
+                             ["crop", "fit", "blur"])
+
+        self.reframe_zoom_var = ctk.StringVar(
+            value=str(settings.reframe.zoom if settings else 1.0)
+        )
+        rowz = ctk.CTkFrame(content, fg_color="transparent")
+        rowz.pack(fill="x", pady=(0, theme.spacing.sm))
+        ctk.CTkLabel(rowz, text="Reframe zoom (1.0 = default)", font=get_font("sm"),
+                     text_color=theme.colors.text_secondary).pack(anchor="w")
+        ctk.CTkEntry(rowz, textvariable=self.reframe_zoom_var, font=get_font("sm"),
+                     **theme.get_input_style()).pack(fill="x", pady=(theme.spacing.xs, 0))
+
+        self.ollama_host_var = ctk.StringVar(
+            value=settings.ollama.host if settings else "http://localhost:11434"
+        )
+        row = ctk.CTkFrame(content, fg_color="transparent")
+        row.pack(fill="x", pady=(0, theme.spacing.sm))
+        ctk.CTkLabel(row, text="Ollama host", font=get_font("sm"),
+                     text_color=theme.colors.text_secondary).pack(anchor="w")
+        ctk.CTkEntry(row, textvariable=self.ollama_host_var, font=get_font("sm"),
+                     **theme.get_input_style()).pack(fill="x", pady=(theme.spacing.xs, 0))
+
+        self.ollama_model_var = ctk.StringVar(
+            value=settings.ollama.model if settings else "llama3.1:8b"
+        )
+        row2 = ctk.CTkFrame(content, fg_color="transparent")
+        row2.pack(fill="x", pady=(0, theme.spacing.md))
+        ctk.CTkLabel(row2, text="Ollama model", font=get_font("sm"),
+                     text_color=theme.colors.text_secondary).pack(anchor="w")
+        ctk.CTkEntry(row2, textvariable=self.ollama_model_var, font=get_font("sm"),
+                     **theme.get_input_style()).pack(fill="x", pady=(theme.spacing.xs, 0))
+
+        self.ollama_status = ctk.CTkLabel(
+            content, text="Ollama: not checked",
+            font=get_font("xs"), text_color=theme.colors.text_muted,
+        )
+        self.ollama_status.pack(anchor="w", pady=(0, theme.spacing.sm))
+
+        btn_row = ctk.CTkFrame(content, fg_color="transparent")
+        btn_row.pack(fill="x")
+        ctk.CTkButton(
+            btn_row, text="Check Ollama", command=self._check_ollama,
+            **theme.get_button_style("secondary"),
+        ).pack(side="left", padx=(0, theme.spacing.sm))
+        ctk.CTkButton(
+            btn_row, text="Save to settings.yaml", command=self._save_local_settings,
+            **theme.get_button_style("primary"),
+        ).pack(side="left")
+
+        ctk.CTkLabel(
+            content,
+            text="No API keys. Install Ollama from ollama.com for smarter titles (optional).",
+            font=get_font("xs"), text_color=theme.colors.text_muted, wraplength=500,
+        ).pack(anchor="w", pady=(theme.spacing.md, 0))
+
+    def _add_option_row(self, parent, label: str, variable, values: list[str]):
+        row = ctk.CTkFrame(parent, fg_color="transparent")
+        row.pack(fill="x", pady=(0, theme.spacing.sm))
+        ctk.CTkLabel(row, text=label, font=get_font("sm"),
+                     text_color=theme.colors.text_secondary).pack(anchor="w")
+        ctk.CTkOptionMenu(
+            row, values=values, variable=variable, font=get_font("sm"),
+            fg_color=theme.colors.bg_tertiary, button_color=theme.colors.bg_hover,
+            button_hover_color=theme.colors.accent_primary,
+            dropdown_fg_color=theme.colors.bg_secondary,
+        ).pack(anchor="w", pady=(theme.spacing.xs, 0))
+
+    def _check_ollama(self):
+        from ...core.ai.ollama_client import OllamaClient, OllamaConfig
+
+        client = OllamaClient(OllamaConfig(
+            host=self.ollama_host_var.get().strip(),
+            model=self.ollama_model_var.get().strip(),
+        ))
+        if client.is_available():
+            self.ollama_status.configure(
+                text=f"Ollama: running ({self.ollama_model_var.get()})",
+                text_color=theme.colors.success,
+            )
+            if self.on_status_change:
+                self.on_status_change("Ollama OK", "success")
+        else:
+            self.ollama_status.configure(
+                text="Ollama: not reachable (heuristic fallback will be used)",
+                text_color=theme.colors.warning,
+            )
+            if self.on_status_change:
+                self.on_status_change("Ollama offline", "warning")
+
+    def _save_local_settings(self):
+        import yaml
+        from ...config.settings import _repo_root
+
+        path = _repo_root() / "config" / "settings.yaml"
+        data: dict = {}
+        if path.is_file():
+            data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+
+        data.setdefault("whisper", {})["model"] = self.whisper_model_var.get()
+        data.setdefault("ffmpeg", {})["hwaccel"] = self.hwaccel_var.get()
+        data.setdefault("captions", {})["preset"] = self.caption_preset_var.get()
+        data.setdefault("reframe", {})["layout"] = self.reframe_layout_var.get()
+        try:
+            data.setdefault("reframe", {})["zoom"] = float(self.reframe_zoom_var.get())
+        except ValueError:
+            pass
+        data.setdefault("ollama", {})["host"] = self.ollama_host_var.get().strip()
+        data.setdefault("ollama", {})["model"] = self.ollama_model_var.get().strip()
+        data.setdefault("app", {})["output_root"] = self.default_output_var.get()
+
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(yaml.dump(data, default_flow_style=False, sort_keys=False), encoding="utf-8")
+
+        from ...config import get_settings
+        get_settings.cache_clear()
+
+        messagebox.showinfo("Saved", f"Settings written to:\n{path}")
+        if self.on_status_change:
+            self.on_status_change("Settings saved", "success")
         
     def _refresh_presets(self):
         """Refresh preset list"""

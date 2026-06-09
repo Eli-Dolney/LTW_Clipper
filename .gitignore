@@ -97,6 +97,7 @@ desktop.ini
 # User-specific paths (if any scripts reference them)
 user_config.json
 local_settings.json
+config/asset_packs.json
 
 # Test files
 test_*.mp4

@@ -86,33 +86,20 @@ class VideoSplitter:
         # Supported video formats
         self.supported_formats = {'.mp4', '.avi', '.mov', '.mkv', '.flv', '.wmv', '.webm'}
 
-        # YouTube-optimized quality settings
-        self.quality_settings = {
-            'youtube_sd': {
-                'bitrate': '2000k',
-                'resolution': '854x480',
-                'preset': 'fast',
-                'description': 'YouTube SD (480p)'
-            },
-            'youtube_hd': {
-                'bitrate': '5000k',
-                'resolution': '1920x1080',
-                'preset': 'fast',
-                'description': 'YouTube HD (1080p)'
-            },
-            'youtube_4k': {
-                'bitrate': '15000k',
-                'resolution': '3840x2160',
-                'preset': 'slow',
-                'description': 'YouTube 4K (2160p)'
-            },
-            'original': {
-                'bitrate': None,
-                'resolution': None,
-                'preset': 'fast',
-                'description': 'Original quality'
+        # Centralized quality presets (src/core/render/quality_presets.py)
+        from .render.quality_presets import QUALITY_PRESETS
+
+        self.quality_settings = {}
+        for key, spec in QUALITY_PRESETS.items():
+            res = spec.get("resolution")
+            if res:
+                res = res.replace(":", "x")
+            self.quality_settings[key] = {
+                "bitrate": spec.get("bitrate"),
+                "resolution": res,
+                "preset": spec.get("preset", "fast"),
+                "description": spec["description"],
             }
-        }
 
         # Track processed clips for Resolve integration
         self.clip_metadata = []
@@ -394,16 +381,25 @@ class VideoSplitter:
                 try:
                     segment_duration = max(0.001, end_time - start_time)
                     
-                    # Generate timestamp for professional naming
-                    start_time_formatted = "02d"
-                    end_time_formatted = "02d"
+                    # Format timestamps as MM_SS (and HH_MM_SS if >=1h)
+                    def _fmt_ts(seconds: float) -> str:
+                        total = int(seconds)
+                        h, rem = divmod(total, 3600)
+                        m, s = divmod(rem, 60)
+                        if h > 0:
+                            return f"{h:02d}_{m:02d}_{s:02d}"
+                        return f"{m:02d}_{s:02d}"
 
-                    # Generate output filename using naming pattern
+                    start_time_formatted = _fmt_ts(start_time)
+                    end_time_formatted = _fmt_ts(end_time)
+
                     output_filename = self.naming_pattern.format(
                         name=base_name,
                         num=i+1,
                         duration=self.clip_duration,
                         timestamp=start_time_formatted,
+                        start=start_time_formatted,
+                        end=end_time_formatted,
                         project=self.project_name
                     ) + ".mp4"
                     output_path = self.clips_dir / output_filename
@@ -447,6 +443,8 @@ class VideoSplitter:
                         'clip_number': i+1,
                         'start_time': start_time,
                         'end_time': end_time,
+                        'start_time_formatted': start_time_formatted,
+                        'end_time_formatted': end_time_formatted,
                         'duration': end_time - start_time,
                         'timestamp': datetime.now().isoformat(),
                         'quality': self.quality,

@@ -532,5 +532,4 @@ if __name__ == "__main__":
         print(f"   Resolution: {spec['resolution'][0]}x{spec['resolution'][1]}")
         print(f"   Description: {spec['description']}")
 
-    print("
-🚀 Ready for multi-platform optimization!"
+    print("\n🚀 Ready for multi-platform optimization!")

@@ -1,0 +1,48 @@
+{
+  "name": "Game Dev Tutorial",
+  "niche": "gamedev",
+  "icon": "🎮",
+  "description": "Long, teachable segments for Unreal / Unity / Godot tutorials. Low hype, high clarity, chapter-friendly.",
+  "content_type": "tutorial",
+  "builtin": true,
+  "clip_duration": 50.0,
+  "min_duration": 20.0,
+  "max_duration": 90.0,
+  "scene_detection": false,
+  "max_clips": 12,
+  "hook_phrases": [
+    "here's how", "let me show you", "the first step", "what we're going to do",
+    "this is where", "the trick is", "make sure you", "if you want to",
+    "let's build", "the important part", "common mistake", "pro tip"
+  ],
+  "hook_words": [
+    "blueprint", "node", "shader", "material", "mesh", "collision", "script",
+    "function", "component", "setup", "settings", "tutorial", "step", "build", "create"
+  ],
+  "scoring_weights": {
+    "audio": 0.15,
+    "hook_phrase": 0.30,
+    "hook_word": 0.20,
+    "length": 0.15,
+    "completeness": 0.20
+  },
+  "voice": {
+    "persona": "A patient, experienced game-dev instructor teaching by doing.",
+    "tone": "Clear, encouraging, jargon-aware but beginner-friendly. No clickbait.",
+    "title_style": "Descriptive, benefit-first (e.g. 'Make Realistic Water in Unreal 5 in 5 Minutes').",
+    "cta": "Subscribe for more game-dev breakdowns.",
+    "hashtag_sets": ["#gamedev", "#unrealengine", "#unity", "#indiedev", "#tutorial"],
+    "keyword_tags": ["game dev", "unreal engine", "unity", "tutorial", "indie dev"]
+  },
+  "look": {
+    "caption_preset": "minimal",
+    "lut_name": null,
+    "transition_pack": null,
+    "sfx_pack": null,
+    "auto_transitions": false
+  },
+  "platforms": ["youtube", "youtube_shorts"],
+  "naming_pattern": "{name}_step_{num:03d}",
+  "add_captions": true,
+  "quality": "youtube_hd"
+}

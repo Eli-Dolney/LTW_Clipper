@@ -1,0 +1,11 @@
+{
+  "source_video": "/Users/elidolney/Desktop/Python Scripts/LTW_Splitter/test_videos/Create INSANE Realistic & Interactive Water in 5 minutes in Unreal 5.5.mp4",
+  "project_name": "Create INSANE Realistic & Interactive Water in 5 minutes in Unreal 5.5",
+  "run_id": "20260603_222846",
+  "generator": "heuristic",
+  "clip_dirs": [
+    "/Users/elidolney/Desktop/Python Scripts/LTW_Splitter/test_videos/ltw_output/Create INSANE Realistic & Interactive Water in 5 minutes in Unreal 5.5/clips/we-ll-start-with-the-sim-tab-of-shallow",
+    "/Users/elidolney/Desktop/Python Scripts/LTW_Splitter/test_videos/ltw_output/Create INSANE Realistic & Interactive Water in 5 minutes in Unreal 5.5/clips/it-has-a-sample-sphere-running-through-it",
+    "/Users/elidolney/Desktop/Python Scripts/LTW_Splitter/test_videos/ltw_output/Create INSANE Realistic & Interactive Water in 5 minutes in Unreal 5.5/clips/we-can-just-copy-and-paste-that-and"
+  ]
+}

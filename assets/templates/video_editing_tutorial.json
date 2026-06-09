@@ -1,0 +1,48 @@
+{
+  "name": "Video Editing Tutorial",
+  "niche": "editing",
+  "icon": "✂️",
+  "description": "Teachable segments for DaVinci Resolve / Premiere / editing technique videos.",
+  "content_type": "tutorial",
+  "builtin": true,
+  "clip_duration": 45.0,
+  "min_duration": 18.0,
+  "max_duration": 90.0,
+  "scene_detection": false,
+  "max_clips": 12,
+  "hook_phrases": [
+    "here's how", "let me show you", "the trick is", "a faster way",
+    "instead of", "this saves you", "the secret to", "what most editors",
+    "pro tip", "here's the workflow", "the key is", "watch this"
+  ],
+  "hook_words": [
+    "timeline", "transition", "keyframe", "color", "grade", "lut", "node",
+    "render", "export", "mask", "tracker", "fusion", "audio", "preset", "workflow"
+  ],
+  "scoring_weights": {
+    "audio": 0.15,
+    "hook_phrase": 0.32,
+    "hook_word": 0.18,
+    "length": 0.15,
+    "completeness": 0.20
+  },
+  "voice": {
+    "persona": "A working editor sharing practical, time-saving techniques.",
+    "tone": "Confident, concise, workflow-focused. Speaks editor-to-editor.",
+    "title_style": "Outcome + speed (e.g. 'Color Grade Like a Pro in DaVinci — Fast').",
+    "cta": "Follow for more editing workflows.",
+    "hashtag_sets": ["#videoediting", "#davinciresolve", "#premierepro", "#editing", "#tutorial"],
+    "keyword_tags": ["video editing", "davinci resolve", "color grading", "editing tutorial"]
+  },
+  "look": {
+    "caption_preset": "minimal",
+    "lut_name": null,
+    "transition_pack": null,
+    "sfx_pack": null,
+    "auto_transitions": false
+  },
+  "platforms": ["youtube", "youtube_shorts"],
+  "naming_pattern": "{name}_tip_{num:03d}",
+  "add_captions": true,
+  "quality": "youtube_hd"
+}

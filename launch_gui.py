@@ -54,9 +54,18 @@ def check_dependencies():
 
 def main():
     """Main entry point"""
-    print("🎬 LTW Video Editor Pro v2.0")
+    print("🎬 LTW Video Editor Pro v2.1")
     print("=" * 40)
-    
+
+    try:
+        from src.logging_setup import configure_logging
+        from src.config import get_settings
+
+        settings = get_settings()
+        configure_logging(level=settings.logging.level)
+    except Exception:
+        pass
+
     # Check dependencies
     if not check_dependencies():
         print("\n❌ Please install missing dependencies first")
@@ -67,26 +76,16 @@ def main():
     print()
     
     try:
-        # Import and run the new GUI
-        from gui.main_app import LTWVideoEditorPro
-        
+        from src.gui.main_app import LTWVideoEditorPro
+
         app = LTWVideoEditorPro()
         app.run()
-        
+
     except Exception as e:
         print(f"❌ Failed to launch GUI: {e}")
         import traceback
         traceback.print_exc()
-        
-        # Fallback to old GUI
-        print("\n⚠️  Attempting to launch legacy GUI...")
-        try:
-            from gui import VideoSplitterGUI
-            app = VideoSplitterGUI()
-            app.run()
-        except Exception as e2:
-            print(f"❌ Legacy GUI also failed: {e2}")
-            sys.exit(1)
+        sys.exit(1)
 
 if __name__ == "__main__":
     main()
