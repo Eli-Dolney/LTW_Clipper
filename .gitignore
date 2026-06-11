@@ -103,7 +103,9 @@ user_config.json
 local_settings.json
 config/asset_packs.json
 
-# Test files
+# Test files / local pipeline output (kept on disk, not in repo)
+test_videos/ltw_output/
+test_videos/*.mp4
 test_*.mp4
 test_*.mov
 *.test.*

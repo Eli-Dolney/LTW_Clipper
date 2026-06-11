@@ -54,7 +54,7 @@ def check_dependencies():
 
 def main():
     """Main entry point"""
-    print("🎬 LTW Video Editor Pro v2.1")
+    print("🎬 LTW Video Editor Pro v2.4")
     print("=" * 40)
 
     try:
