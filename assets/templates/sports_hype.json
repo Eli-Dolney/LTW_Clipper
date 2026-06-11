@@ -1,0 +1,60 @@
+{
+  "name": "Sports Hype",
+  "niche": "sports",
+  "icon": "🏈",
+  "description": "Fast-cut sports highlights with beat-sync pacing, impact SFX, and music ducking under announcer/dialog.",
+  "content_type": "gaming",
+  "builtin": true,
+  "clip_duration": 15.0,
+  "min_duration": 4.0,
+  "max_duration": 30.0,
+  "scene_detection": true,
+  "max_clips": 15,
+  "hook_phrases": [
+    "touchdown",
+    "and he scores",
+    "what a play",
+    "unbelievable",
+    "game winner",
+    "knockout",
+    "let's go"
+  ],
+  "hook_words": [
+    "boom",
+    "wow",
+    "insane",
+    "crazy",
+    "clutch"
+  ],
+  "scoring_weights": {
+    "audio": 0.4,
+    "hook_phrase": 0.3,
+    "hook_word": 0.15,
+    "length": 0.1,
+    "completeness": 0.05
+  },
+  "voice": {
+    "persona": "Hype sports commentator",
+    "tone": "High energy, short punchy lines",
+    "title_style": "ALL CAPS impact titles",
+    "cta": "Follow for more highlights",
+    "hashtag_sets": ["#sports", "#highlights", "#edit"],
+    "keyword_tags": ["sports", "highlights", "edit"]
+  },
+  "look": {
+    "caption_preset": "hormozi",
+    "auto_transitions": true,
+    "overlays": [
+      {
+        "text": "{title}",
+        "kind": "title",
+        "alignment": 8,
+        "fade_in_ms": 200,
+        "fade_out_ms": 400
+      }
+    ]
+  },
+  "platforms": ["youtube_shorts", "tiktok"],
+  "add_captions": true,
+  "quality": "youtube_hd"
+}

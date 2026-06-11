@@ -92,6 +92,8 @@ class LTWVideoEditorPro:
         nav_items = [
             ("split", "✂️  Video Splitter"),
             ("templates", "🎛️  Templates"),
+            ("text_studio", "✏️  Text Studio"),
+            ("edit_suite", "🎞️  Edit Suite"),
             ("opus", "🤖  Opus Clip AI"),
             ("studio", "🎬  Studio"),
             ("resolve", "🎭  DaVinci Resolve"),
@@ -153,6 +155,8 @@ class LTWVideoEditorPro:
         from .tabs.settings_tab import SettingsTab
         from .tabs.studio_tab import StudioTab
         from .tabs.templates_tab import TemplatesTab
+        from .tabs.text_studio_tab import TextStudioTab
+        from .tabs.edit_suite_tab import EditSuiteTab
         
         # Split Tab
         self.tabs["split"] = SplitTab(
@@ -174,7 +178,17 @@ class LTWVideoEditorPro:
             on_status_change=self._on_status_change,
             on_apply_template=self._on_apply_template,
         )
-        
+
+        self.tabs["text_studio"] = TextStudioTab(
+            self.content_area,
+            on_status_change=self._on_status_change,
+        )
+
+        self.tabs["edit_suite"] = EditSuiteTab(
+            self.content_area,
+            on_status_change=self._on_status_change,
+        )
+
         self.tabs["studio"] = StudioTab(
             self.content_area,
             on_status_change=self._on_status_change,

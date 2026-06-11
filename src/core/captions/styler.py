@@ -1,44 +1,26 @@
 """Convert Whisper word timestamps into stylized ASS/SRT/VTT captions.
 
 The ASS output supports per-word karaoke-style highlighting (pop-in + color
-shift on the active word). SRT and VTT outputs are produced from the same
-segments for upload to YouTube / TikTok.
+shift on the active word), opacity, fade animations, and standalone text overlays.
+SRT and VTT outputs are produced from the same segments for upload to YouTube / TikTok.
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 
 from ..models import Transcript, TranscriptSegment, WordTiming
+from .models import CaptionStyleModel, TextOverlayModel, resolve_overlay_tokens
+
+# Backward-compatible alias
+CaptionStyle = CaptionStyleModel
 
 
-# ---- Preset styles ---------------------------------------------------------
+# ---- Built-in presets (fallback when JSON styles are unavailable) -----------
 
-@dataclass
-class CaptionStyle:
-    """ASS style parameters. Colors use RGB, not BGR - we convert internally."""
-
-    name: str = "bold_outline"
-    font: str = "Arial Black"
-    font_size: int = 64
-    primary_rgb: tuple[int, int, int] = (255, 255, 255)
-    highlight_rgb: tuple[int, int, int] = (255, 214, 10)   # used for active word
-    outline_rgb: tuple[int, int, int] = (0, 0, 0)
-    back_rgb: tuple[int, int, int] = (0, 0, 0)
-    outline_px: int = 6
-    shadow_px: int = 0
-    bold: bool = True
-    italic: bool = False
-    uppercase: bool = True
-    max_chars_per_line: int = 22
-    max_words_per_line: int = 6
-    bottom_margin_px: int = 220
-    border_style: int = 1  # 1 = outline+shadow, 3 = opaque box
-
-
-CAPTION_PRESETS: dict[str, CaptionStyle] = {
-    "bold_outline": CaptionStyle(
+CAPTION_PRESETS: dict[str, CaptionStyleModel] = {
+    "bold_outline": CaptionStyleModel(
         name="bold_outline",
         font="Arial Black",
         font_size=64,
@@ -46,8 +28,9 @@ CAPTION_PRESETS: dict[str, CaptionStyle] = {
         highlight_rgb=(255, 214, 10),
         outline_px=6,
         uppercase=True,
+        builtin=True,
     ),
-    "minimal": CaptionStyle(
+    "minimal": CaptionStyleModel(
         name="minimal",
         font="Helvetica",
         font_size=52,
@@ -56,8 +39,9 @@ CAPTION_PRESETS: dict[str, CaptionStyle] = {
         outline_px=3,
         uppercase=False,
         bold=False,
+        builtin=True,
     ),
-    "mrbeast": CaptionStyle(
+    "mrbeast": CaptionStyleModel(
         name="mrbeast",
         font="Impact",
         font_size=72,
@@ -65,8 +49,11 @@ CAPTION_PRESETS: dict[str, CaptionStyle] = {
         highlight_rgb=(255, 80, 80),
         outline_px=8,
         uppercase=True,
+        highlight_pop=True,
+        highlight_scale=125,
+        builtin=True,
     ),
-    "tiktok": CaptionStyle(
+    "tiktok": CaptionStyleModel(
         name="tiktok",
         font="Montserrat",
         font_size=58,
@@ -75,6 +62,63 @@ CAPTION_PRESETS: dict[str, CaptionStyle] = {
         outline_px=4,
         border_style=1,
         uppercase=False,
+        builtin=True,
+    ),
+    "hormozi": CaptionStyleModel(
+        name="hormozi",
+        font="Arial Black",
+        font_size=68,
+        primary_rgb=(255, 255, 255),
+        highlight_rgb=(255, 220, 0),
+        outline_px=7,
+        uppercase=True,
+        highlight_pop=True,
+        highlight_scale=120,
+        alignment=2,
+        margin_v=200,
+        builtin=True,
+    ),
+    "clean_box": CaptionStyleModel(
+        name="clean_box",
+        font="Helvetica",
+        font_size=54,
+        primary_rgb=(255, 255, 255),
+        highlight_rgb=(255, 255, 255),
+        outline_px=0,
+        border_style=3,
+        back_rgb=(0, 0, 0),
+        back_opacity=55,
+        uppercase=False,
+        bold=False,
+        builtin=True,
+    ),
+    "neon": CaptionStyleModel(
+        name="neon",
+        font="Arial Black",
+        font_size=60,
+        primary_rgb=(0, 255, 255),
+        highlight_rgb=(255, 0, 255),
+        outline_rgb=(0, 80, 160),
+        outline_px=5,
+        shadow_px=2,
+        uppercase=True,
+        builtin=True,
+    ),
+    "subtle_lower": CaptionStyleModel(
+        name="subtle_lower",
+        font="Helvetica",
+        font_size=44,
+        primary_rgb=(240, 240, 240),
+        highlight_rgb=(255, 255, 255),
+        outline_px=2,
+        primary_opacity=85,
+        uppercase=False,
+        bold=False,
+        alignment=2,
+        margin_v=120,
+        fade_in_ms=200,
+        fade_out_ms=200,
+        builtin=True,
     ),
 }
 
@@ -100,14 +144,12 @@ class CaptionStyler:
 
     def __init__(
         self,
-        style: CaptionStyle | str = "bold_outline",
+        style: CaptionStyleModel | str = "bold_outline",
         *,
         video_size: tuple[int, int] = (1080, 1920),
     ) -> None:
         if isinstance(style, str):
-            if style not in CAPTION_PRESETS:
-                raise ValueError(f"Unknown caption preset: {style}")
-            self.style = CAPTION_PRESETS[style]
+            self.style = _resolve_style(style)
         else:
             self.style = style
         self.video_size = video_size
@@ -123,6 +165,9 @@ class CaptionStyler:
         clip_offset: float = 0.0,
         clip_end: float | None = None,
         formats: tuple[str, ...] = ("ass", "srt", "vtt"),
+        overlays: list[TextOverlayModel] | None = None,
+        overlay_metadata: dict[str, str] | None = None,
+        clip_duration: float | None = None,
     ) -> CaptionArtifacts:
         """Write caption files and return their paths.
 
@@ -133,10 +178,23 @@ class CaptionStyler:
         artifacts = CaptionArtifacts()
 
         filtered = self._filter_segments(transcript, clip_offset, clip_end)
+        duration = clip_duration
+        if duration is None and filtered:
+            duration = max(seg.end for seg in filtered)
+        elif duration is None:
+            duration = 0.0
 
         if "ass" in formats:
             ass_path = out_dir / f"{base_name}.ass"
-            ass_path.write_text(self._build_ass(filtered), encoding="utf-8")
+            ass_path.write_text(
+                self._build_ass(
+                    filtered,
+                    overlays=overlays or [],
+                    overlay_metadata=overlay_metadata,
+                    clip_duration=duration,
+                ),
+                encoding="utf-8",
+            )
             artifacts.ass = ass_path
         if "srt" in formats:
             srt_path = out_dir / f"{base_name}.srt"
@@ -149,6 +207,37 @@ class CaptionStyler:
 
         return artifacts
 
+    def build_preview_ass(
+        self,
+        *,
+        sample_text: str = "This is how your captions look",
+        overlays: list[TextOverlayModel] | None = None,
+        overlay_metadata: dict[str, str] | None = None,
+        duration: float = 3.0,
+    ) -> str:
+        """Build ASS for a static preview (no transcript required)."""
+        words = sample_text.split()
+        if not words:
+            words = ["Preview"]
+        step = duration / max(len(words), 1)
+        word_timings = [
+            WordTiming(word=w, start=i * step, end=(i + 1) * step, probability=1.0)
+            for i, w in enumerate(words)
+        ]
+        seg = TranscriptSegment(
+            id=0,
+            start=0.0,
+            end=duration,
+            text=sample_text,
+            words=word_timings,
+        )
+        return self._build_ass(
+            [seg],
+            overlays=overlays or [],
+            overlay_metadata=overlay_metadata,
+            clip_duration=duration,
+        )
+
     # ---- Filtering ---------------------------------------------------------
 
     def _filter_segments(
@@ -159,7 +248,6 @@ class CaptionStyler:
     ) -> list[TranscriptSegment]:
         out: list[TranscriptSegment] = []
         for seg in transcript.segments:
-            # Keep segments that overlap the clip window.
             if end is not None and seg.start >= end:
                 continue
             if seg.end <= offset:
@@ -191,17 +279,69 @@ class CaptionStyler:
 
     # ---- ASS builder -------------------------------------------------------
 
-    def _build_ass(self, segments: list[TranscriptSegment]) -> str:
+    def _build_ass(
+        self,
+        segments: list[TranscriptSegment],
+        *,
+        overlays: list[TextOverlayModel],
+        overlay_metadata: dict[str, str] | None,
+        clip_duration: float,
+    ) -> str:
         style = self.style
         w, h = self.video_size
-        primary = _rgb_to_ass_bgr(style.primary_rgb)
-        outline = _rgb_to_ass_bgr(style.outline_rgb)
-        back = _rgb_to_ass_bgr(style.back_rgb)
-        highlight = _rgb_to_ass_bgr(style.highlight_rgb)
+        header = self._ass_header(style, w, h)
+        overlay_styles = self._overlay_style_lines(overlays)
+        lines = [header, *overlay_styles, "[Events]\n",
+                 "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n"]
+
+        highlight_bgr = _rgb_to_ass_bgr(
+            style.highlight_rgb, style.highlight_opacity,
+        )
+
+        for seg in segments:
+            line_events = _split_into_lines(
+                seg,
+                max_chars=style.max_chars_per_line,
+                max_words=style.max_words_per_line,
+                uppercase=style.uppercase,
+                highlight=highlight_bgr,
+                highlight_pop=style.highlight_pop,
+                highlight_scale=style.highlight_scale,
+            )
+            for start, end, text in line_events:
+                prefix = _fade_prefix(style.fade_in_ms, style.fade_out_ms)
+                lines.append(
+                    f"Dialogue: 0,{_ass_time(start)},{_ass_time(end)},Default,,0,0,0,,"
+                    f"{prefix}{text}\n"
+                )
+
+        for idx, overlay in enumerate(overlays):
+            start = overlay.start if overlay.start is not None else 0.0
+            end = overlay.end if overlay.end is not None else max(clip_duration, start + 1.0)
+            if end <= start:
+                end = start + 1.0
+            text = resolve_overlay_tokens(overlay.text, overlay_metadata)
+            if overlay.uppercase:
+                text = text.upper()
+            prefix = _fade_prefix(overlay.fade_in_ms, overlay.fade_out_ms)
+            style_name = f"Overlay{idx}"
+            lines.append(
+                f"Dialogue: 1,{_ass_time(start)},{_ass_time(end)},{style_name},,0,0,0,,"
+                f"{prefix}{_ass_escape(text)}\n"
+            )
+
+        return "".join(lines)
+
+    def _ass_header(self, style: CaptionStyleModel, w: int, h: int) -> str:
+        primary = _rgb_to_ass_bgr(style.primary_rgb, style.primary_opacity)
+        outline = _rgb_to_ass_bgr(style.outline_rgb, style.outline_opacity)
+        back = _rgb_to_ass_bgr(style.back_rgb, style.back_opacity)
+        highlight = _rgb_to_ass_bgr(style.highlight_rgb, style.highlight_opacity)
         bold = -1 if style.bold else 0
         italic = -1 if style.italic else 0
+        margin_v = style.margin_v if style.margin_v else style.bottom_margin_px
 
-        header = (
+        return (
             "[Script Info]\n"
             "; Generated by LTW Video Splitter Pro\n"
             "ScriptType: v4.00+\n"
@@ -219,27 +359,34 @@ class CaptionStyler:
             f"Style: Default,{style.font},{style.font_size},{primary},"
             f"{highlight},{outline},{back},{bold},{italic},0,0,100,100,0,0,"
             f"{style.border_style},{style.outline_px},{style.shadow_px},"
-            f"2,40,40,{style.bottom_margin_px},1\n"
+            f"{style.alignment},{style.margin_h},{style.margin_h},{margin_v},1\n"
             "\n"
-            "[Events]\n"
-            "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n"
         )
 
-        lines = [header]
-        for seg in segments:
-            # Group words into rendering lines ~max_words_per_line each.
-            line_events = _split_into_lines(
-                seg,
-                max_chars=style.max_chars_per_line,
-                max_words=style.max_words_per_line,
-                uppercase=style.uppercase,
-                highlight=highlight,
+    def _overlay_style_lines(self, overlays: list[TextOverlayModel]) -> list[str]:
+        lines: list[str] = []
+        base = self.style
+        for idx, overlay in enumerate(overlays):
+            font = overlay.font or base.font
+            size = overlay.font_size or max(base.font_size, 48)
+            primary_rgb = overlay.primary_rgb or base.primary_rgb
+            outline_rgb = overlay.outline_rgb or base.outline_rgb
+            back_rgb = overlay.back_rgb or base.back_rgb
+            primary = _rgb_to_ass_bgr(primary_rgb, overlay.primary_opacity)
+            outline = _rgb_to_ass_bgr(outline_rgb, overlay.outline_opacity)
+            back = _rgb_to_ass_bgr(back_rgb, overlay.back_opacity)
+            highlight = primary
+            bold = -1 if overlay.bold else 0
+            italic = -1 if overlay.italic else 0
+            style_name = f"Overlay{idx}"
+            lines.append(
+                f"Style: {style_name},{font},{size},{primary},"
+                f"{highlight},{outline},{back},{bold},{italic},0,0,100,100,0,0,"
+                f"{overlay.border_style},{overlay.outline_px},{overlay.shadow_px},"
+                f"{overlay.alignment},{overlay.margin_h},{overlay.margin_h},"
+                f"{overlay.margin_v},1\n"
             )
-            for start, end, text in line_events:
-                lines.append(
-                    f"Dialogue: 0,{_ass_time(start)},{_ass_time(end)},Default,,0,0,0,,{text}\n"
-                )
-        return "".join(lines)
+        return lines
 
     # ---- SRT / VTT ---------------------------------------------------------
 
@@ -261,11 +408,42 @@ class CaptionStyler:
         return "\n".join(lines).strip() + "\n"
 
 
+# ---- Style resolution ------------------------------------------------------
+
+def _resolve_style(name: str) -> CaptionStyleModel:
+    """Resolve a style name from StyleManager or built-in presets."""
+    try:
+        from .style_manager import StyleManager
+
+        mgr = StyleManager()
+        style = mgr.get(name)
+        if style is not None:
+            return style
+    except Exception:  # noqa: BLE001
+        pass
+    if name in CAPTION_PRESETS:
+        return CAPTION_PRESETS[name]
+    raise ValueError(f"Unknown caption style: {name}")
+
+
 # ---- Helpers ---------------------------------------------------------------
 
-def _rgb_to_ass_bgr(rgb: tuple[int, int, int]) -> str:
+def _opacity_to_ass_alpha(opacity: int) -> int:
+    """Map 0-100 opacity (100=opaque) to ASS alpha byte (00=opaque)."""
+    clamped = max(0, min(100, opacity))
+    return int(round((100 - clamped) * 255 / 100))
+
+
+def _rgb_to_ass_bgr(rgb: tuple[int, int, int], opacity: int = 100) -> str:
     r, g, b = rgb
-    return f"&H00{b:02X}{g:02X}{r:02X}"
+    alpha = _opacity_to_ass_alpha(opacity)
+    return f"&H{alpha:02X}{b:02X}{g:02X}{r:02X}"
+
+
+def _fade_prefix(fade_in_ms: int, fade_out_ms: int) -> str:
+    if fade_in_ms <= 0 and fade_out_ms <= 0:
+        return ""
+    return f"{{\\fad({fade_in_ms},{fade_out_ms})}}"
 
 
 def _ass_time(seconds: float) -> str:
@@ -315,18 +493,14 @@ def _split_into_lines(
     max_words: int,
     uppercase: bool,
     highlight: str,
+    highlight_pop: bool,
+    highlight_scale: int,
 ) -> list[tuple[float, float, str]]:
-    """Build one or more ASS events for a single transcript segment.
-
-    If we have word timestamps, emit a karaoke-style event per line where
-    the currently-active word is colored with the ``highlight`` color via
-    ``{\\r}`` style overrides.
-    """
+    """Build one or more ASS events for a single transcript segment."""
     if not seg.words:
         text = seg.text.upper() if uppercase else seg.text
         return [(seg.start, seg.end, text)]
 
-    # Chunk words into lines.
     lines: list[list[WordTiming]] = []
     current: list[WordTiming] = []
     current_chars = 0
@@ -351,17 +525,20 @@ def _split_into_lines(
             continue
         line_start = chunk[0].start
         line_end = chunk[-1].end
-        # Build a text with {\r}...{\r} highlight flips per word so each word
-        # flashes highlight for its own duration.
         pieces: list[str] = []
         for w in chunk:
             raw = w.word.strip()
             if uppercase:
                 raw = raw.upper()
             dur_cs = max(1, int(round((w.end - w.start) * 100)))
-            # \k highlights over duration (centiseconds) using the SecondaryColour,
-            # which we've set to `highlight` via the V4+ style.
-            pieces.append(f"{{\\k{dur_cs}}}{_ass_escape(raw)} ")
+            escaped = _ass_escape(raw)
+            if highlight_pop and highlight_scale > 100:
+                pop_tag = (
+                    f"{{\\t(0,{dur_cs * 10},\\fscx{highlight_scale}\\fscy{highlight_scale})}}"
+                )
+                pieces.append(f"{{\\k{dur_cs}}}{pop_tag}{escaped} ")
+            else:
+                pieces.append(f"{{\\k{dur_cs}}}{escaped} ")
         text = "".join(pieces).rstrip()
         out.append((line_start, line_end, text))
     return out

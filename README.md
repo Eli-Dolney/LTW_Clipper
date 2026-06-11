@@ -16,6 +16,21 @@
 
 ## ✨ Features
 
+### New in 2.4 (Edit Suite)
+
+- **Edit Suite tab** — sports & movie edit workstation: layer clip audio + music + announcer with sidechain ducking, beat-synced montages, and reference-edit style replication.
+- **Reference analyzer** — drop in a hype reel or trailer; LTW reads cut cadence, shot length, and audio hit density, then applies that recipe to your clips.
+- **Beat sync** — librosa beat detection on any music track; clip segments snap to the beat grid.
+- **Audio mixer** — ffmpeg `sidechaincompress` ducks music under fighter/dialog audio; optional announcer voice-over and impact SFX at detected peaks.
+- **Sports & cinematic templates** — `Sports Hype` and `Cinematic Trailer` channel presets in `assets/templates/`.
+
+### New in 2.3 (Text Studio)
+
+- **Text Studio** — Remotion-inspired caption style editor with live preview: fonts, colors, opacity per layer, fade in/out, 9-grid positioning, word-pop emphasis, and text overlays (title cards, watermarks, CTAs).
+- **Editable caption styles** — 8 built-in styles (`bold_outline`, `minimal`, `mrbeast`, `tiktok`, `hormozi`, `clean_box`, `neon`, `subtle_lower`) stored as JSON in `assets/caption_styles/`; save/import/export your own.
+- **Text overlays** — per-template overlay definitions with `{title}` / `{channel}` token substitution, burned in the same ASS pass as captions.
+- **StyleManager** — all GUI caption dropdowns (Templates, Opus, Settings) now list built-in + custom styles dynamically.
+
 ### New in 2.2 (channel templates & transitions)
 
 - **Channel Templates** — niche presets (Game Dev, Video Editing, Gaming, Geopolitics, AI, Long-form) that tune the *whole* pipeline: highlight detection hook phrases/words, scoring weights, caption style, and the channel's voice (persona/tone/title-style/hashtags). Pick one, tweak it, save your own, import/export.
@@ -116,6 +131,67 @@ captions:
 ```
 
 Any value can also be overridden with env vars like `LTW_WHISPER__MODEL=medium`.
+
+## 🎞️ Edit Suite
+
+Open the **Edit Suite** tab to build sports hype reels and cinematic edits locally.
+
+**Workflow:**
+1. **Reference** (optional) — analyze an edit you like; LTW extracts cut rate, transition style, and audio hit pattern.
+2. **Clips** — add your highlight clips (fighter footage, game moments, movie scenes).
+3. **Beat sync** — pick a song; detect beats; each clip segment snaps to N beats.
+4. **Audio layers** — clip dialog + music bed (auto-ducked) + optional announcer line ("TOUCHDOWN!").
+5. **Render** — stitches a montage with transitions + SFX at cuts, then mixes all audio layers.
+
+**CLI beat detection** (also available in the GUI):
+
+```bash
+python -c "from src.core.edit_suite import detect_beats; from pathlib import Path; detect_beats(Path('song.mp3'), Path('beats.json'))"
+```
+
+**Mix audio on a single clip:**
+
+```python
+from pathlib import Path
+from src.core.edit_suite import AudioMixer, AudioMixOptions
+
+AudioMixer().mix(
+    Path("clip.mp4"), Path("edited.mp4"),
+    music=Path("song.mp3"),
+    announcer=Path("touchdown.wav"),
+    options=AudioMixOptions(music_volume=0.35, duck_music=True),
+)
+```
+
+Save/load edit recipes as JSON to reuse a replicated style across projects.
+
+## ✏️ Text Studio
+
+Open the **Text Studio** tab to design caption styles with a live ffmpeg preview.
+
+**Controls:** font, size, colors (with per-layer opacity), outline/shadow, fade in/out, 9-point alignment grid, uppercase/bold/word-pop toggles.
+
+**Overlays:** add title cards (`{title}`), watermarks, or CTAs that render in the same ASS burn pass as karaoke captions.
+
+Styles are saved as JSON in `assets/caption_styles/`:
+
+```json
+{
+  "name": "my_style",
+  "font": "Arial Black",
+  "font_size": 64,
+  "primary_rgb": [255, 255, 255],
+  "primary_opacity": 100,
+  "fade_in_ms": 200,
+  "fade_out_ms": 200,
+  "alignment": 2,
+  "margin_v": 220,
+  "highlight_pop": true,
+  "highlight_scale": 120
+}
+```
+
+Channel templates can reference a style by name (`look.caption_preset`) or embed a full inline style (`look.caption_style`) plus overlay list (`look.overlays`).
 
 ## 🎛️ Channel Templates & Transitions
 

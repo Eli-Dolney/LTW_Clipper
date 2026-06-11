@@ -28,7 +28,8 @@ def test_single_clip_has_no_xfade() -> None:
     graph, vlabel, alabel = build_filtergraph([12.0], with_audio=True)
     assert "xfade" not in graph
     assert vlabel == "v0n"
-    assert alabel == "0:a"
+    assert alabel == "abase"
+    assert "[0:a]anull[abase]" in graph
 
 
 def test_multi_clip_video_and_audio_chain() -> None:

@@ -13,6 +13,7 @@ import os
 
 from ..theme import theme, get_font
 from ..utils.preset_manager import PresetManager, Preset
+from ...core.captions.style_manager import StyleManager
 
 
 class PresetCard(ctk.CTkFrame):
@@ -444,7 +445,7 @@ class SettingsTab(ctk.CTkFrame):
             value=settings.captions.preset if settings else "bold_outline"
         )
         self._add_option_row(content, "Caption preset", self.caption_preset_var,
-                             ["bold_outline", "minimal", "mrbeast", "tiktok"])
+                             StyleManager().names())
 
         self.reframe_layout_var = ctk.StringVar(
             value=settings.reframe.layout if settings else "crop"

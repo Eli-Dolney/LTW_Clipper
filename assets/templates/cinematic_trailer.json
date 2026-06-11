@@ -1,0 +1,48 @@
+{
+  "name": "Cinematic Trailer",
+  "niche": "cinematic",
+  "icon": "🎬",
+  "description": "Slower, dramatic movie-style edits with dissolve transitions and subtle lower-thirds.",
+  "content_type": "clips",
+  "builtin": true,
+  "clip_duration": 25.0,
+  "min_duration": 6.0,
+  "max_duration": 45.0,
+  "scene_detection": true,
+  "max_clips": 8,
+  "hook_phrases": [
+    "this changes everything",
+    "you won't believe",
+    "the moment when",
+    "in a world where"
+  ],
+  "hook_words": [
+    "finally",
+    "revealed",
+    "secret",
+    "epic"
+  ],
+  "scoring_weights": {
+    "audio": 0.2,
+    "hook_phrase": 0.25,
+    "hook_word": 0.15,
+    "length": 0.25,
+    "completeness": 0.15
+  },
+  "voice": {
+    "persona": "Trailer narrator",
+    "tone": "Dramatic, cinematic, sparse",
+    "title_style": "Title case, evocative",
+    "cta": "",
+    "hashtag_sets": ["#cinematic", "#movie", "#edit"],
+    "keyword_tags": ["cinematic", "trailer", "film"]
+  },
+  "look": {
+    "caption_preset": "subtle_lower",
+    "auto_transitions": true,
+    "overlays": []
+  },
+  "platforms": ["youtube_shorts"],
+  "add_captions": false,
+  "quality": "youtube_hd"
+}

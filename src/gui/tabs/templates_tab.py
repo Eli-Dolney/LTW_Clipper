@@ -17,10 +17,8 @@ from ..theme import get_font, theme
 
 from ...core.assets import AssetPackManager
 from ...core.templates import ChannelTemplate, TemplateManager
+from ...core.captions.style_manager import StyleManager
 from ...core.templates.models import LookAndSound, ScoringWeightsModel, VoiceProfile
-
-
-CAPTION_PRESETS = ["bold_outline", "minimal", "mrbeast", "tiktok"]
 WEIGHT_FIELDS = ["audio", "hook_phrase", "hook_word", "length", "completeness"]
 
 
@@ -36,6 +34,7 @@ class TemplatesTab(ctk.CTkFrame):
         self.on_status_change = on_status_change
         self.on_apply_template = on_apply_template
         self.manager = TemplateManager()
+        self.style_mgr = StyleManager()
         self.pack_mgr = AssetPackManager()
         self.current: Optional[ChannelTemplate] = None
         self._list_buttons: dict[str, ctk.CTkButton] = {}
@@ -175,12 +174,18 @@ class TemplatesTab(ctk.CTkFrame):
         ctk.CTkLabel(crow, text="Caption preset", font=get_font("sm"),
                      text_color=theme.colors.text_secondary).pack(anchor="w")
         self.caption_var = ctk.StringVar(value="bold_outline")
-        ctk.CTkOptionMenu(
-            crow, values=CAPTION_PRESETS, variable=self.caption_var, font=get_font("sm"),
+        self.caption_menu = ctk.CTkOptionMenu(
+            crow, values=self._caption_style_names(), variable=self.caption_var, font=get_font("sm"),
             fg_color=theme.colors.bg_tertiary, button_color=theme.colors.bg_hover,
             button_hover_color=theme.colors.accent_primary,
             dropdown_fg_color=theme.colors.bg_secondary,
-        ).pack(anchor="w", pady=(theme.spacing.xs, theme.spacing.md))
+        )
+        self.caption_menu.pack(anchor="w", pady=(theme.spacing.xs, theme.spacing.md))
+        ctk.CTkButton(
+            look, text="✏️  Open Text Studio to edit styles",
+            font=get_font("xs"), height=28, command=self._open_text_studio_hint,
+            **theme.get_button_style("secondary"),
+        ).pack(anchor="w", pady=(0, theme.spacing.sm))
         self.lut_var = ctk.StringVar()
         self.transition_pack_var = ctk.StringVar()
         self.sfx_pack_var = ctk.StringVar()
@@ -266,6 +271,13 @@ class TemplatesTab(ctk.CTkFrame):
                      **theme.get_input_style()).pack(fill="x", pady=(2, 0))
 
     # ---- Asset packs -------------------------------------------------------
+
+    def _caption_style_names(self) -> list[str]:
+        return self.style_mgr.names()
+
+    def _open_text_studio_hint(self) -> None:
+        if self.on_status_change:
+            self.on_status_change("Open the Text Studio tab to design caption styles", "info")
 
     def _pack_choices(self, kind: str) -> list[str]:
         return [""] + self.pack_mgr.pack_names(kind)

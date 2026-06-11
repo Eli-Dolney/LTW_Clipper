@@ -38,6 +38,10 @@ MANIFEST
 *.swo
 *~
 .DS_Store
+
+# Generated Text Studio preview frames (sample_frame.jpg is kept)
+assets/preview/studio_*.jpg
+
 *.sublime-project
 *.sublime-workspace
 

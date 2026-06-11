@@ -138,6 +138,8 @@ class StudioTab(ctk.CTkFrame):
         self.grid_frame = ctk.CTkFrame(scroll, fg_color="transparent")
         self.grid_frame.pack(fill="both", expand=True)
 
+        self._build_montage_card(scroll)
+
         actions = ctk.CTkFrame(scroll, fg_color="transparent")
         actions.pack(fill="x", pady=theme.spacing.lg)
         ctk.CTkButton(
@@ -145,6 +147,180 @@ class StudioTab(ctk.CTkFrame):
             command=self._run_pipeline,
             **theme.get_button_style("primary"),
         ).pack(fill="x")
+
+    # ---- Montage / compilation --------------------------------------------
+
+    def _build_montage_card(self, parent):
+        from ...core.render.transitions import TRANSITIONS
+
+        card = ctk.CTkFrame(parent, fg_color=theme.colors.bg_secondary, corner_radius=8)
+        card.pack(fill="x", pady=(theme.spacing.md, 0))
+        ctk.CTkLabel(
+            card, text="🎬  Build Compilation",
+            font=get_font("md", "bold"), text_color=theme.colors.text_primary,
+        ).pack(anchor="w", padx=theme.spacing.md, pady=(theme.spacing.md, theme.spacing.xs))
+        ctk.CTkLabel(
+            card,
+            text="Stitch the rendered clips into one montage with transitions + an optional SFX at each cut.",
+            font=get_font("xs"), text_color=theme.colors.text_muted, wraplength=560, justify="left",
+        ).pack(anchor="w", padx=theme.spacing.md)
+
+        ctrl = ctk.CTkFrame(card, fg_color="transparent")
+        ctrl.pack(fill="x", padx=theme.spacing.md, pady=theme.spacing.sm)
+
+        ctk.CTkLabel(ctrl, text="Clips", font=get_font("xs"),
+                     text_color=theme.colors.text_secondary).pack(side="left")
+        self.montage_variant_var = ctk.StringVar(value="portrait (9:16)")
+        ctk.CTkOptionMenu(
+            ctrl, values=["portrait (9:16)", "horizontal (16:9)"],
+            variable=self.montage_variant_var, width=150, font=get_font("xs"),
+            fg_color=theme.colors.bg_tertiary, button_color=theme.colors.bg_hover,
+            button_hover_color=theme.colors.accent_primary,
+            dropdown_fg_color=theme.colors.bg_secondary,
+        ).pack(side="left", padx=(theme.spacing.xs, theme.spacing.md))
+
+        ctk.CTkLabel(ctrl, text="Transition", font=get_font("xs"),
+                     text_color=theme.colors.text_secondary).pack(side="left")
+        self.montage_transition_var = ctk.StringVar(value="fade")
+        ctk.CTkOptionMenu(
+            ctrl, values=list(TRANSITIONS.keys()), variable=self.montage_transition_var,
+            width=130, font=get_font("xs"),
+            fg_color=theme.colors.bg_tertiary, button_color=theme.colors.bg_hover,
+            button_hover_color=theme.colors.accent_primary,
+            dropdown_fg_color=theme.colors.bg_secondary,
+        ).pack(side="left", padx=(theme.spacing.xs, theme.spacing.md))
+
+        ctk.CTkLabel(ctrl, text="Dur", font=get_font("xs"),
+                     text_color=theme.colors.text_secondary).pack(side="left")
+        self.montage_dur_slider = ctk.CTkSlider(
+            ctrl, from_=0.2, to=1.5, number_of_steps=13, width=100,
+            fg_color=theme.colors.bg_tertiary,
+            progress_color=theme.colors.accent_primary,
+            button_color=theme.colors.accent_primary,
+        )
+        self.montage_dur_slider.set(0.5)
+        self.montage_dur_slider.pack(side="left", padx=(theme.spacing.xs, 0))
+
+        sfx_row = ctk.CTkFrame(card, fg_color="transparent")
+        sfx_row.pack(fill="x", padx=theme.spacing.md, pady=(0, theme.spacing.sm))
+        ctk.CTkLabel(sfx_row, text="Transition SFX", font=get_font("xs"),
+                     text_color=theme.colors.text_secondary).pack(side="left")
+        self.montage_sfx_var = ctk.StringVar(value="None")
+        self._sfx_lookup: Dict[str, Path] = {}
+        self.montage_sfx_menu = ctk.CTkOptionMenu(
+            sfx_row, values=self._sfx_choices(), variable=self.montage_sfx_var,
+            width=200, font=get_font("xs"),
+            fg_color=theme.colors.bg_tertiary, button_color=theme.colors.bg_hover,
+            button_hover_color=theme.colors.accent_primary,
+            dropdown_fg_color=theme.colors.bg_secondary,
+        )
+        self.montage_sfx_menu.pack(side="left", padx=(theme.spacing.xs, theme.spacing.sm))
+        ctk.CTkButton(
+            sfx_row, text="Browse SFX…", width=100, height=26, font=get_font("xs"),
+            command=self._browse_sfx, **theme.get_button_style("secondary"),
+        ).pack(side="left")
+
+        self.montage_btn = ctk.CTkButton(
+            card, text="🎬  Build Compilation", command=self._build_montage,
+            **theme.get_button_style("primary"),
+        )
+        self.montage_btn.pack(fill="x", padx=theme.spacing.md, pady=(0, theme.spacing.sm))
+        self.montage_status = ctk.CTkLabel(
+            card, text="", font=get_font("xs"), text_color=theme.colors.text_muted,
+        )
+        self.montage_status.pack(anchor="w", padx=theme.spacing.md, pady=(0, theme.spacing.md))
+
+    def _sfx_choices(self) -> list[str]:
+        choices = ["None"]
+        try:
+            from ...core.assets import AssetPackManager
+
+            self._sfx_lookup = {}
+            for item in AssetPackManager().items("sfx"):
+                label = f"{item.name}{item.ext}"
+                self._sfx_lookup[label] = item.path
+                choices.append(label)
+        except Exception:  # noqa: BLE001
+            pass
+        return choices
+
+    def _browse_sfx(self):
+        path = filedialog.askopenfilename(
+            title="Select transition SFX",
+            filetypes=[("Audio", "*.wav *.mp3 *.aif *.aiff *.m4a *.flac *.ogg")],
+        )
+        if path:
+            label = Path(path).name
+            self._sfx_lookup[label] = Path(path)
+            existing = list(self.montage_sfx_menu.cget("values"))
+            if label not in existing:
+                existing.append(label)
+                self.montage_sfx_menu.configure(values=existing)
+            self.montage_sfx_var.set(label)
+
+    def _build_montage(self):
+        if not self.project_dir:
+            messagebox.showwarning("Compilation", "Load a project folder first.")
+            return
+        variant_file = "clip_portrait.mp4" if "portrait" in self.montage_variant_var.get() else "clip.mp4"
+        clip_files: List[Path] = []
+        for clip in self._clips:
+            slug = self._slug_from_clip(clip)
+            f = self.project_dir / "clips" / slug / variant_file
+            if f.is_file():
+                clip_files.append(f)
+        if len(clip_files) < 2:
+            messagebox.showwarning(
+                "Compilation",
+                f"Need at least 2 rendered '{variant_file}' clips. Found {len(clip_files)}.\n"
+                "Run the pipeline first so clips are rendered.",
+            )
+            return
+
+        portrait = "portrait" in self.montage_variant_var.get()
+        sfx_label = self.montage_sfx_var.get()
+        sfx_path = self._sfx_lookup.get(sfx_label) if sfx_label != "None" else None
+        transition = self.montage_transition_var.get()
+        dur = round(float(self.montage_dur_slider.get()), 2)
+        output = self.project_dir / f"compilation_{'portrait' if portrait else 'horizontal'}.mp4"
+
+        self.montage_btn.configure(state="disabled")
+        self.montage_status.configure(
+            text=f"Building {len(clip_files)}-clip compilation ({transition}, {dur}s)…"
+        )
+        if self.on_status_change:
+            self.on_status_change("Building compilation…", "processing")
+
+        def work():
+            try:
+                from ...core.render.transitions import TransitionComposer, TransitionOptions
+
+                opts = TransitionOptions(
+                    transition=transition,
+                    transition_dur=dur,
+                    width=1080 if portrait else 1920,
+                    height=1920 if portrait else 1080,
+                )
+                TransitionComposer().compose(clip_files, output, options=opts, sfx=sfx_path)
+                self.after(0, lambda: self._on_montage_done(output))
+            except Exception as exc:  # noqa: BLE001
+                self.after(0, lambda e=exc: self._on_montage_error(str(e)))
+
+        threading.Thread(target=work, daemon=True).start()
+
+    def _on_montage_done(self, output: Path):
+        self.montage_btn.configure(state="normal")
+        self.montage_status.configure(text=f"✅ Saved: {output.name}")
+        if self.on_status_change:
+            self.on_status_change("Compilation ready", "success")
+        messagebox.showinfo("Compilation", f"Compilation built:\n\n{output}")
+
+    def _on_montage_error(self, error: str):
+        self.montage_btn.configure(state="normal")
+        self.montage_status.configure(text=f"Failed: {error[:200]}")
+        if self.on_status_change:
+            self.on_status_change("Compilation failed", "error")
+        messagebox.showerror("Compilation failed", error)
 
     def _browse(self):
         path = filedialog.askdirectory(title="Select LTW project folder")
@@ -186,6 +362,13 @@ class StudioTab(ctk.CTkFrame):
                 self._source_video = src
 
         self._load_transcript(project)
+
+        # Refresh SFX options in case packs were added since startup.
+        if hasattr(self, "montage_sfx_menu"):
+            choices = self._sfx_choices()
+            self.montage_sfx_menu.configure(values=choices)
+            if self.montage_sfx_var.get() not in choices:
+                self.montage_sfx_var.set("None")
 
         for i, clip in enumerate(clips):
             self._add_clip_card(clip, i)

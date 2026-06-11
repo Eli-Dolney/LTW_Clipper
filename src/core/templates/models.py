@@ -11,6 +11,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
+from ..captions.models import CaptionStyleModel, TextOverlayModel
 from ..models import Platform
 
 ContentType = Literal["clips", "shorts", "tutorial", "long_form", "gaming"]
@@ -68,6 +69,8 @@ class LookAndSound(BaseModel):
     """The visual / audio identity layer."""
 
     caption_preset: str = "bold_outline"
+    caption_style: CaptionStyleModel | None = None
+    overlays: list[TextOverlayModel] = Field(default_factory=list)
     lut_name: str | None = None
     transition_pack: str | None = None
     sfx_pack: str | None = None

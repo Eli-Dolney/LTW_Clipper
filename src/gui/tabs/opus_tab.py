@@ -12,6 +12,7 @@ import customtkinter as ctk
 from ..components.file_picker import FilePicker
 from ..components.progress_card import ProgressCard, StageStatus
 from ..theme import get_font, theme
+from ...core.captions.style_manager import StyleManager
 
 
 # Map pipeline stage names to indices in the progress card.
@@ -97,6 +98,7 @@ class OpusTab(ctk.CTkFrame):
         }
         self._processor = None  # set when a run starts
         self._active_template = None  # ChannelTemplate selected from the Templates tab
+        self.style_mgr = StyleManager()
         self._create_widgets()
 
     # ---- Widgets -----------------------------------------------------------
@@ -282,13 +284,14 @@ class OpusTab(ctk.CTkFrame):
             font=get_font("sm"), text_color=theme.colors.text_secondary,
         ).pack(anchor="w")
         self.caption_style_var = ctk.StringVar(value="bold_outline")
-        ctk.CTkOptionMenu(
-            crow, values=["bold_outline", "minimal", "mrbeast", "tiktok"],
+        self.caption_style_menu = ctk.CTkOptionMenu(
+            crow, values=self.style_mgr.names(),
             variable=self.caption_style_var, font=get_font("sm"),
             fg_color=theme.colors.bg_tertiary, button_color=theme.colors.bg_hover,
             button_hover_color=theme.colors.accent_primary,
             dropdown_fg_color=theme.colors.bg_secondary,
-        ).pack(anchor="w", pady=(theme.spacing.xs, 0))
+        )
+        self.caption_style_menu.pack(anchor="w", pady=(theme.spacing.xs, 0))
 
         # Reframe layout
         lrow = ctk.CTkFrame(content, fg_color="transparent")

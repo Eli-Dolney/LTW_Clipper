@@ -114,7 +114,9 @@ def build_filtergraph(
     audio_label: str | None = None
     if with_audio:
         if n == 1:
-            audio_label = "0:a"
+            # Route through filter graph so -map uses [label], not invalid [0:a].
+            chains.append("[0:a]anull[abase]")
+            audio_label = "abase"
         else:
             prev_a = "0:a"
             for k in range(1, n):
@@ -194,26 +196,39 @@ class TransitionComposer:
             sfx=use_sfx,
         )
 
-        cmd = [self.ffmpeg, "-y", "-hide_banner", "-loglevel", "error"]
-        for c in clips:
-            cmd += ["-i", str(c)]
-        if use_sfx:
-            cmd += ["-i", str(sfx)]
-        cmd += ["-filter_complex", filter_complex, "-map", f"[{vlabel}]"]
-        if alabel is not None:
-            cmd += ["-map", f"[{alabel}]"]
-        cmd += [
-            "-c:v", self.runner.video_encoder, "-pix_fmt", "yuv420p",
-            "-preset", opts.preset, "-crf", str(opts.crf),
-        ]
-        if alabel is not None:
-            cmd += ["-c:a", "aac", "-b:a", "160k", "-ar", "44100", "-ac", "2"]
-        cmd.append(str(output))
+        def build_cmd(encoder: str) -> list[str]:
+            cmd = [self.ffmpeg, "-y", "-hide_banner", "-loglevel", "error"]
+            for c in clips:
+                cmd += ["-i", str(c)]
+            if use_sfx:
+                cmd += ["-i", str(sfx)]
+            cmd += ["-filter_complex", filter_complex, "-map", f"[{vlabel}]"]
+            if alabel is not None:
+                cmd += ["-map", f"[{alabel}]"]
+            cmd += ["-c:v", encoder, "-pix_fmt", "yuv420p", "-preset", opts.preset,
+                    "-crf", str(opts.crf)]
+            if alabel is not None:
+                cmd += ["-c:a", "aac", "-b:a", "160k", "-ar", "44100", "-ac", "2"]
+            cmd.append(str(output))
+            return cmd
 
+        encoder = self.runner.video_encoder
         try:
-            subprocess.run(cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            subprocess.run(build_cmd(encoder), check=True,
+                           stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         except subprocess.CalledProcessError as exc:
             stderr = exc.stderr.decode("utf-8", errors="replace") if exc.stderr else ""
+            # Hardware encoders (videotoolbox/nvenc/qsv) can be unavailable or busy;
+            # fall back to software libx264 once before giving up.
+            if encoder != "libx264":
+                log.warning("Encoder %s failed (%s), retrying with libx264",
+                            encoder, stderr[:160])
+                try:
+                    subprocess.run(build_cmd("libx264"), check=True,
+                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    return output
+                except subprocess.CalledProcessError as exc2:
+                    stderr = exc2.stderr.decode("utf-8", errors="replace") if exc2.stderr else ""
             raise RuntimeError(f"ffmpeg montage failed: {stderr[:500]}") from exc
         return output
 

@@ -35,7 +35,9 @@ from .ai.metadata_writer import MetadataConfig, MetadataWriter
 from .ai.ollama_client import OllamaConfig
 from .ai.transcriber import LocalTranscriber, TranscriberConfig
 from .captions.burner import CaptionBurner
+from .captions.models import CaptionStyleModel, TextOverlayModel
 from .captions.styler import CaptionStyler
+from .captions.style_manager import StyleManager
 from .models import (
     ClipMetadata,
     ClipPlan,
@@ -67,6 +69,8 @@ class PipelineOptions:
     ollama_host: str = "http://localhost:11434"
     ollama_model: str = "llama3.1:8b"
     caption_preset: str = "bold_outline"
+    caption_style: CaptionStyleModel | None = None
+    overlays: list[TextOverlayModel] | None = None
     burn_captions: bool = True
     emit_horizontal: bool = True
     emit_portrait: bool = True
@@ -104,6 +108,8 @@ class PipelineOptions:
             min_duration=template.min_duration,
             max_duration=template.max_duration,
             caption_preset=template.look.caption_preset,
+            caption_style=template.look.caption_style,
+            overlays=list(template.look.overlays) or None,
             burn_captions=template.add_captions,
             platforms=list(template.platforms),
             template_name=template.name,
@@ -461,12 +467,26 @@ class OpusClipProcessor:
                     shutil.copy2(primary, legacy)
 
         # 3. Captions (scoped to the clip window).
-        styler = CaptionStyler(self.options.caption_preset)
+        style_mgr = StyleManager()
+        resolved_style = style_mgr.resolve(
+            self.options.caption_preset,
+            self.options.caption_style,
+        )
+        styler = CaptionStyler(resolved_style)
+        clip_duration = safe_end - safe_start
+        overlay_metadata = {
+            "title": meta.youtube.title,
+            "channel": self.options.template_name or "LTW",
+            "cta": meta.shorts.caption,
+        }
         caption_artifacts = styler.write(
             transcript, clip_dir,
             base_name="captions",
             clip_offset=safe_start,
             clip_end=safe_end,
+            overlays=self.options.overlays or [],
+            overlay_metadata=overlay_metadata,
+            clip_duration=clip_duration,
         )
 
         # 4. Optionally burn captions into portrait variants.
